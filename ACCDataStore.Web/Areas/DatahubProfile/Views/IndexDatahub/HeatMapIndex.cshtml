@@ -1,0 +1,150 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@section Header {
+    <!-- Bootstrap Core JavaScript -->
+<script src="~/Scripts/jquery.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q&signed_in=true"></script>
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HeatMapIndex.js"></script>
+    @*<script src="http://code.highcharts.com/maps/modules/data.js"></script>*@
+    @*<script src="http://code.highcharts.com/maps/modules/exporting.js"></script>*@
+<script src="~/Scripts/accdatastore/views/Datazone_with_Desc.js"></script>
+
+    <style type="text/css">
+
+    .nicebox {
+        position: absolute;
+        text-align: center;
+        font-family: "Roboto", "Arial", sans-serif;
+        font-size: 13px;
+        z-index: 5;
+        box-shadow: 0 4px 6px -4px #333;
+        padding: 5px 10px;
+        background: rgb(255,255,255);
+        background: linear-gradient(to bottom,rgba(255,255,255,1) 0%,rgba(245,245,245,1) 100%);
+        border: rgb(229, 229, 229) 1px solid;
+    }
+
+    #data-box {
+        /*top: 15px;
+        left: 480px;*/
+        height: 45px;
+        line-height: 45px;
+        display: none;
+    }
+
+
+    #legend {
+        display: flex;
+        display: -webkit-box;
+        padding-top: 7px;
+    }
+
+    .color-key {
+        background: linear-gradient(to right, hsl(5, 69%, 54%) 0%, hsl(29, 71%, 51%) 17%, hsl(54, 74%, 47%) 33%, hsl(78, 76%, 44%) 50%, hsl(102, 78%, 41%) 67%, hsl(127, 81%, 37%) 83%, hsl(151, 83%, 34%) 100%);
+        flex: 1;
+        -webkit-box-flex: 1;
+        /*margin: 0 5px;*/
+        text-align: left;
+        font-size: 1.0em;
+        line-height: 1.0em;
+    }
+
+    #data-value {
+        font-size: 1.0em;
+        font-weight: bold;
+    }
+
+    #data-label {
+        font-size: 1.0em;
+        font-weight: normal;
+        /*padding-right: 10px;*/
+    }
+
+        #data-label:after {
+            content: ':';
+        }
+
+    #data-caret {
+        margin-left: -5px;
+        display: block;
+        font-size: 14px;
+        /*width: 15px;*/
+    }
+</style>
+
+}
+@{
+    ViewBag.Title = "HeatMapIndex";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>DataHub - Interactive Heat Map</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div id="map-canvas" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel-group">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Layers</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div id="mapcontrolbox">
+                                    <select id="selecteddataset">
+                                        <option value="Participating">Participating</option>
+                                        <option value="Not-Participating">Not-Participating</option>
+                                        <option value="Unconfirmed">Unconfirmed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="text-left"  id="census-min">min %</div>
+                                <div class="color-key "><span id="data-caret">&#x25c6;</span></div>
+                                <div class="text-right" id="census-max">max %</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div id="data-box" class="col-md-12 text-center">
+                                    <label id="data-label" for="data-value"></label>
+                                    <span id="data-value"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>         <!-- row -->
+
+        <div class="row">
+            <div class="col-md-10">
+                <div id="divinformationContainer" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <div id="divChartContainer" style="width: 100%;"></div>
+            </div>
+            <div class="col-md-5">
+                <div id="divPieChartContainer" style="width: 100%;"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+ 

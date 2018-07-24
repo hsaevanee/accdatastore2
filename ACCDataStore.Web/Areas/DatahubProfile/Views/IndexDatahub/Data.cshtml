@@ -1,0 +1,531 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@section Header {
+    <!--Include jQuery-->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!--Bootstrap Multiselect-->
+    <script type="text/javascript" src="~/Scripts/bootstrap-multiselect.js"></script>
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+    <!-- jQuery DataTables-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.0/css/select.bootstrap.min.css" />
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.0/js/dataTables.select.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <!-- Main JS file-->
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ComparisonsIndex.js"></script>
+<script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/IndexdatahubProfile.js"></script>
+<script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsGraphsNew.js"></script>
+<script>
+    var selectionParams = @Html.Raw(Json.Encode(Model.selectionParamsRaw))
+</script>
+}
+ 
+@{
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <div class="container">
+            <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">About</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            This data represents the percentage of people that achieve positive
+                            destinations in terms of their career goals. You can select a specific
+                            location or school to view the data, or you can see the overall city statistics.
+                            You can also view data related to any particular person by name.
+                            Clicking either of the items in graph legends will turn that series of data on and off.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Please Select Criteria</h3>
+                </div>
+                <div class="panel-body">
+@using (Html.BeginForm("Data", "IndexDatahub", new { area = "DatahubProfile" }))
+{
+<table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td width="40%">School</td>
+                                    <td>@Html.DropDownList("selectedschoolcode", new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>                                 
+                                    @*<td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>*@
+                                    <td width="20%"><button onclick="return SubmitForm(this.id)" class="btn btn-primary" id="schoolsubmitButton" name="schoolsubmitButton" value="Search">Search</button></td>
+                                    @*<td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>*@
+                                    
+                                    @*<td width="20%"><button class="btn btn-primary" id="schoolsubmitButton">Search</button></td>*@
+                                </tr>
+                                <tr>
+                                    <td width="40%">Neighbourhoods</td>
+                                    <td>@Html.DropDownList("selectedneighbourhoods", new SelectList(Model.ListNeighbourhoodsName, "seedcode", "name"))</td>
+                                    <td width="20%"><button onclick="return SubmitForm(this.id)" class="btn btn-primary" id="neighbourhoodssubmitButton" name="neighbourhoodssubmitButton" value="Search">Search</button></td>
+                                    @*<td width="20%"><button class="btn btn-primary" id="neighbourhoodButton">Search</button></td>*@
+                                </tr>
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="selectedcouncil" value="@Model.selectedcouncil" />
+}
+                </div>
+            </div>
+        </div>
+        @*<div id="myPartialContainer">
+            @Html.Partial("_DataTables", Model.ListSelectionData);
+        </div>*@
+        <div class="col-md-6">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Search People by Name</h3>
+                </div>
+                <div class="panel-body">
+@using (Html.BeginForm("SearchpupilbyName", "IndexDatahub", new { area = "DatahubProfile" }))
+{
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td width="30%">Forname</td>
+                            @*<td><input type="text" name="forename"></td>*@
+                            <td><input name="forename" type="text" tabindex="1" placeholder="Forename"></td>
+                            @*<td width="20%"><input type="submit" name="schoolsubmitButton" value="Search" /></td>*@
+                            <td width="20%"></td>
+                        </tr>
+                        <tr>
+                            <td width="30%">Surname</td>
+                            @*<td><input type="text" name="surname"></td>*@
+                            <td><input name="surname"  type="text" tabindex="1" placeholder="Surname"></td>
+                            <td width="20%"><input enabled type="submit" name="searchsubmitButton" class="btn btn-primary" value="Search" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+}
+                </div>
+            </div>
+        </div>
+    </div>
+
+         <div style="border-top: solid lightgrey 1px; margin: 20px 0px 50px 0px">
+            <h2 style="margin: 30px 0px 30px 0px">
+                @for (int i = 0; i < Model.selectionParams.school.Count; i++)
+                {
+                    @Model.selectionParams.school[i];
+                    if (i < Model.selectionParams.school.Count - 1)
+                    { 
+                        <span>, </span>
+                    }
+                    else
+                    {
+                        <span> </span>
+                    }
+                }
+                @for (int i = 0; i < Model.selectionParams.neighbourhood.Count; i++)
+                {
+                    @Model.selectionParams.neighbourhood[i];
+                    if (i < Model.selectionParams.neighbourhood.Count - 1)
+                    {
+                        <span>, </span>
+                    }
+                    else
+                    {
+                        <span> </span>
+                    }
+                }
+                @if (Model.selectionParams.neighbourhood.Count > 0 || Model.selectionParams.school.Count > 0)
+                {
+                    <span>Data</span>
+                }
+                else
+                {
+                     @Model.selectionParams.councilName;
+                    <span>Data</span>
+                }
+            </h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">People Overview</h3>
+                </div>
+                <div class="panel-body">
+                    <p>This gives an Overview of People Destinations within @Model.selectedcouncil and selected area(s)</p>
+                    @if (Model.selectedschool != null)
+                    {
+                        <div id="datahub-index-specificpiechart" style="width: 50%; float: left"></div>
+                        <div id="datahub-index-mainpiechart" style="width: 50%; float: left"></div>
+                    }
+                    else
+                    {
+                        <div id="datahub-index-mainpiechart"></div>
+                    }
+                    <div id="datahub-index-bigolbarchart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@if (Model.ListSelectionData != null)
+{ 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center"> Opportunities for All Clients</h4>
+                </div>
+                <div class="panel-body">
+                    <p>This gives an Overview of People by Age and Gender within @Model.selectedcouncil and selected area(s)</p>
+                    <table class="table table-bordered table-hover" id="OpportunitiesForAllClientsTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="20%"></th>
+                                <th class="text-center" width="10%">All Clients*</th>
+                                <th class="text-center" width="10%">Males</th>
+                                <th class="text-center" width="10%">Females</th>
+                                <th class="text-center" width="10%">People 15</th>
+                                <th class="text-center" width="10%">People 16</th>
+                                <th class="text-center" width="10%">People 17</th>
+                                <th class="text-center" width="10%">People 18</th>
+                                <th class="text-center" width="10%">People 19</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var data in Model.ListSelectionData)
+                            {
+                                <tr>
+                                    <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
+                                    <td class="text-center">@data.allPupils</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allMale))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allFemale))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils15))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils16))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils17))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils18))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils19))</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    * - Excluding Those Moved outwith Scotland.
+                </div>
+
+                <div id="OpportunitiesForAllClientsChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center"> Current Positive Destinations</h4>
+                </div>
+                <div class="panel-body">
+                    <p>This gives a breakdown of current positive desitinations within @Model.selectedcouncil and selected area(s)</p>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover" id="CurrentPositiveDestintionsTable1">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">School Pupils</th>
+                                    <th class="text-center">School Pupils In Transition</th>
+                                    <th class="text-center">Activity Agreement</th>
+                                    <th class="text-center">Employability Fund Stage 2</th>
+                                    <th class="text-center">Employability Fund Stage 3</th>
+                                    <th class="text-center">Employability Fund Stage 4</th>
+                                    <th class="text-center">Full Time Employment</th>
+                                    <th class="text-center">Further Education</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var data in Model.ListSelectionData)
+                                {
+                                    <tr>
+                                        <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSchool))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSchoolTransition))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInActivityAgreement))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEmployabilityFundStage2))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEmployabilityFundStage3))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEmployabilityFundStage4))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInFullTimeEmployement))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInFurtherEducation))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="CurrentPositiveDestintionsChart1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover" id="CurrentPositiveDestintionsTable2">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">Higher Education</th>
+                                    <th class="text-center">Modern Apprenticeship</th>
+                                    <th class="text-center">Part Time Employment</th>
+                                    <th class="text-center">Personal/ Skills Development</th>
+                                    <th class="text-center">Self-Employed</th>
+                                    <th class="text-center">Other Formal Training</th>
+                                    <th class="text-center">Voluntary Work</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var data in Model.ListSelectionData)
+                                {
+                                    <tr>
+                                        <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInHigherEducation))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInModernApprenship))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInPartTimeEmployment))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInPersonalSkillDevelopment))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSelfEmployed))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInTraining))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInVoulanteerWork))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="CurrentPositiveDestintionsChart2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center"> Non Positive Destinations</h4>
+                </div>
+                <div class="panel-body">
+                    <p>This gives a breakdown of current non-positive desitinations and unknown within @Model.selectedcouncil and selected area(s)</p>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover" id="NonPositiveDestinationsTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    @*<th class="text-center">Average Weeks Since Last Positive Destinationn</th>*@
+                                    <th class="text-center">Custody</th>
+                                    <th class="text-center">Economically Inactive</th>
+                                    <th class="text-center">Unavailable-ill Health</th>
+                                    <th class="text-center">Unemployed</th>
+                                    <th class="text-center">Unknown</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var data in Model.ListSelectionData)
+                                {
+                                    <tr>
+                                        <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
+                                        @*<td class="text-center"></td>*@
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInCustody))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEconomicallyInactive))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInUnavailableIllHealth))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInUnemployed))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInUnknown))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="NonPositiveDestinationsChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+}
+        <div id="table-test1"></div>
+        @*<div id="myPartialContainer">
+            @Html.Partial("_DataTables", Model.ListSelectionData);
+        </div>*@
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 style="margin: 0; text-align: center">@Model.selectedcouncil Monthly Trends</h4>
+                </div>
+                <div class="panel-body">
+                    <p class ="text-center">This is the trend chart showing 12 month data for @Model.selectedcouncil and selected area(s)</p>
+                    <div style="text-align: center">
+                        <button onclick="hGraphs.switchMonthsTrends('participating')">Positive Destinations</button>
+                        <button onclick="hGraphs.switchMonthsTrends('notParticipating')">Non-Positive Destinations</button>
+                        <button onclick="hGraphs.switchMonthsTrends('unknown')">Unknown</button>
+                    </div>
+                    <div id="month-trend-histogram"></div>
+                </div>
+            </div>
+        </div>
+            </div>
+
+    </div>
+
+        <div style="margin: 20px 0px 20px 0px; border-top: solid lightgrey 1px">
+            <h2 style="margin: 30px 0px 30px 0px">
+                @if (Model.selectionParams.school.Count > 0 || Model.selectionParams.neighbourhood.Count > 0)
+                {
+                    @Model.selectionParams.councilName; 
+                    <span>Data</span>
+                }
+            
+            </h2>
+            <!--Schools Overview-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">@Model.selectedcouncil Schools Overview</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="summaryDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-left">
+                                                School Name
+                                            </th>
+                                            <th class="text-center">
+                                                % Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Non-Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Unknown
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var School in Model.summaryTableData)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-left">
+                                                    @School.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.participating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.notParticipating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.unknown)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <button onclick="hGraphs.switchAllSchoolComparison('participating')">Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('notParticipating')">Non-Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('unknown')">Unknown</button>
+                        </div>
+                        <div id="index-all-school-comparison-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <!--Neighbourhoods Overview-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">@Model.selectedcouncil Neighbourhoods Overview</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>This gives an Overview of Destinations of People in all neighbourhood(s) within @Model.selectedcouncil</p>
+                            <div class="table-responsive">
+                                <table id="summaryNeighbourhoodDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-left">
+                                                Neighbourhood Name
+                                            </th>
+                                            <th class="text-center">
+                                                % Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Non-Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Unknown
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var School in Model.summaryNeighboursTableData)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-left">
+                                                    @School.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.participating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.notParticipating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.unknown)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Non-Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('unknown')">Unknown</button>
+                        </div>
+                        <div id="index-all-IMDatazone-comparison-chart"></div>
+                    </div>
+        </div>
+            </div>
+
+    </div>
+
+    </div>
+
+</body>

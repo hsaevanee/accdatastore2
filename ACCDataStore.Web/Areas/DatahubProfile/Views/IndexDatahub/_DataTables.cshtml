@@ -1,0 +1,174 @@
+﻿@model IList<accdatastore.web.areas.datahubprofile.viewmodels.datahub.summarydataviewmodel>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center"> Opportunities for All Clients</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover" id="OpportunitiesForAllClientsTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="20%"></th>
+                                <th class="text-center" width="10%">All Clients*</th>
+                                <th class="text-center" width="10%">Males</th>
+                                <th class="text-center" width="10%">Females</th>
+                                <th class="text-center" width="10%">Pupils 15</th>
+                                <th class="text-center" width="10%">Pupils 16</th>
+                                <th class="text-center" width="10%">Pupils 17</th>
+                                <th class="text-center" width="10%">Pupils 18</th>
+                                <th class="text-center" width="10%">Pupils 19</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var data in Model)
+                            {
+                                <tr>
+                                    <th class="text-center">@Html.DisplayTextFor(data.name)</th>
+                                    <td class="text-center">@Html.DisplayTextFor(data.allPupilsMovedOutwithScotland)</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allMale))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allFemale))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils15))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils16))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils17))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils18))</td>
+                                    <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils19))</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    * - Excluding Those Moved outwith Scotland.
+                </div>
+
+                <div id="OpportunitiesForAllClientsChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center"> Current Positive Destinations</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover" id="CurrentPositiveDestintionsTable1">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">School Pupils</th>
+                                    <th class="text-center">School Pupils In Trainsitions</th>
+                                    <th class="text-center">Activity Agreement</th>
+                                    <th class="text-center">Employability Fund Stage 2</th>
+                                    <th class="text-center">Employability Fund Stage 3</th>
+                                    <th class="text-center">Employability Fund Stage 4</th>
+                                    <th class="text-center">Full Time Employment</th>
+                                    <th class="text-center">Further Education</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var data in Model)
+                                {
+                                    <tr>
+                                        <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSchool))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSchoolTransition))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInActivityAgreement))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEmployabilityFundStage2))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEmployabilityFundStage3))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEmployabilityFundStage4))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInFullTimeEmployement))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInFurtherEducation))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="CurrentPositiveDestintionsChart1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover" id="CurrentPositiveDestintionsTable2">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">Higher Education</th>
+                                    <th class="text-center">Modern Apprenticeship</th>
+                                    <th class="text-center">Part Time Employment</th>
+                                    <th class="text-center">Personal/ Skills Development</th>
+                                    <th class="text-center">Self-Employed</th>
+                                    <th class="text-center">Other Formal Training</th>
+                                    <th class="text-center">Voluntary Work</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var data in Model)
+                                {
+                                    <tr>
+                                        <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInHigherEducation))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInModernApprenship))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInPartTimeEmployment))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInPersonalSkillDevelopment))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSelfEmployed))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInTraining))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInVoulanteerWork))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="CurrentPositiveDestintionsChart2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title text-center"> Non Positive Destinations</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-hover" id="NonPositiveDestinationsTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">Average Weeks Since Last Positive Destinationn</th>
+                                    <th class="text-center">Custody</th>
+                                    <th class="text-center">Economically Inactive</th>
+                                    <th class="text-center">Unavailable-ill Health</th>
+                                    <th class="text-center">Unemployed</th>
+                                    <th class="text-center">Unknown</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var data in Model)
+                                {
+                                    <tr>
+                                        <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
+                                        <td class="text-center">@*@String.Format("{0:#,0.00}", data.AvgWeekssinceLastPositiveDestination)*@</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInCustody))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEconomicallyInactive))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInUnavailableIllHealth))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInUnemployed))</td>
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInUnknown))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="NonPositiveDestinationsChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

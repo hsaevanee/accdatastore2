@@ -1,0 +1,140 @@
+﻿@section Header {
+    <link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/cssf/views/CityWideCSSF/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/cssf/views/CityWideCSSF/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/cssf/views/CityWideCSSF/service.js"></script>
+    <script src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>  
+
+<script src="~/bower_components/datatables.net-buttons/js/dataTables.buttons.js"></script>
+<script src="~/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/bower_components/datatables.net-buttons-bs/js/buttons.bootstrap.js"></script>
+<script src="~/bower_components/datatables.net-buttons/js/buttons.html5.js"></script>
+<script src="~/bower_components/datatables.net-buttons/js/buttons.colVis.js"></script>
+<script src="~/bower_components/datatables.net-buttons/js/buttons.flash.js"></script>
+<script src="~/bower_components/datatables.net-buttons/js/buttons.print.js"></script>
+
+    <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+    <link rel="stylesheet" href="~/Content/accdatastore/BaseContent.css" />
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="~/bower_components/datatables.net-buttons-dt/css/buttons.dataTables.min.cs  s" />
+
+}
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select Report</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left" >
+                                            Report
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eChild.Name for eChild in mIndex.ListReports track by eChild.Code"
+                                                    ng-model="mIndex.ListReportSelected" ng-change="updateData()"></select>
+                                        </td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                            <p><button type="button" class="btn btn-info" ng-click="doGetData()">View</button></p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container" ng-if="mIndex.bShowContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> {{ mIndex.ListReportSelected.Name}} </h4>
+                        </div>
+                        <div class="panel-body">
+                            <table datatable="ng" dt-options="dtOptions"  class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"> Name </th>
+                                        <th class="text-center"> Total Number of Agreements </th>
+                                        <th class="text-center"> Total Cost (£)</th>
+                                        <th class="text-center"> Number of Closed Agreements </th>
+                                        <th class="text-center"> Closed Agreement Cost (£)</th>
+                                        <th class="text-center"> Number of Current Agreements </th>
+                                        <th ng-if="mIndex.ShowCountChild" class="text-center"> Number of Children</th>
+                                        <th class="text-center"> Ongoing Cost (£)</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="eData in mIndex.listResults">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eData.Client_id }}</td>
+                                        <td class="text-right">{{ eData.Count }}</td>
+                                        <td class="text-right">{{ eData.TotalCost }}</td>
+                                        <td class="text-right">{{ eData.CountClosed }}</td>
+                                        <td class="text-right">{{ eData.ClosedCost }}</td>
+                                        <td class="text-right">{{ eData.CountOngoing }}</td>
+                                        <td ng-if="mIndex.ShowCountChild" class="text-right">{{ eData.CountChild }}</td>
+                                        <td class="text-right">{{ eData.OngoingCost }}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-if="mIndex.PieChartCost">
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.PieChartCost"></highchart>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.PieChartAgreements"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-if="mIndex.BarChartCost">
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.BarChartCost"></highchart>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.BarChartNoAgreement"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @*<pre>
+            {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+</div>

@@ -1,0 +1,296 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.SIMD.SIMDViewModel
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/SIMD/SIMD.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+}
+@{
+    //SIMD
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="list-group">
+                    <a href="@Url.Action("Index", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)" class="list-group-item">Data</a>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <h2>SIMD</h2>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" style="text-align: center"> Please Select Criteria</h4>
+                    </div>
+                        <div class="panel-body">
+ 
+                                @using (Html.BeginForm("Index", "SIMD", new { area = "SchoolProfile" }))
+                                {
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td class="text-left">Select school name </td>
+                                            <td class="text-left">@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
+                                            @*<td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>*@
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left">Data available </td>
+                                            <td></td>
+                                        </tr>
+                                        @{
+                                    var check = "";
+                                    foreach (var itemYear in Model.ListYear)
+                                    {
+                                        check = "";
+                                        if (Model.ListSelectedYear != null)
+                                        {
+                                            if (Model.ListSelectedYear.Contains(itemYear))
+                                            {
+                                                check = "checked";
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            check = "checked";
+                                        }
+
+                                        <tr>
+                                            <td></td>
+                                            <td class="text-left">
+                                                <input type="checkbox" name="years" value="@itemYear"
+                                                       @check /> @itemYear
+                                                </td>
+                                            </tr>
+                                    }
+                                        }
+
+
+                                        @{
+                                    check = "";
+                                    if (Model.ListSelectedYear != null)
+                                    {
+                                        if (Model.ListSelectedYear.Count == 2)
+                                        {
+                                            check = "checked";
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        check = "checked";
+                                    }
+                                        }
+                                        <tr>
+                                            <td></td>
+                                            <td class="text-left">
+                                                <input type="checkbox" name="CheckYearAll"
+                                                       value="ALL" id="CheckYearAll" @check />CheckALL
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left">Select Deciles </td>
+                                            <td></td>
+                                        </tr>
+                                        @{
+                                    foreach (var itemSIMD in Model.ListSIMDdefinition)
+                                    {
+                                        check = "";
+                                        if (Model.ListSelectedDeciles != null)
+                                        {
+                                            if (Model.ListSelectedDeciles.Contains(itemSIMD))
+                                            {
+                                                check = "checked";
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            check = "checked";
+                                        }
+
+                                        <tr>
+                                            <td></td>
+                                            <td class="text-left">
+                                                <input type="checkbox" name="SIMD" value="@itemSIMD"
+                                                       @check /> @itemSIMD
+                                                </td>
+                                            </tr>
+                                    }
+                                        }
+                                        @*@foreach (var itemSIMD in Model.ListSIMDdefinition)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        <input type="checkbox" name="SIMD" value="@itemSIMD"
+                                                               checked="checked" /> @itemSIMD
+                                                        </td>
+                                                    </tr>
+                                            }*@
+
+                                        @{
+                                    check = "";
+                                    if (Model.ListSelectedDeciles != null)
+                                    {
+                                        if (Model.ListSelectedDeciles.Count == 10)
+                                        {
+                                            check = "checked";
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        check = "checked";
+                                    }
+                                        }
+                                        <tr>
+                                            <td></td>
+                                            <td class="text-left">
+                                                <input type="checkbox" name="CheckSIMDAll"
+                                                       value="ALL" id="CheckSIMDAll" @check />CheckALL
+                                            </td>
+
+                                        </tr>
+                                    </table>
+                                    <p><button id="buttonGetData" type="submit" class="btn btn-primary">Get Data!</button></p>
+
+                                }
+
+                        </div>
+                </div>
+            </div>
+        </div> <!--row-->
+@if (Model.IsShowData)
+{ 
+    <hr>
+
+            <!-- Content Row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title" style="text-align: center"> SIMD : @Model.selectedschoolname</h4>
+                </div>
+                <div class="panel-body">
+
+                        <form id="SIMD">
+                            <table id="datatable" class="table table-bordered table-hover pull-left">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Decile</th>
+                                        @if (Model.ListSelectedYear != null && Model.ListSelectedYear.Count != 0)
+                                        {
+                                            foreach (var selection in Model.ListSelectedYear)
+                                            {
+                                                if (selection.Equals("2009"))
+                                                {
+                                                    <th colspan="2">2009</th>
+                                                }
+                                                if (selection.Equals("2012"))
+                                                {
+                                                    <th colspan="2">2012</th>
+                                                }
+                                            }
+                                        }
+                                        <th rowspan="2">Select data </th>
+                                    </tr>
+                                    <tr>
+
+                                        @if (Model.ListSelectedYear != null && Model.ListSelectedYear.Count != 0)
+                                        {
+                                            foreach (var selection in Model.ListSelectedYear)
+                                            {
+                                                if (selection.Equals("2009"))
+                                                {
+                                                    <th class="text-center">@Model.selectedschoolname</th>
+                                                    <th class="text-center">All Primary Schools</th>
+                                                }
+                                                if (selection.Equals("2012"))
+                                                {
+                                                    <th class="text-center">@Model.selectedschoolname</th>
+                                                    <th class="text-center">All Primary Schools</th>
+                                                }
+                                            }
+                                        }
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemSIMD in Model.ListSIMDData)
+                                    {
+                                        <tr>
+                                            <td>@itemSIMD.SIMDCode</td>
+                                            @if (Model.ListSelectedYear != null && Model.ListSelectedYear.Count != 0)
+                                            {
+                                                foreach (var selection in Model.ListSelectedYear)
+                                                {
+                                                    if (selection.Equals("2009"))
+                                                    {
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemSIMD.PercentageInSchool2009)</td>
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemSIMD.PercentageAllSchool2009)</td>
+                                                    }
+                                                    if (selection.Equals("2012"))
+                                                    {
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemSIMD.PercentageInSchool2012)</td>
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemSIMD.PercentageAllSchool2012)</td>
+                                                    }
+                                                }
+                                            }
+                                            <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemSIMD.SIMDCode" checked="checked" /></td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                                <tr>
+                                    @{var colspanSize = (@Model.ListSelectedYear.Count * 2) + 1;}
+                                    <td colspan=@colspanSize></td>
+                                    <td><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                                </tr>
+                                @*<tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
+                                <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
+                                <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
+                            </table>
+
+                            <ul class="list-inline">
+                                <li>
+                                    <button class="btn btn-primary" onclick='myFunctionBar()'><label>Bar Chart</label></button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-primary" onclick='myFunctionColumn()'><label>Column Chart</label></button>
+                                </li>
+                                @*<li>
+                                    @Html.ActionLink("Export Excel", "ExportExcel", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)
+                                </li>*@
+                            </ul>
+ 
+
+                            <div id="divChartContainer"></div>
+                            <p>
+                                Scottish Index of Multiple Deprivation ( SIMD) 2012 identifies small area concentrations of multiple deprivation across all of Scotland in a consistent way. The school census data was collected and matched at an individual pupil level to each data zone and decile (decile1 being the 10% most deprived areas in Scotland upto decile 10 the least deprived). Pupil level data was then analysed by school to produce the tables and charts above. This gives the distribution of pupils in each school by the datazone and respective decile. NB data includes pupils who live in Aberdeenshire but attend City schools.
+                            </p>
+                        </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+    </div>
+</body>
+

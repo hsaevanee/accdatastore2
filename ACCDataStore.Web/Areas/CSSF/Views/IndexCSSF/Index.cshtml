@@ -1,0 +1,261 @@
+﻿@section Header {
+    <link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/cssf/views/IndexCSSF/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/cssf/views/IndexCSSF/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/cssf/views/IndexCSSF/service.js"></script>
+    <script src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
+    <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" />
+}
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select Child</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left">
+                                            Placement Category
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eCatagory.Name for eCatagory in mIndex.ListCategory track by eCatagory.Code"
+                                                    ng-model="mIndex.ListCategorySelected" ng-change="updateData()"></select>                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">
+                                            Service Type
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eServiceType.Name for eServiceType in mIndex.ListServiceType track by eServiceType.Code"
+                                                    ng-model="mIndex.ListServiceTypeSelected" ng-change="updateData()"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" >
+                                            Child ID
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eChild.Client_Id for eChild in mIndex.ListClientID  | filter:{PlacementCategory:mIndex.ListCategorySelected.Code,ServiceType:mIndex.ListServiceTypeSelected.Code} track by eChild.Client_Id"
+                                                    ng-model="mIndex.ClientSelected" ng-change="updateData()">
+                                                <option value="">Select Child ID</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                            <p><button type="button" class="btn btn-info" ng-click="doGetData()">View</button></p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container" ng-if="mIndex.bShowContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Child Information </h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left" colspan="2">Date of Birth</td>
+                                        <td>{{ mIndex.listChildPlacements[0].DateOfBirth }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" colspan="2">Age</td>
+                                        <td>{{ mIndex.listChildPlacements[0].Age }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" colspan="2">Gender</td>
+                                        <td>{{ mIndex.listChildPlacements[0].Gender }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" colspan="2">Total Placements</td>
+                                        <td>{{ mIndex.listChildPlacements.length }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" colspan="2">Total Agreements</td>
+                                        <td>{{ mIndex.listChildAgreements.length }}</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <td class="text-left"> <b>Agreement Cost Breakdown by Placement Category</b></td>
+                                        <td class="text-center"> <b>Cost (£)</b></td>
+                                        <td class="text-center"> <b>Ongoing Cost (£)</b></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-right">OUT OF AUTHORITY</td>
+                                        <td class="text-right">{{ mIndex.Cost_OOA }}</td>
+                                        <td class="text-right">{{ mIndex.Active_Cost_OOA }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-right">DISABILITY</td>
+                                        <td class="text-right">{{ mIndex.Cost_D }}</td>
+                                        <td class="text-right">{{ mIndex.Active_Cost_D }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-right">COMMISSIONED</td>
+                                        <td class="text-right">{{ mIndex.Cost_CO }}</td>
+                                        <td class="text-right">{{ mIndex.Active_Cost_CO }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-right">SPECIAL PARENTING</td>
+                                        <td class="text-right">{{ mIndex.Cost_SP }}</td>
+                                        <td class="text-right">{{ mIndex.Active_Cost_SP }}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right"><b>TOTAL COST</b></td>
+                                        <td class="text-right">{{ mIndex.Cost_total }}</td>
+                                        <td class="text-right">{{ mIndex.Active_Cost_total }}</td>
+                                    </tr>
+
+                                    <tr class="info">
+                                        <td class="text-left"> <b>Agreement Cost Breakdown by Supplier</b></td>
+                                        <td class="text-center"> <b>Cost (£)</b></td>
+                                        <td class="text-center"> <b>Ongoing Cost (£)</b></td>
+                                    </tr>
+
+                                    <tr ng-repeat="eData in mIndex.listCostbySupplier">
+                                        <!-- topic loop -->
+                                        <td class="text-right">{{ eData.Supplier_name }}</td>
+                                        <td class="text-right">{{ eData.Cost }}</td>
+                                        <td class="text-right">{{ eData.OngoingCost }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right"><b>TOTAL COST</b></td>
+                                        <td class="text-right">{{ mIndex.Cost_total }}</td>
+                                        <td class="text-right">{{ mIndex.Active_Cost_total }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartCostbyAuthority"></highchart>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartCostbySupplier"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Placements </h4>
+                        </div>
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"> Extract Date </th>
+                                        <th class="text-center"> Placement ID </th>
+                                        <th class="text-center"> Placement Name </th>
+                                        <th class="text-center"> Placement Started </th>
+                                        <th class="text-center"> Placement Ended </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="eData in mIndex.listChildPlacements" class="{{eData.Payattention === '**' ? 'warning' : ''}}">
+                                        <!-- topic loop -->
+                                        <td class="text-center"> {{ eData.DatasetDate }} </td>
+                                        <td class="text-left"> {{ eData.Placement_Id }}</td>
+                                        <td class="text-left">{{ eData.Placement_Name }}</td>
+                                        <td class="text-right">{{ eData.Palcement_Started }}</td>
+                                        <td class="text-right">{{eData.Payattention}}{{ eData.Palcement_Ended }}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <p class="text-right">** Ongoing Placement(s)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Agreements </h4>
+                        </div>
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"> Extract Date </th>
+                                        <th class="text-center"> Agreement ID </th>
+                                        <th class="text-center"> Supplier Name </th>
+                                        <th class="text-center"> Agreement Started </th>
+                                        <th class="text-center"> Agreement Ended </th>
+                                        <th class="text-center"> Active Week Cost (£) </th>
+                                        <th class="text-center"> Number of Days </th>
+                                        <th class="text-center"> Actual Cost (£)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="eData in mIndex.listChildAgreements" class="{{eData.Payattention === '**' ? 'warning' : ''}}">
+                                        <!-- topic loop -->
+                                        <td class="text-center"> {{ eData.DatasetDate }} </td>
+                                        <td class="text-left">{{ eData.Agreement_Id }}</td>
+                                        <td class="text-left">{{ eData.Supplier_Name }}</td>
+                                        <td class="text-right">{{ eData.Agreement_Started }}</td>
+                                        <td class="text-right">{{eData.Payattention}}{{ eData.Agreement_Ended }}</td>
+                                        <td class="text-right">{{ eData.Active_Cost }}</td>
+                                        <td class="text-right">{{ eData.NumberofDays }}</td>
+                                        <td class="text-right">{{ eData.Actual_Cost }}</td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <p class="text-right">** Ongoing Agreement(s) and Number of Days count until today</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @*<pre>
+            {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+</div>

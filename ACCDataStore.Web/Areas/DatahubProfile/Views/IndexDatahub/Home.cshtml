@@ -1,0 +1,64 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @*<script src="~/Scripts/highcharts.js"></script>*@   
+}
+@{
+    //Wider Achievement
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-3">
+
+                <img class="img-responsive img-hover" src="@Url.Content("~/Images/AberdeenGuarantees.png")" alt="">
+
+        </div>
+        <div class="col-md-9">
+            <h2 class="text-left text-info">Data Hub</h2>
+            <p class="text-justify">
+                This Datahub analysis tool provides partners with summary statistics on the school leaver destinations of the entire 16 to 19 year age group.  It is designed to assist partners in mapping and analysing areas of need across the city, such as geographical areas of high unemployment, or the leaver demographics of a community.            
+            </p>
+            <p class="text-justify">
+                Data is extracted from the Datahub, a live list of the destinations of all 16-19 year olds hosted by the Scottish Government.  The data on this tool will be regularly updated, however please note that the data is a snapshot of the last upload from the Datahub, not real-time.  A new or more up to date extract can be requested at any time.
+            </p>
+            <p class="text-left">
+                Features include:
+            </p>
+            <p>
+                <ul class="text-left">
+                    <li>
+                        A summary breakdown of leaver characteristics for the city, neighbourhood and school catchments boundaries 
+                    </li>
+                    <li>
+                        A heat map illustrating datazones with the highest proportions of leavers not participating in education employment or training
+                    </li>
+                    <li>
+                        A summary map of neighbourhood, school and datazone participation rates
+                    </li>
+                </ul>
+            </p>
+            <p class="text-justify">
+                It is possible to provide full details of the young people in any given category on request, though understandably this is highly restricted and will only be given subject to relevant data sharing protocols/arrangements.  The system can provide lists of the young people in any given category in Excel spreadsheet or pdf format.  As well as single records for those working directly with individuals.
+            </p>
+            <p class="text-justify">
+                If you have any queries regarding the data, please contact
+            </p>
+            <p class="text-justify">
+                Carole Snedden
+            </p>
+            <p class="text-justify">
+                Opportunities for All Manager
+            </p>
+            <p class="text-justify">
+                <i class="fa fa-envelope-o"></i>
+                <abbr title="Email">E</abbr>: <a href="mailto:csneddon@aberdeencity.gov.uk">csneddon@aberdeencity.gov.uk</a>
+
+            </p>
+        </div>
+    </div>
+
+    </div> <!--container-->
+</body>

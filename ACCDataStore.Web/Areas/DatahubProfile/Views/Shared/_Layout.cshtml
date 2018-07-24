@@ -1,0 +1,187 @@
+﻿@using ACCDataStore.Entity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Data Hub</title>
+    @*<title>@HttpContext.Current.Application["APP_NAME"]</title>*@
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
+    @*<script src="~/Scripts/accdatastore/views/global.js"></script>
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
+    @*<script src="~/Scripts/highcharts.js"></script>*@
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet">*@
+    @*<script src="~/Scripts/accdatastore/views/global.js"></script>*@
+    @*<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script>
+        var sContextPath = '@Url.Content("~")';
+    </script>*@
+
+    @*@RenderSection("Header")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+    @RenderSection("style", required: false)
+    <link rel="stylesheet" href="~/bower_components/angular-ui-select/dist/select.min.css">
+    <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+    <script type="text/javascript" src="~/Scripts/accdatastore/views/global.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.1.min.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>*@
+
+    <script type="text/javascript" src="~/bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-ui-select/dist/select.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts/highcharts-3d.js"></script>
+    <script type="text/javascript" src="~/bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+        var sContextPath = '@Url.Content("~")';
+    </script>
+    @RenderSection("Header")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Index", new { Area = "", id = "" }, null)" style="color: whitesmoke; font-weight: bold; font-style: italic; font-family: Verdana; font-size: x-large;">Data Observatory</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About us</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="mailto:HSaevanee@aberdeencity.gov.uk">Feedback <i class="far fa-envelope"></i></a>                       
+                    </li>
+                    @{
+                        Users user = Session["SessionUser"] as Users;
+                        <li class="dropdown open">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Hello @user.UserName<span class=" glyphicon glyphicon-user"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="@Url.Action("Logout", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Sign out</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Subheading Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                @*<h1 class="text-left text-info">
+                    Data Hub Statistics:
+                    <small>*@
+                        @*@{ string Council = Session["Council"] as string;
+                         if (Council != null)
+                         {
+                            <span>@Council</span>
+                         }
+                         else
+                         {
+                            <span>Aberdeen City</span>
+                         }
+                    }Wide*@
+                @*</small>
+            </h1>*@
+
+                 <ol class="breadcrumb pull-left">
+                    <li>
+                        <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Home</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Datahub", new { Area = "DatahubProfile" }, null)">Data</a>
+                    </li>
+                    @{
+                        string council = Session["Council"] as string;
+                        if (council != null)
+                        {
+                            <li>
+                                <a href="@Url.Action("Data", "IndexDatahub", new { Area = "DatahubProfile" }, null)">@council</a>
+                            </li>
+                            @*<li>
+                                    <a href="@Url.Action("IndexCoucil", "IndexDatahub", new { Area = "DatahubProfile", sCouncilname = @council.name, sCouncilcode = @council.seedcode }, null)">Work in Progress</a>
+                                </li>*@
+                                <li>
+                                    <a href="@Url.Action("Map", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>
+                                </li>
+
+                        }
+
+
+                    }
+                     <li>
+                         <a href="@Url.Action("Index", "CityProfile", new { Area = "DatahubProfile" }, null)">Aberdeen City</a>
+                     </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Map", new { Area = "DatahubProfile"}, null)">Interactive Map</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <marquee>Last  data update was on 19 April 2018</marquee>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    <!-- Footer -->
+     <footer>
+        <div class="container-fluid footer">
+            <div class="col-lg-12">
+
+                <div class="col-lg-2">
+                    <img src="@Url.Content("~/Images/Aberdeen Council_TransparentLogo.png")" alt="Aberdeen City Council" width="130" height="108" />
+                </div>
+                <div class="col-lg-3">
+                    <img src="@Url.Content("~/Images/AberdeenGuarantees1.png")" alt="Aberdeen Gaurtees logo" width="250" height="108" />
+                </div>
+                <div class="col-lg-3">
+                    <img src="@Url.Content("~/Images/Skilldevelopmentlogo.png")" alt="Skills Development Scotland logo" width="200" height="108" />
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-center">Aberdeen City Council is not responsible for the content or accuracy of the data contained in any external sites.</p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+    <div id="divSpinner" class="modal" style="display: none;">
+    </div>
+</body>
+</html>

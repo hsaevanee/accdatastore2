@@ -1,0 +1,739 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACCDataStore.Web</RootNamespace>
+    <AssemblyName>ACCDataStore.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML">
+      <HintPath>..\packages\ClosedXML.0.76.0\lib\net40-client\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Log4Net1213">
+      <HintPath>..\packages\Common.Logging.Log4Net1213.3.0.0\lib\net40\Common.Logging.Log4Net1213.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=0.0.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OpenXMLSDK-MOT.2.7.1\lib\net45\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.6.8.3\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.JetDriver">
+      <HintPath>..\packages\NHibernate.JetDriver.2.0.0.1002\lib\net40\NHibernate.JetDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.Web.Common.3.2.2.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenXmlPowerTools">
+      <HintPath>..\packages\OpenXmlPowerTools.4.5.3.1\lib\net45\OpenXmlPowerTools.dll</HintPath>
+    </Reference>
+    <Reference Include="Rotativa">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bower_components\angular-bootstrap\ui-bootstrap-csp.css" />
+    <Content Include="bower_components\angular-bootstrap\ui-bootstrap.min.js" />
+    <Content Include="bower_components\angular-datatables\dist\angular-datatables.min.js" />
+    <Content Include="bower_components\angular-datatables\dist\css\angular-datatables.min.css" />
+    <Content Include="bower_components\angular-route\angular-route.min.js" />
+    <Content Include="bower_components\angular-sanitize\angular-sanitize.min.js" />
+    <Content Include="bower_components\angular-ui-router\release\angular-ui-router.min.js" />
+    <Content Include="bower_components\angular-ui-select\dist\select.min.css" />
+    <Content Include="bower_components\angular-ui-select\dist\select.min.js" />
+    <Content Include="bower_components\angularjs-slider\dist\rzslider.css" />
+    <Content Include="bower_components\angularjs-slider\dist\rzslider.js" />
+    <Content Include="bower_components\angularjs-slider\src\rzslider.js" />
+    <Content Include="bower_components\angular\angular.js" />
+    <Content Include="bower_components\angular\angular.min.js" />
+    <Content Include="bower_components\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="bower_components\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="bower_components\datatables.net-buttons-bs\js\buttons.bootstrap.js" />
+    <Content Include="bower_components\datatables.net-buttons-dt\css\buttons.dataTables.css" />
+    <Content Include="bower_components\datatables.net-buttons-dt\css\buttons.dataTables.min.css" />
+    <Content Include="bower_components\datatables.net-buttons\js\buttons.colVis.js" />
+    <Content Include="bower_components\datatables.net-buttons\js\buttons.flash.js" />
+    <Content Include="bower_components\datatables.net-buttons\js\buttons.html5.js" />
+    <Content Include="bower_components\datatables.net-buttons\js\buttons.print.js" />
+    <Content Include="bower_components\datatables.net-buttons\js\dataTables.buttons.js" />
+    <Content Include="bower_components\datatables.net-buttons\js\dataTables.buttons.min.js" />
+    <Content Include="bower_components\datatables.net\js\jquery.dataTables.min.js" />
+    <Content Include="bower_components\file-saver\FileSaver.js" />
+    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.css" />
+    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.js" />
+    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.min.js" />
+    <Content Include="bower_components\highcharts\highcharts-3d.js" />
+    <Content Include="bower_components\highcharts\highcharts.js" />
+    <Content Include="bower_components\highcharts\modules\exporting.js" />
+    <Content Include="bower_components\jquery\dist\jquery.min.js" />
+    <Content Include="bower_components\json-export-excel\dest\json-export-excel.js" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.js" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.min.js" />
+    <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
+    <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\map.css" />
+    <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
+    <Content Include="Content\accdatastore\areas\SchoolProfiles\SchoolProfile.css" />
+    <Content Include="Content\accdatastore\BaseContent.css" />
+    <Content Include="Content\accdatastore\views\global.css" />
+    <Content Include="Content\bootstrap-multiselect.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\heroic-features.css" />
+    <Content Include="Content\justified-nav.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\accdatastore\areas\nationality\views\indexnationality\index.css" />
+    <Content Include="Content\accdatastore\views\index\index.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Config\GeneralSettings.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Images\Aberdeen  Gaurtees logo.png" />
+    <Content Include="Images\acc-logo.gif" />
+    <Content Include="Images\AchievementLogo.png" />
+    <Content Include="Images\background1.jpg" />
+    <Content Include="Images\bruce_scharlau.JPG" />
+    <Content Include="Images\CEM.PNG" />
+    <Content Include="Images\children.png" />
+    <Content Include="Images\collaborative_planning.png" />
+    <Content Include="Images\community_planning_aberdeen.png" />
+    <Content Include="Images\covalent.png" />
+    <Content Include="Images\Do_Coyle.jpg" />
+    <Content Include="Images\education.jpg" />
+    <Content Include="Images\families.png" />
+    <Content Include="Images\Finance.png" />
+    <Content Include="Images\forecast.jpg" />
+    <Content Include="Images\glow.png" />
+    <Content Include="Images\house.png" />
+    <Content Include="Images\Ian_Heywood.jpg" />
+    <Content Include="Images\ics.jpg" />
+    <Content Include="Images\improvementservice.png" />
+    <Content Include="Images\insight_logo.jpg" />
+    <Content Include="Images\IS_Avatar.png" />
+    <Content Include="Images\Jan2.png" />
+    <Content Include="Images\Kevin.jpeg" />
+    <Content Include="Images\knowledgehub.png" />
+    <Content Include="Images\lumessetalent.png" />
+    <Content Include="Images\management.jpg" />
+    <Content Include="Images\Pamela_Bain.jpeg" />
+    <Content Include="Images\Performance.jpg" />
+    <Content Include="Images\population.png" />
+    <Content Include="Images\pupils.jpg" />
+    <Content Include="Images\schoolprofile.png" />
+    <Content Include="Images\scottish.jpg" />
+    <Content Include="Images\seemis.png" />
+    <Content Include="Images\seemislogo.png" />
+    <Content Include="Images\Skilldevelopmentlogo.png" />
+    <Content Include="Images\spinner.gif" />
+    <Content Include="Images\WIP.jpg" />
+    <Content Include="Resources\Download\loading.gif" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\accdatastore\areas\authorisation\app.js" />
+    <Content Include="Scripts\accdatastore\areas\authorisation\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\authorisation\service.js" />
+    <Content Include="Scripts\accdatastore\areas\cssf\views\CityWideCSSF\app.js" />
+    <Content Include="Scripts\accdatastore\areas\cssf\views\CityWideCSSF\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\cssf\views\CityWideCSSF\service.js" />
+    <Content Include="Scripts\accdatastore\areas\cssf\views\IndexCSSF\app.js" />
+    <Content Include="Scripts\accdatastore\areas\cssf\views\IndexCSSF\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\cssf\views\IndexCSSF\service.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\app.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\service.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\app.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\service.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ComparisonsIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\CouncilSelector.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphsNew.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphs.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\IndexdatahubProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapMain.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\Pupilslist.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ScotlandIndexMain.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\app.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Locality\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Locality\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Locality\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Curriculum\Curriculum.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Curriculum\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\EthnicBackground.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\EthnicBackground2.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexAberdeenProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSpecialSchool.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSecondarySchool.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexPrimarySchool.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSchoolProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\LoadMutiselect.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Data.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Trending.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\LevelOfEnglish.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Map\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Map\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Map\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Nationality\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Nationality\Nationality.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Query\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Query\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Query\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SIMD\SIMD.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SpecialSchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SpecialSchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SpecialSchool\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\StudentStage.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\Curriculum.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground2.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\Index2SchoolProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\IndexSchoolProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Language\LevelOfEnglish.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Language\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Nationality\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Nationality\Nationality.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\SIMD\SIMD.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\IndexWiderAchievement.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\widerAchievement\IndexWiderAchievement.js" />
+    <Content Include="Scripts\accdatastore\areas\widerAchievement\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\views\Datazone_2016.js" />
+    <Content Include="Scripts\accdatastore\views\DZGlasgow.js" />
+    <Content Include="Scripts\accdatastore\views\Datazone_with_Desc.js" />
+    <Content Include="Scripts\accdatastore\views\global.js" />
+    <Content Include="Scripts\accdatastore\views\InsightSchoollocations.js" />
+    <Content Include="Scripts\accdatastore\views\Neighbourhoods2016.js" />
+    <Content Include="Scripts\accdatastore\views\Neighbourhoods.js" />
+    <Content Include="Scripts\accdatastore\views\PrimarySchoollocations.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\highcharts.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <Content Include="Scripts\jquery-ui.min-1.11.1.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\accdatastore\views\index\index.js" />
+    <Content Include="Scripts\pdfmake.min.js" />
+    <Content Include="Scripts\vfs_fonts.js" />
+    <Content Include="Content\accdatastore\static\testpowerbi.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Index\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Achievement\AchievementAreaRegistration.cs" />
+    <Compile Include="Areas\Achievement\Controllers\WiderAchievementController.cs" />
+    <Compile Include="Areas\Achievement\ViewModels\WiderAchievement\WiderAchievementViewModel.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminPanelController.cs" />
+    <Compile Include="Areas\Authorisation\AuthorisationAreaRegistration.cs" />
+    <Compile Include="Areas\Authorisation\Controllers\IndexAuthorisationController.cs" />
+    <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
+    <Compile Include="Areas\CSSF\Controllers\BaseCSSFController.cs" />
+    <Compile Include="Areas\CSSF\Controllers\CityWideCSSFController.cs" />
+    <Compile Include="Areas\CSSF\Controllers\IndexCSSFController.cs" />
+    <Compile Include="Areas\CSSF\CSSFAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\BaseDataHubController.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\CityProfileController.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\DataHubController.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\MapController.cs" />
+    <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\Helpers\SummaryDataHelperCity.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\Helpers\SummaryDataHelper.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\BenchmarkAjax.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\HistogramSeriesData.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\MonthlyDataSeries.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\PosNegSchoolList.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\ViewModelParams.cs" />
+    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\CurrentCouncil.cs" />
+    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
+    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubViewModel.cs" />
+    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubData.cs" />
+    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\SummaryDataViewModel.cs" />
+    <Compile Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\ComparisonsViewModel.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfilesController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\CitySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexAberdeenProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexInteractiveMapController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\LocalitySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\MapController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\SecondarySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\SpecialSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\BaseSchoolProfilesViewModel.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexPrimarySchoolProfilesViewModel.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexAberdeenProfileViewModel.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexSecondarySchoolProfilesViewModel.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\PupilsListViewModel.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\TredningViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\BaseSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\CurriculumController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\LanguageController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\SIMDController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\StudentStageController.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\Curriculum\CurriculumViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\IndexSchoolProfile\Index2SchoolProfileViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\IndexSchoolProfile\IndexSchoolProfileViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\Language\LanguageViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\Nationality\NationalityViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\EthnicBackgroundController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\IndexSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\NationalityController.cs" />
+    <Compile Include="Areas\SchoolProfile\SchoolProfileAreaRegistration.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel2.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\SchoolProfileViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\SIMD\SIMDViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\StudentStage\StudentStageViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\WiderAchievementController.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\WiderAchievement\WiderAchievementViewModel.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ConstantHelper.cs" />
+    <Compile Include="Helpers\ConvertHelper.cs" />
+    <Compile Include="Helpers\ORM\IBaseUnitOfWork.cs" />
+    <Compile Include="Helpers\ORM\INHibernateHelper.cs" />
+    <Compile Include="Helpers\ORM\IUnitOfWork3nd.cs" />
+    <Compile Include="Helpers\ORM\IUnitOfWork2nd.cs" />
+    <Compile Include="Helpers\ORM\IUnitOfWork.cs" />
+    <Compile Include="Helpers\ORM\MVCApplicationModule.cs" />
+    <Compile Include="Helpers\ORM\NHibernateHelper.cs" />
+    <Compile Include="Helpers\ORM\NHibernateModule.cs" />
+    <Compile Include="Helpers\ORM\NHibernateUnitOfWork3nd.cs" />
+    <Compile Include="Helpers\ORM\NHibernateUnitOfWork2nd.cs" />
+    <Compile Include="Helpers\ORM\NHibernateUnitOfWork.cs" />
+    <Compile Include="Helpers\ORM\TransactionalAttribute3nd-temp.cs" />
+    <Compile Include="Helpers\ORM\TransactionalAttribute2nd-temp.cs" />
+    <Compile Include="Helpers\ORM\TransactionalAttribute.cs" />
+    <Compile Include="Helpers\ORM\TransactionAttribute.cs" />
+    <Compile Include="Helpers\ORM\TransactionFilter.cs" />
+    <Compile Include="Helpers\Security\AdminAuthenticationAttribute.cs" />
+    <Compile Include="Helpers\Security\AuthMessageSender.cs" />
+    <Compile Include="Helpers\Security\DatahubAuthenticationAttribute.cs" />
+    <Compile Include="Helpers\Security\GenericAuthenticationAttribute.cs" />
+    <Compile Include="Helpers\Security\PublicAuthenticationAttribute.cs" />
+    <Compile Include="Helpers\Security\SchoolAuthenticationAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\IndexViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config" />
+    <Content Include="Areas\SchoolProfile\Views\web.config" />
+    <Content Include="Areas\SchoolProfile\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\IndexSchoolProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\EthnicBackground\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Nationality\Index.cshtml" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Areas\SchoolProfile\Views\SIMD\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\StudentStage\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\IndexSchoolProfile\Index2.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\EthnicBackground\Index2.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Language\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Curriculum\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Nationality\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\EthnicBackground\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Language\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\StudentStage\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Curriculum\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\web.config" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\PersonalDetails.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Pupilslist.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\HeatMapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\WiderAchievement\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\WiderAchievement\Index 2.cshtml" />
+    <Content Include="Less\bootstrap-multiselect.less" />
+    <Content Include="Areas\SchoolProfile\Views\StudentStage\Index2.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\web.config" />
+    <Content Include="Areas\SchoolProfiles\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSecondarySchool.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MainIndex.cshtml" />
+    <Content Include="Areas\Achievement\Views\web.config" />
+    <Content Include="Areas\Achievement\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Achievement\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Achievement\Views\WiderAchievement\Index.cshtml" />
+    <Content Include="Areas\Achievement\Views\WiderAchievement\Home.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\WiderAchievement\MapIndex.cshtml" />
+    <Content Include="Areas\Achievement\Views\WiderAchievement\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Home.cshtml" />
+    <Content Include="Areas\Authorisation\Views\web.config" />
+    <Content Include="Areas\Authorisation\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Authorisation\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Index.cshtml" />
+    <Content Include="bower.json" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Home.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\IndexPrimarySchool.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Pupilslist.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Trending.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\SchoolWebsites.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexAberdeenProfile\IndexAberdeenCity.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexInteractiveMap\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\ScotlandIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\Comparisons.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\_DataTables.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Map.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Data.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2 - Copy.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\_DataTables.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\data.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\_showdata.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\IndexPrimarySchool - Copy.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool - Copy.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\PrimarySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\DataHub\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\SecondarySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\SpecialSchoolProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\CitySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\Map\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index1.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\CityProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\Map\Index.cshtml" />
+    <Content Include="Areas\CSSF\Views\web.config" />
+    <Content Include="Areas\CSSF\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\CSSF\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\CSSF\Views\IndexCSSF\Index.cshtml" />
+    <Content Include="Areas\CSSF\Views\IndexCSSF\Home.cshtml" />
+    <Content Include="Areas\CSSF\Views\CityWideCSSF\Index.cshtml" />
+    <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Register.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\AdminPanel\index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Authorisation\Views\IndexAuthorisation\AddingUser.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminPanel\AddingUser.cshtml" />
+    <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
+    <Content Include="Views\Index\theTeam.cshtml" />
+    <Content Include="Views\Index\About.cshtml" />
+    <Content Include="Views\Index\Contact.cshtml" />
+    <Content Include="Views\Index\DataCentre.cshtml" />
+    <Content Include="Views\Index\Finance.cshtml" />
+    <Content Include="Views\Index\Management.cshtml" />
+    <Content Include="Views\Index\PandP.cshtml" />
+    <Content Include="Views\Index\Education.cshtml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Index\Test.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Achievement\Models\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Authorisation\Models\" />
+    <Folder Include="Areas\CSSF\Models\" />
+    <Folder Include="Areas\CSSF\Views\Base\" />
+    <Folder Include="Areas\DatahubProfile\Views\BaseDataHub\" />
+    <Folder Include="Areas\DatahubProfile\Views\IndexDatahub\Map\" />
+    <Folder Include="Areas\SchoolProfiles\Models\" />
+    <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfiles\" />
+    <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfile\" />
+    <Folder Include="Areas\SchoolProfile\Models\" />
+    <Folder Include="Content\accdatastore\areas\Authorisation\" />
+    <Folder Include="Models\" />
+    <Folder Include="Resources\Upload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACCDataStore.Core\ACCDataStore.Core.csproj">
+      <Project>{1089dbbb-7b0b-482b-aae0-d40cc98d8d75}</Project>
+      <Name>ACCDataStore.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACCDataStore.Entity.RenderObject\ACCDataStore.Entity.RenderObject.csproj">
+      <Project>{88628c45-bfd4-4ab4-b356-8a7bd1306cab}</Project>
+      <Name>ACCDataStore.Entity.RenderObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACCDataStore.Entity\ACCDataStore.Entity.csproj">
+      <Project>{8a578ae3-a65b-4ebf-afd0-458c455c408a}</Project>
+      <Name>ACCDataStore.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACCDataStore.Repository\ACCDataStore.Repository.csproj">
+      <Project>{8c8cc883-dc02-419f-8160-b9dd8a8ae273}</Project>
+      <Name>ACCDataStore.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2774</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:2777/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

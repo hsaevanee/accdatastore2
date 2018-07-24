@@ -1,0 +1,35 @@
+﻿@section Header {
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/service.js"></script>
+}
+
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <section>
+                <div id="container_demo">
+                    <div id="wrapper">
+                        <div id="login" class="animate form">
+                            <form>
+                                <h1>You do not have permission to access this data</h1>
+                                <p>
+                                    <label>Please Request to Access data using</label>
+                                    <a href="@Url.Content("~/Resources/Download/ADOAccessForm.docx")" target="_blank">Request Form</a>
+                                </p>
+
+                            </form>
+                        </div>              
+
+                    </div>
+                </div>
+            </section>           
+        </div>
+        @*<pre>
+                {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+</div>

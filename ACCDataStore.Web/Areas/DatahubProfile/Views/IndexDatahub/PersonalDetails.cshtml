@@ -1,0 +1,370 @@
+﻿@*@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.PupilObject*@
+@model ACCDataStore.Entity.DatahubProfile.DatahubDataObj
+
+@section Header {
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/IndexdatahubProfile.js"></script>
+    @*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+}
+
+@{
+    ViewBag.Title = "PersonalDetails";
+}
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                    <h2>Personal Details: @{var name = Model.Forename + " " + Model.Surname;} @name</h2>
+            </div>
+            <div class="col-md-6">               
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Personal Details</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td width="200">SDS Ref:</td>
+                                    <td>@Model.SDS_Client_Ref</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">SCN:</td>
+                                    <td>@Model.Scottish_Candidate_Number</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">D.O.B:</td>
+                                    <td>@Model.Date_of_Birth</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Age:</td>
+                                    <td>@Model.Age</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Gender:</td>
+                                    <td>@Model.Gender</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Contact Details</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td width="200">CCS Address:</td>
+                                    <td>@Model.CSS_Address</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Postcode:</td>
+                                    <td>@Model.CSS_Postcode</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">LA Address:</td>
+                                    <td>@Model.LA_Address</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Postcode:</td>
+                                    <td>@Model.LA_Postcode</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Tel:</td>
+                                    <td>@Model.Telephone_Number</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Current Status-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Current Status</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td width="200">Current Status:</td>
+                                    <td>@Model.Current_Status</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Source:</td>
+                                    <td>@Model.Status_Source</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Status Start Date:</td>
+                                    <td>@Model.Status_Start_Date</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Last Engagement With SDS:</td>
+                                    <td>@Model.Last_Engagement_with_SDS</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Last Positive Status:</td>
+                                    <td>@Model.Last_Positive_Status</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Weeks Since Last Positive Status:</td>
+                                    <td>@Model.Weeks_since_last_Pos_Status</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--School Details-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">School Details</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td width="200">SEED:</td>
+                                            <td>@Model.SEED_Code</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">School:</td>
+                                            <td>@Model.School_Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Start Date:</td>
+                                            <td>@Model.Start_Date</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Statutory Leave Date:</td>
+                                            <td>@Model.Statutory_Leave_Date</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td width="200">School MIS Reference:</td>
+                                            <td>@Model.School_MIS_Reference</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Stage:</td>
+                                            <td>@Model.School_Year_Group</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Anticipated Leave Date:</td>
+                                            <td>@Model.Anticipated_School_Leaving_Date</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Actual Leave Date:</td>
+                                            <td>@Model.Actual_Date_Left_School</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td width="200">Prefered Occupation:</td>
+                                            <td colspan="3">@Model.Preferred_Occupation</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Source:</td>
+                                            <td colspan="3">@Model.Preferred_Occupation_Source</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Prefered Route:</td>
+                                            <td colspan="3">@Model.Preferred_Route</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200">Source:</td>
+                                            <td colspan="3">@Model.Preferred_Route_Source</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Employment Details-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Employment Details</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td width="200">Employer Name:</td>
+                                    <td colspan="3">@Model.Employer_Name</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Job Title:</td>
+                                    <td colspan="3">@Model.Job_Title</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">End Date:</td>
+                                    <td colspan="3">@Model.End_Date</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Course Details-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Cources Details</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td width="200">Organisation:</td>
+                                    <td>@Model.Organisation_Name</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Course Title:</td>
+                                    <td>.@Model.Course_Title</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Course Level:</td>
+                                    <td>@Model.Course_Level</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Benefit Details-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Benefit Details</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td width="200">Benefit Types:</td>
+                                    <td>@Model.Benefit_Types</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Benefit Source:</td>
+                                    <td>@Model.Benefit_Source</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Additional Needs-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">Additional Needs</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td width="200">Looked After Status:</td>
+                                    <td>@Model.Looked_After_Status</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Look After Source:</td>
+                                    <td>@Model.Looked_After_Source</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Young Carer:</td>
+                                    <td>@Model.Young_Carer</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Young Carer Source:</td>
+                                    <td>@Model.Young_Carer_Source</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">CSP:</td>
+                                    <td>@Model.CSP</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">CSP Source:</td>
+                                    <td>@Model.CSP_Source</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Child's Plan:</td>
+                                    <td>@Model.Childs_Plan</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Childs Plan Source:</td>
+                                    <td>@Model.Childs_Plan_Source</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">ASN:</td>
+                                    <td>@Model.ASN</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">ASN Source:</td>
+                                    <td>@Model.ASN_Source</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">IEP:</td>
+                                    <td>@Model.IEP</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">IEP Source:</td>
+                                    <td>@Model.IEP_Source</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Transition Plan:</td>
+                                    <td>@Model.Transition_Plan</td>
+                                </tr>
+                                <tr>
+                                    <td width="200">Transition Plan Source:</td>
+                                    <td>@Model.Transition_Plan_Source</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!--container-->
+    @*<a href='@Url.Action("ExportExcel", "IndexDatahub", new {  dataname = "All Clients" })'><button>Export to PDF</button></a>*@
+
+</body>

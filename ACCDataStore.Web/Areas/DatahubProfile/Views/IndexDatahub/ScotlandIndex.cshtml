@@ -1,0 +1,138 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@using Newtonsoft.Json
+@section Header {
+    <script  src="~/Scripts/jquery.js"></script>
+    <script  src="~/Scripts/highcharts.js"></script>
+    <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+    <link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+    <script  src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ScotlandIndexMain.js"></script>
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsGraphsNew.js"></script> 
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/CouncilSelector.js"></script>
+    <script>var councilList = @Html.Raw(JsonConvert.SerializeObject(this.Model.ListCouncilName));</script>
+}
+@{
+    //Wider Achievement
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        <!--<h2 style="margin: 15px 0px 15px 0px">Select your area from the map or the dropdown list</h2>-->
+                    </div>
+                    
+                </div>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading"><h2> Scotland-Wide Map</h2></div>
+                        <div class="panel-body">
+                           <div class = "row">
+                            <div class= "col-md-8"><p>This allows you select the council whose data you would like to see</p></div>
+                            <div class="col-md-4">
+                                @*<form class="form-inline" action="/DatahubProfile/IndexDatahub/Index" style="margin: 15px 0px 15px 0px; text-align: right">
+                <div style="display: inline-block">
+                    <div class="form-group">
+                        <select class="form-control" id="scotland-area">
+                            <option>Select from dropdown list</option>
+                            <option value="Aberdeen">Aberdeen</option>
+                            <option value="Aberdeenshire">Aberdeenshire</option>
+                            <option value="Aberdeenshire">Glasgow</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </form>*@
+
+                                @*@using (Html.BeginForm("ScotlandIndex", "IndexDatahub", FormMethod.Post, new { vmDatahubViewModel = Model }))*@
+                                @using (Html.BeginForm("Data", "IndexDatahub"))
+                                {
+                                    <div style="display: inline-block">
+                                        <div class="form-group">
+                                            @*@Html.DropDownListFor(m => m.selectedcouncil, Model.ListCouncilName.Select(x => x.name).ToList(), "--- Council---")*@
+                                            <select id="council-selection" name="selectedcouncil">
+                                                @foreach (var name in Model.ListCouncilName)
+                                                {
+                                                    <option>@name.name</option>
+                                                }
+                                            </select>
+                                            <button type="submit" class="btn btn-default">Submit</button>
+                                        </div>
+
+                                    </div>
+                                }
+                            </div>
+                           </div>
+                            <div id="map-canvas" style="width: 100%; height: 500px"></div>
+                        </div>
+                    </div>
+                    </div>
+                
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading"><h2>Scotland Monthly Destinations</h2></div>
+                            <div class="panel-body">
+                                <p>This gives an overview of people destinations for all councils in Scotland</p>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="scotland-all-councils">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th class="text-center">Council</th>
+                                                <th class="text-center">Positive Destinations</th>
+                                                <th class="text-center">Non-Positive Destinations</th>
+                                                <th class="text-center">Unknown</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var data in Model.allCouncilTable)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        @if (data.name == "Aberdeen City" || data.name == "Glasgow City" || data.name == "Aberdeenshire")
+                                                        {
+                                                            <a style="cursor: pointer" onclick="selectCouncil(this.firstChild.nodeValue)">@data.name</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            @data.name
+                                                        }
+                                                    </td>
+                                                    <td style="text-align: center">@Math.Round(data.Participating(), 2)</td>
+                                                    <td style="text-align: center">@Math.Round(data.NotParticipating(), 2)</td>
+                                                    <td style="text-align: center">@Math.Round(data.Percentage(data.allPupilsInUnknown), 2)</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-primary text-center">
+                                <div class="panel-heading"><h2>Scotland Monthly Destination Trend Graph</h2></div>
+                                <div class="panel-body">
+                                    <p>This displays the 12 months people destination data for all councils in Scotland</p>
+                                    <div id="month-trend-histogram"></div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!--container-->
+</body>

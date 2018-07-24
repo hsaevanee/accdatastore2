@@ -1,0 +1,77 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.ComparisonsViewModel
+@section Header {
+    <!--Include jQuery-->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!--Bootstrap Multiselect-->
+    <script type="text/javascript" src="~/Scripts/bootstrap-multiselect.js"></script>
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+    <!-- jQuery DataTables-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.0/css/select.bootstrap.min.css" />
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.0/js/dataTables.select.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <!-- Main JS file-->
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ComparisonsIndex.js"></script>
+}
+
+
+@{
+    ViewBag.Title = "Comparisons";
+}
+
+<body>
+    <div class="container">
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Select Criteria</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td width="40%">School</td>
+                                    <td>@Html.DropDownList("selectedschoolcode", new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>                                 
+                                    @*<td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>*@
+                                    
+                                    @*<td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>*@
+
+                                    <td width="20%"><button class="btn btn-primary" id="schoolsubmitButton1">Search</button></td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Neighbourhoods</td>
+                                    <td>@Html.DropDownList("selectedneighbourhoods", new SelectList(Model.ListNeighbourhoodsName, "seedcode", "name"))</td>
+                                    @*<td width="20%"><input type="submit" class="btn btn-primary"  name="neighbourhoodssubmitButton" value="Search" /></td>*@
+                                    <td width="20%"><button class="btn btn-primary" id="neighbourhoodButton1">Search</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myPartialContainer">
+            @Html.Partial("_DataTables", Model.ListSelectionData);
+        </div>
+        </div>
+</body>

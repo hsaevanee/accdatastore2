@@ -1,0 +1,95 @@
+﻿
+.panel.with-nav-tabs .panel-heading{
+    padding: 5px 5px 0 5px;
+}
+.panel.with-nav-tabs .nav-tabs{
+	border-bottom: none;
+}
+/********************************************************************/
+/*** PANEL PRIMARY ***/
+.with-nav-tabs.panel-primary .nav-tabs > li > a,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+    color: #fff;
+}
+.with-nav-tabs.panel-primary .nav-tabs > .open > a,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+	color: #fff;
+	background-color: #3071a9;
+	border-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:focus {
+	color: #428bca;
+	background-color: #fff;
+	border-color: #428bca;
+	border-bottom-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu {
+    background-color: #428bca;
+    border-color: #3071a9;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a {
+    color: #fff;   
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+    background-color: #3071a9;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+    background-color: #4a9fe9;
+}
+
+
+.zui-table {
+    border: 1px;
+    border-right: solid 1px #ddd;
+    border-collapse: separate;
+    border-spacing: 0;
+    /*border-top: solid 1px #ddd;*/
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #ffffff;
+    border: 1px;
+    border-bottom: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    /*color: #336B6B;*/
+    padding: 10px;
+    text-align: center;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+.zui-table tbody td {
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+.zui-wrapper {
+    position: relative;
+}
+.zui-scroller {
+    /*margin-left: 300px;*/
+    overflow-x: scroll;
+    overflow-y: visible;
+    padding-bottom: 5px;
+    width: auto;
+}
+.zui-table .zui-sticky-col {
+    border-left: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    left: 0;
+    position: absolute;
+    top: auto;
+    /*width: 300px;*/
+}

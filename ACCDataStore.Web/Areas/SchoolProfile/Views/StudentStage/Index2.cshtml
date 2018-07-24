@@ -1,0 +1,311 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.StudentStage.StudentStageViewModel
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />*@
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/StudentStage/StudentStage.js"></script>
+    @*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+}
+@{//Student Stage
+    ViewBag.Title = "Index";
+}
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="list-group">
+                    <a href="@Url.Action("Index", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)" class="list-group-item">Data</a>
+                    <a href="@Url.Action("MapData", "StudentStage", new { area = "SchoolProfile", sschoolname = "" }, null)" class="list-group-item">Interactive Map</a>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <h2>Stage - Primary School (%pupils)</h2>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title text-center"> Please Select Criteria</h4>
+                    </div>
+                    <div class="panel-body"> 
+
+@if (Model.IsShowCriteria)
+{
+    using (Html.BeginForm("Index", "StudentStage", new { area = "SchoolProfile" }))
+    {
+        <table class="table table-bordered">
+            <tr>
+                <td colspan="2">Select school name </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
+                @*<td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>*@
+            </tr>
+            <tr>
+                <td colspan="2">Select Gender </td>
+            </tr>
+
+            @*@foreach (var itemGender in Model.ListGenderCode)
+                {
+                    if (Model.DicGender.ContainsKey(itemGender))
+                    {
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="checkbox" name="gender" value="@itemGender"
+                                       checked="checked" /> @Model.DicGender[itemGender]
+                                </td>
+                            </tr>
+                    }
+                }*@
+            @foreach (var itemGender in Model.ListGenderCode)
+            {
+                if (Model.DicGenderWithSelected.ContainsKey(itemGender))
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" name="gender" value="@itemGender"
+                                   @Model.DicGenderWithSelected[itemGender][1] /> @Model.DicGenderWithSelected[itemGender][0]
+                            </td>
+                        </tr>
+                }
+            }
+            @{
+            var check = "";
+            if (Model.ListSelectedGender != null)
+            {
+                if (Model.ListSelectedGender.Count == 3)
+                {
+                    check = "checked";
+                }
+
+            }
+            else
+            {
+                check = "checked";
+            }
+            }
+            <tr>
+                <td></td>
+                <td>
+                    <input type="checkbox" name="CheckGenderAll"
+                           value="ALL" id="CheckGenderAll" @check />CheckALL
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="2">Select Stages </td>
+            </tr>
+            @{
+        foreach (var itemStage in Model.ListStageCode)
+        {
+            check = "";
+            if (Model.ListSelectedStdStage != null)
+            {
+                if (Model.ListSelectedStdStage.Contains(itemStage))
+                {
+                    check = "checked";
+                }
+
+            }
+            else
+            {
+                check = "checked";
+            }
+
+            <tr>
+                <td></td>
+                <td>
+                    <input type="checkbox" name="stages" value="@itemStage"
+                           @check /> @itemStage
+                    </td>
+                </tr>
+        }
+            }
+            @*@foreach (var itemStage in Model.ListStageCode)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" name="stages" value="@itemStage"
+                                   checked="checked" /> @itemStage
+                            </td>
+                        </tr>
+                }*@
+
+            @{
+        check = "";
+        if (Model.ListSelectedStdStage != null)
+        {
+            if (Model.ListSelectedStdStage.Count == 7)
+            {
+                check = "checked";
+            }
+
+        }
+        else
+        {
+            check = "checked";
+        }
+            }
+
+
+            <tr>
+                <td></td>
+                <td>
+                    <input type="checkbox" name="CheckStageAll"
+                           value="ALL" id="CheckStageAll" @check />CheckALL
+                </td>
+
+            </tr>
+        </table>
+    <p><button id="buttonGetData" type="submit" class="btn btn-primary">Get Data!</button></p>
+
+    }
+}
+
+                    </div>
+                </div>
+            </div>
+        </div> <!--row-->
+@if (Model.IsShowData)
+{
+    <hr>
+            <!-- Content Row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title" style="text-align: center"> Stage : @Model.selectedschoolname</h4>
+                </div>
+                <div class="panel-body">
+
+                        <form id="StdStageData">
+                            <table id="datatable" class="table table-bordered table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Stage</th>
+                                        @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                                        {
+                                            foreach (var selection in Model.ListSelectedGender)
+                                            {
+                                                if (selection.Equals("F"))
+                                                {
+                                                    <th class="text-center"  colspan="2">Female</th>
+                                                }
+                                                if (selection.Equals("M"))
+                                                {
+                                                    <th class="text-center" colspan="2">Male</th>
+                                                }
+                                                if (selection.Equals("T"))
+                                                {
+                                                    <th class="text-center" colspan="2">Total</th>
+                                                }
+                                            }
+                                        }
+                                        <th rowspan="2">Select data </th>
+                                    </tr>
+                                    <tr>
+
+                                        @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                                        {
+                                            foreach (var selection in Model.ListSelectedGender)
+                                            {
+                                                if (selection.Equals("F"))
+                                                {
+                                                    <th>@Model.selectedschoolname</th>
+                                                    <th>All Primary Schools</th>
+                                                }
+                                                if (selection.Equals("M"))
+                                                {
+                                                    <th>@Model.selectedschoolname</th>
+                                                    <th>All Primary Schools</th>
+                                                }
+                                                if (selection.Equals("T"))
+                                                {
+                                                    <th>@Model.selectedschoolname</th>
+                                                    <th>All Primary Schools</th>
+                                                }
+                                            }
+                                        }
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemStdStage in Model.ListStdStageData)
+                                    {
+
+                                        <tr>
+                                            <td>@itemStdStage.StageCode</td>
+
+                                            @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                                            {
+                                                foreach (var selection in Model.ListSelectedGender)
+                                                {
+                                                    if (selection.Equals("F"))
+                                                    {
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageFemaleInSchool)</td>
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageFemaleAllSchool)</td>
+                                                    }
+                                                    if (selection.Equals("M"))
+                                                    {
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageMaleInSchool)</td>
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageMaleAllSchool)</td>
+                                                    }
+                                                    if (selection.Equals("T"))
+                                                    {
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageInSchool)</td>
+                                                        <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageAllSchool)</td>
+                                                    }
+                                                }
+                                            }
+
+                                            <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemStdStage.StageCode" checked="checked" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tr>
+                                    @{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}
+                                    <td colspan=@colspan></td>
+                                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                                </tr>
+                                @*<tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
+            <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
+            <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
+            <tr><td>@Html.ActionLink("Interactive Map", "MapData", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
+                            </table>
+                            <ul class="list-inline">
+                                <li>
+                                    <button class="btn btn-primary" onclick='myFunctionBar()'><label>Bar Chart</label></button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-primary" onclick='myFunctionColumn()'><label>Column Chart</label></button>
+                                </li>
+                                @*<li>
+                                    @Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile"}, null)
+                                </li>*@
+                            </ul>
+
+                            <div id="divChartContainer"></div>
+
+                            <br>
+                        </form>
+
+                </div>
+            </div>
+        </div>
+    </div> <!--row-->
+}
+    </div> <!--container-->
+</body>

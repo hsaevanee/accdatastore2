@@ -1,0 +1,484 @@
+﻿@section Header {
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/Locality/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/Locality/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/Locality/service.js"></script>
+}
+
+<div ng-app="rootApp" ng-controller="rootCtrl" ng-cloak="">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select Year</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr rowspan="2">
+                                        <td class="text-left" width="10%">
+                                            Aberdeen Locality
+                                        </td>
+                                        <td class="text-left" colspan="2">
+                                            <ui-select multiple limit="1" ng-model="mIndex.ListSchoolSelected" theme="bootstrap" close-on-select="true">
+                                                <ui-select-match placeholder="Select school...">{{ $item.Name }}</ui-select-match>
+                                                <ui-select-choices repeat="eSchool in mIndex.ListSchool">
+                                                    <div ng-bind-html="eSchool.Name"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Year</td>
+                                        <td class="text-left">
+                                            <select ng-options="eYear.Academicyear for eYear in mIndex.ListYear track by eYear.Year"
+                                                    ng-model="mIndex.YearSelected"></select>
+                                        </td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                            <p><button type="button" class="btn btn-info" ng-click="doGetData()">View</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" align="center">
+                    <img height="100" width="100" src="@Url.Content("~/Resources/Download/loading.gif")" ng-show="bShowLoading" />
+                </div>
+            </div>
+        </div>
+
+        <div class="container" ng-if="mIndex.bShowContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel with-nav-tabs panel-primary">
+                        <div class="panel-heading">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a data-toggle="tab" href="#summary" ng-click="doTabClick()">Summary</a></li>
+                                <li role="presentation"><a id="tabschoolroll" role="tab" data-toggle="tab" href="#schoolroll" ng-click="doTabClick()">School Roll</a></li>
+                                <li role="presentation"><a id="tabsimd" role="tab" data-toggle="tab" href="#simd" ng-click="doTabClick()">SIMD</a></li>
+                                <li role="presentation"><a id="tabfsm" role="tab" data-toggle="tab" href="#fsm" ng-click="doTabClick()">FSM</a></li>
+                                <li role="presentation"><a id="tabcfe" role="tab" data-toggle="tab" href="#cfe" ng-click="doTabClick()">CfE</a></li>
+                                <li role="presentation"><a id="tabattendance" role="tab" data-toggle="tab" href="#attendance" ng-click="doTabClick()">Attendance</a></li>
+                                <li role="presentation"><a id="tabexclusions" role="tab" data-toggle="tab" href="#exclusions" ng-click="doTabClick()">Exclusions</a></li>
+                                <li role="presentation"><a id="tabiep" role="tab" data-toggle="tab" href="#iep" ng-click="doTabClick()">IEP</a></li>
+                                <li role="presentation"><a id="tabcsp" role="tab" data-toggle="tab" href="#csp" ng-click="doTabClick()">CSP</a></li>
+                                <li role="presentation"><a id="tabeal" role="tab" data-toggle="tab" href="#eal" ng-click="doTabClick()">EAL</a></li>
+                                <li role="presentation"><a id="tablookafter" role="tab" data-toggle="tab" href="#lookafter" ng-click="doTabClick()">Looked After</a></li>
+                                <li role="presentation"><a id="tabethnicity" role="tab" data-toggle="tab" href="#ethnicity" ng-click="doTabClick()">Ethnicity</a></li>
+                                <li role="presentation"><a id="tabnationality" role="tab" data-toggle="tab" href="#nationality" ng-click="doTabClick()">Nationality</a></li>
+                                <li role="presentation"><a id="tabotherlinks" role="tab" data-toggle="tab" href="#otherlinks" ng-click="doTabClick()">Websites</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="summary">
+                                    <h3> Summary  </h3>
+
+                                    <hr />
+                                    <h3>Curriculum for Excellence (CfE) Levels *</h3>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary text-center">
+                                                <div class="panel-heading">
+                                                    <ul class="nav nav-tabs" role="tablist">
+                                                        <li role="presentation" class="active"><a data-toggle="tab" href="#primarycfe" ng-click="doTabClick()">Primary</a></li>
+                                                        <li role="presentation"><a data-toggle="tab" href="#secondarycfe" ng-click="doTabClick()">Secondary</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane fade in active" id="primarycfe">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title"> <strong>(CfE) Levels {{ mIndex.YearSelected.Academicyear }} </strong></h4>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="table-responsive">
+                                                                                <p> <strong> % of pupils achieving expected CfE, {{mIndex.YearSelected.Academicyear}}</strong></p>
+                                                                                <table class="table table-bordered table-hover">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th rowspan="2"></th>
+                                                                                            <th colspan="2" class="text-center">P1 - Early Level</th>
+                                                                                            <th colspan="2" class="text-center">P4 - First Level</th>
+                                                                                            <th colspan="2" class="text-center">P7 - Second Level</th>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></th>
+                                                                                            <th class="text-center">{{ eSchool.SchoolName }}</th>
+                                                                                            <th ng-hide="true" ng-repeat-end></th>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></th>
+                                                                                            <th class="text-center">{{ eSchool.SchoolName }}</th>
+                                                                                            <th ng-hide="true" ng-repeat-end></th>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></th>
+                                                                                            <th class="text-center">{{ eSchool.SchoolName }}</th>
+                                                                                            <th ng-hide="true" ng-repeat-end></th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr ng-if=" mIndex.ListingData[0].SPCfElevel===null">
+                                                                                            <td colspan="7"><strong><i> Data is not available</i> </strong></td>
+                                                                                        </tr>
+                                                                                        <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SPCfElevel.P1EarlyLevel" ng-init="nTopicIndex = $index">
+                                                                                            <!-- topic loop -->
+                                                                                            <td class="text-left">{{ eGenericSchoolData.Code }}</td><!-- topic name -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel.P1EarlyLevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel.P1EarlyLevel_no[nTopicIndex].sCount }})</td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel.P4FirstLevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel.P4FirstLevel_no[nTopicIndex].sCount }})</td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel.P7SecondLevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel.P7SecondLevel_no[nTopicIndex].sCount }})</td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade" id="secondarycfe">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title"> <strong>(CfE) Levels {{ mIndex.YearSelected.Academicyear }} </strong></h4>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="table-responsive">
+                                                                                <p> <strong> % of pupils achieving expected CfE, {{mIndex.YearSelected.Academicyear}}</strong></p>
+                                                                               <table id="" class="table table-bordered table-hover">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th rowspan="2"></th>
+                                                                                            <th colspan="2" class="text-center" ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SchoolName }}</th>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></th><!-- inner shcool loop for each year, hide content -->
+                                                                                            <th class="text-center">Third Level or better</th>
+                                                                                            <th class="text-center">Fourth Level</th><!-- school name on header row 2 -->
+                                                                                            <th ng-hide="true" ng-repeat-end></th><!-- end year loop -->
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr ng-if=" mIndex.ListingData[0].SPCfElevel===null">
+                                                                                            <td colspan="5"><strong><i> Data is not available</i> </strong></td>
+                                                                                        </tr>
+                                                                                        <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SPCfElevel2.ListThirdlevel" ng-init="nTopicIndex = $index">
+                                                                                            <!-- topic loop -->
+                                                                                            <td class="text-left">{{ eGenericSchoolData.Code }}</td><!-- topic name -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel2.ListThirdlevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel2.ListThirdlevel_no[nTopicIndex].sCount }}) </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel2.ListForthlevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel2.ListForthlevel_no[nTopicIndex].sCount }}) </td>
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="schoolroll">
+                                    <h3>School Roll</h3>
+
+
+                                </div>
+                                <div class="tab-pane fade" id="simd">
+                                    <h3>Scottish Index of Multiple Deprivation</h3>
+                                </div>
+                                <div class="tab-pane fade" id="fsm">
+                                    <h3> Free School Meal</h3>
+
+
+
+                                </div>
+
+                                <div class="tab-pane fade" id="cfe">
+                                    <h3>Curriculum for Excellence (CfE) Levels *</h3>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary text-center">
+                                                <h3 class="text-center" ng-repeat="eschool in mIndex.ListSchoolSelected"> <strong> {{ eschool.Name }} </strong></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary text-center">
+                                                <div class="panel-heading">
+                                                    <ul class="nav nav-tabs" role="tablist">
+                                                        <li role="presentation" class="active"><a data-toggle="tab" href="#primarycfe2" ng-click="doTabClick()">Primary</a></li>
+                                                        <li role="presentation"><a data-toggle="tab" href="#secondarycfe2" ng-click="doTabClick()">Secondary</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane fade in active" id="primarycfe2">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title"> <strong>(CfE) Levels {{ mIndex.YearSelected.Academicyear }} </strong></h4>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="table-responsive">
+                                                                                <p> <strong> % of pupils achieving expected CfE, {{mIndex.YearSelected.Academicyear}}</strong></p>
+                                                                                <table class="table table-bordered table-hover">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th rowspan="2"></th>
+                                                                                            <th colspan="2" class="text-center">P1 - Early Level</th>
+                                                                                            <th colspan="2" class="text-center">P4 - First Level</th>
+                                                                                            <th colspan="2" class="text-center">P7 - Second Level</th>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></th>
+                                                                                            <th class="text-center">{{ eSchool.SchoolName }}</th>
+                                                                                            <th ng-hide="true" ng-repeat-end></th>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></th>
+                                                                                            <th class="text-center">{{ eSchool.SchoolName }}</th>
+                                                                                            <th ng-hide="true" ng-repeat-end></th>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></th>
+                                                                                            <th class="text-center">{{ eSchool.SchoolName }}</th>
+                                                                                            <th ng-hide="true" ng-repeat-end></th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr ng-if=" mIndex.ListingData[0].SPCfElevel===null">
+                                                                                            <td colspan="7"><strong><i> Data is not available</i> </strong></td>
+                                                                                        </tr>
+                                                                                        <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SPCfElevel.P1EarlyLevel" ng-init="nTopicIndex = $index">
+                                                                                            <!-- topic loop -->
+                                                                                            <td class="text-left">{{ eGenericSchoolData.Code }}</td><!-- topic name -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel.P1EarlyLevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel.P1EarlyLevel_no[nTopicIndex].sCount }}) </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel.P4FirstLevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel.P4FirstLevel_no[nTopicIndex].sCount }})</td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel.P7SecondLevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel.P7SecondLevel_no[nTopicIndex].sCount }}) </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <p class="text-left"><small></small> * Based on Teacher Judgement Survey 2016(Experimental data)</p>
+
+                                                            <hr />
+                                                            <div class="row" ng-if="mIndex.ChartData.ChartCfeP1Level">
+                                                                <div class="col-md-4">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfeP1Level"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfeP1LevelbyQuintile"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" ng-if="mIndex.ChartData.ChartCfeP4Level">
+                                                                <div class="col-md-4">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfeP4Level"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfeP4LevelbyQuintile"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" ng-if="mIndex.ChartData.ChartCfeP7Level">
+                                                                <div class="col-md-4">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfeP7Level"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfeP7LevelbyQuintile"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade" id="secondarycfe2">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="panel panel-primary text-center">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title"> <strong>(CfE) Levels {{mIndex.YearSelected.Academicyear}} </strong></h4>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="table-responsive">
+                                                                                <p> % S3 pupils achieving</p>
+                                                                                <table id="" class="table table-bordered table-hover">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th rowspan="2"></th>
+                                                                                            <th colspan="2" class="text-center" ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SchoolName }}</th>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></th><!-- inner shcool loop for each year, hide content -->
+                                                                                            <th class="text-center">Third Level or better</th>
+                                                                                            <th class="text-center">Fourth Level</th><!-- school name on header row 2 -->
+                                                                                            <th ng-hide="true" ng-repeat-end></th><!-- end year loop -->
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr ng-if=" mIndex.ListingData[0].SPCfElevel===null">
+                                                                                            <td colspan="5"><strong><i> Data is not available</i> </strong></td>
+                                                                                        </tr>
+                                                                                        <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SPCfElevel2.ListThirdlevel" ng-init="nTopicIndex = $index">
+                                                                                            <!-- topic loop -->
+                                                                                            <td class="text-left">{{ eGenericSchoolData.Code }}</td><!-- topic name -->
+                                                                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel2.ListThirdlevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel2.ListThirdlevel_no[nTopicIndex].sCount }}) </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                                                                            <td>{{ eSchoolInfo.SPCfElevel2.ListForthlevel[nTopicIndex].sPercent }} ({{ eSchoolInfo.SPCfElevel2.ListForthlevel_no[nTopicIndex].sCount }})</td>
+                                                                                            <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <p class="text-left"><small></small> * Based on Teacher Judgement Survey 2016(Experimental data)</p>
+                                                            <hr />
+                                                            <div class="row" ng-if="mIndex.ChartData.ChartCfe3Level">
+                                                                <div class="col-md-4">
+                                                                    <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfe3Level"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfe3LevelbyQuintile"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row" ng-if="mIndex.ChartData.ChartCfe4LevelbyQuintile">
+                                                                <div class="col-md-4">
+                                                                    <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfe4Level"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                        <div class="panel-body">
+                                                                            <highchart config="mIndex.ChartData.ChartCfe4LevelbyQuintile"></highchart>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="attendance">
+                                    <h3> Attendance and Absence </h3>
+
+                                </div>
+                                <div class="tab-pane fade" id="exclusions">
+                                    <h3> Exclusions </h3>
+
+                                </div>
+                                <div class="tab-pane fade" id="iep">
+                                    <h3>Individualised Educational Plan (IEP)</h3>
+
+
+                                </div>
+                                <div class="tab-pane fade" id="csp">
+                                    <h3>Co-ordinated Support Plan (CSP) </h3>
+
+                                </div>
+                                <div class="tab-pane fade" id="eal">
+                                    <h3>Level of English</h3>
+
+
+                                </div>
+                                <div class="tab-pane fade" id="lookafter">
+                                    <h3>Looked After</h3>
+
+                                </div>
+                                <div class="tab-pane fade" id="ethnicity">
+                                    <h3>Ethnicity</h3>
+
+                                </div>
+                                <div class="tab-pane fade" id="nationality">
+                                    <h3>Nationality</h3>
+ 
+                                </div>
+                                <div class="tab-pane fade" id="otherlinks">
+                                    <h3> Other Links  </h3>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @*<pre>
+                {{ mIndex | json }}
+            </pre>*@
+    </script>
+</div>

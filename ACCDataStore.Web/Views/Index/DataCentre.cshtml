@@ -1,0 +1,116 @@
+﻿@section Header {
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+}
+
+@{
+    ViewBag.Title = "DataCentre";
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb pull-left">
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "" }, null)">Home</a>
+                    </li>
+                    <li class="active">Data Centre</li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-left text-info">Data Centre</h1>
+                <hr />
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title text-center"> Data Information Centre</h4>
+                    </div>
+                    <div class="panel-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Dataset</th>
+                                        <th class="text-center">Last Updated</th>
+                                        <th class="text-center">Contact Details</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left">School Profile</td>
+                                        <td class="text-center">8 January 2018</td>
+                                        <td class="text-center">
+                                            <p>
+                                                Ljiljana Pavlenic
+                                            </p>
+                                            <p>
+                                                <i class="fa fa-envelope-o"></i>
+                                                <abbr title="Email">E</abbr>: <a href="mailto:LPAVLENIC@aberdeencity.gov.uk">LPAVLENIC@aberdeencity.gov.uk</a>
+                                            </p>
+                                            <p>
+                                                <i class="fa fa-phone"></i>
+                                                <abbr title="Phone">Ext</abbr>: 3241
+                                            </p>
+                                            <p>
+                                                <i class="fa fa-phone"></i>
+                                                <abbr title="Mobile Phone">M</abbr>: 07825262932
+                                            </p>
+
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Data Hub</td>
+                                        <td class="text-center">5 February 2018</td>
+                                        <td class="text-center">
+                                            <p>
+                                                Carole Snedden
+                                            </p>
+                                            <p>
+                                                Opportunities for All Manager
+                                            </p>
+                                            <p>
+                                                <i class="fa fa-envelope-o"></i>
+                                                <abbr title="Email">E</abbr>: <a href="mailto:csneddon@aberdeencity.gov.uk">csneddon@aberdeencity.gov.uk</a>
+
+                                            </p>
+                                        </td>
+                                     </tr>
+                                    <tr>
+                                        <td class="text-left">Wider Achievement</td>
+                                        <td class="text-center"> January 2017</td>
+                                        <td class="text-center">
+                                            <p>
+                                                Mark Pain
+                                            </p>
+                                            <p>
+                                                Wider Achievement Manager
+                                            </p>
+                                            <p>
+                                                Adventure Aberdeen
+                                            </p>
+                                            <p>
+                                                <i class="fa fa-envelope-o"></i>
+                                                <abbr title="Email">E</abbr>: <a href="mailto:mapain@aberdeencity.gov.uk">mapain@aberdeencity.gov.uk</a>
+
+                                            </p>
+                                        </td>
+                                     </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

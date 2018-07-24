@@ -1,0 +1,265 @@
+﻿@section Header {
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/service.js"></script>
+}
+
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-left text-info">
+                        Request Form
+                    </h1>
+                    <hr />
+                </div>
+
+            </div>
+            @*<section>
+                <div id="container_demo">
+
+                    <div id="wrapper">
+                   
+                        <div id="register" class="animate form">
+                            <form action="@Url.Action("ProcessRequest", "IndexAuthorisation", new { area = "Authorisation" })" autocomplete="on">
+                                <h1> Request </h1>
+                                <p>
+                                    <label for="usernamesignup" class="uname">FIRST NAME:</label>
+                                    <input id="firstname" name="firstname" required="required" type="text" placeholder="Firstname" />
+                                </p>
+                                <p>
+                                    <label for="usernamesignup" class="uname">SURNAME:</label>
+                                    <input id="surname" name="surname" required="required" type="text" placeholder="Surname" />
+                                </p>
+                                <p>
+                                    <label for="usernamesignup" class="uname">JOB TITLE:</label>
+                                    <input id="username" name="jobtitle" required="required" type="text" placeholder="Job Title" />
+                                </p>
+                                <p>
+                                    <label for="usernamesignup" class="uname">TEL NO:</label>
+                                    <input id="username" name="telno" required="required" type="text" placeholder="" />
+                                </p>
+                                <p>
+                                    <label for="emailsignup" class="uname">EMAIL:</label>
+                                    <input id="emailsignup" name="email" required="required" type="text" placeholder="youremail@aberdeencity.gov.uk" />
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="youpasswd">TEAM / DIRECTORATE FUNCTION:</label>
+                                    <input id="password" name="directorate" required="required" type="text" placeholder="" />
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="youpasswd">ABERDEEN DATA OBSERVATORY REQUIRED TO ACCESS (Please tick as appropriate):</label>
+                                </p>
+                                <p class="form-horizontal">
+                                    <input type="checkbox" name="datasets1" id="schprofile" value="schprofile">Aberdeen School Profiles<br>
+                                    <input type="checkbox" name="datasets2" id="datahub" value="datahub">Aberdeen Post 16+ Data Hub<br>    
+                                    <input type="checkbox" name="datasets3" id="cssf" value="cssf">CSSF<br>
+
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="uname">LINE MANAGER NAME:</label>
+                                    <input id="password" name="managername"  type="text" placeholder="" />
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="uname">LINE MANAGER EMAIL:</label>
+                                    <input id="password" name="manageremail" type="text" placeholder="" />
+                                </p>
+                                <p class="signin button">
+                                    <input type="submit" value="Request" />
+                                </p>
+                                <p class="change_link">
+                                    Already a member ?
+                                    <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)" class="to_register"> Go and log in </a>
+                                </p>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </section>*@
+            @*<div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <form action="@Url.Action("ProcessRequest", "IndexAuthorisation", new { area = "Authorisation" })" autocomplete="on">
+                                <p class="text-left">
+                                    <label for="usernamesignup" class="uname">FIRST NAME:</label>
+                                    <input id="firstname" name="firstname" required="required" type="text" placeholder="Firstname" />
+                                </p>
+                                <p class="text-left">
+                                    <label for="usernamesignup" class="uname">SURNAME:</label>
+                                    <input id="surname" name="surname" required="required" type="text" placeholder="Surname" />
+                                </p>
+                                <p class="text-left">
+                                    <label for="usernamesignup" class="uname">JOB TITLE:</label>
+                                    <input id="username" name="jobtitle" required="required" type="text" placeholder="Job Title" />
+                                </p>
+                                <p class="text-left">
+                                    <label for="usernamesignup" class="uname">TEL NO:</label>
+                                    <input id="username" name="telno" required="required" type="text" placeholder="" />
+                                </p>
+                                <p class="text-left">
+                                    <label for="emailsignup" class="uname">EMAIL:</label>
+                                    <input id="emailsignup" name="email" required="required" type="text" placeholder="youremail@aberdeencity.gov.uk" />
+                                </p>
+                                <p class="text-left">
+                                    <label for="passwordsignup" class="youpasswd">TEAM / DIRECTORATE FUNCTION:</label>
+                                    <input id="password" name="directorate" required="required" type="text" placeholder="" />
+                                </p>
+                                <p class="text-left">
+                                    <label for="passwordsignup" class="youpasswd">ABERDEEN DATA OBSERVATORY REQUIRED TO ACCESS (Please tick as appropriate):</label>
+                                </p>
+                                <p class="form-horizontal, text-left">
+                                    <input type="checkbox" name="datasets1" id="schprofile" value="schprofile">Aberdeen School Profiles<br>
+                                    <input type="checkbox" name="datasets2" id="datahub" value="datahub">Aberdeen Post 16+ Data Hub<br>
+                                    <input type="checkbox" name="datasets3" id="cssf" value="cssf">CSSF<br>
+
+                                </p>
+                                <p class="text-left">
+                                    <label for="passwordsignup" class="uname">LINE MANAGER NAME:</label>
+                                    <input id="password" name="managername" type="text" placeholder="" />
+                                </p>
+                                <p class="text-left">
+                                    <label for="passwordsignup" class="uname">LINE MANAGER EMAIL:</label>
+                                    <input id="password" name="manageremail" type="text" placeholder="" />
+                                </p>
+                                <p class="signin button">
+                                    <input type="submit" value="Request" />
+                                </p>
+                                @*<p class="change_link">
+                                    Already a member ?
+                                    <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)" class="to_register"> Go and log in </a>
+                                </p>*@
+                            @*</form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>*@
+
+
+            <div class="panel panel-primary text-center" style="background: #eeeeee">
+                <div class="panel-body">
+                    <form class="form-horizontal" action="@Url.Action("ProcessRequest", "IndexAuthorisation", new { area = "Authorisation" })" autocomplete="on">
+                        <fieldset>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">FIRST NAME:</label>
+                                <input id="firstname" class="form-control" name="firstname" type="text" placeholder="Firstname" />
+
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">SURNAME:</label>
+                                <input id="surname" class="form-control" name="surname" type="text" placeholder="Surname" />
+                            </div>
+                            <div class="form-group text-left ">
+                                <label for="usernamesignup" class="col-lg-3 control-label">JOB TITLE:</label>
+                                <input id="username" class="form-control" name="jobtitle" type="text" placeholder="Job Title" />
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">TEL No:</label>
+                                <input id="username" class="form-control" name="telno" type="text" placeholder="" />
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">EMAIL:</label>
+                                <input id="emailsignup" class="form-control" name="email" type="text" placeholder="youremail@aberdeencity.gov.uk" />
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">FUNCTION:</label>
+                                <input id="password" class="form-control" name="function" type="text" placeholder="" />
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">CLUSTER:</label>
+                                <input id="password" class="form-control" name="cluster" type="text" placeholder="" />
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">JOB ROLE:</label>
+                                <input id="password" class="form-control" name="jobrole" type="text" placeholder="" />
+                            </div>
+                            @*<div class="text-left">
+                            <label class="col-lg-10 control-label text-left">ABERDEEN DATA OBSERVATORY REQUIRED TO ACCESS (Please tick as appropriate):</label>
+                        </div>*@
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">SELECTS:</label>
+                                <div class="col-lg-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="datasets1" id="schprofile" value="schprofile">Aberdeen School Profiles<br>
+                                            <input type="checkbox" name="datasets2" id="datahub" value="datahub">Aberdeen Post 16+ Destinations<br>
+                                            <input type="checkbox" name="datasets3" id="cssf" value="cssf">CSSF<br>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">LINE MANAGER:</label>
+                                <input id="password" class="form-control" name="managername"  type="text" placeholder="" />
+                            </div>
+                            <div class="form-group text-left">
+                                <label for="usernamesignup" class="col-lg-3 control-label">LINE MANAGER EMAIL:</label>
+                                <input id="password" class="form-control" name="manageremail"  type="text" placeholder="" />
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-2">
+                                    <button type="reset" class="btn btn-default" ng-click="resetForm()">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>                                 
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <form method="post" action="SendEmail">
+                <div class="container">
+                    <span class="form-control-static"> Receiver: </span>
+                    <input class="form-control" type="text" name="receiver" />
+                    <br /> <span class="form-control-static"> Subject: </span>
+                    <input class="form-control" type="text" name="message" /> <br />
+                    <input class="form-control" type="text" name="subject" />
+                    <input class="btn btn-primary" type="submit" value="Send" />
+
+                </div>
+
+            </form>
+
+
+</div>
+        @*<pre>
+                {{ mIndex | json }}
+        </pre>*@
+
+
+    </script>
+
+</div>
+
+<style>
+    /*input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }*/
+
+    /*input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }*/
+
+</style>

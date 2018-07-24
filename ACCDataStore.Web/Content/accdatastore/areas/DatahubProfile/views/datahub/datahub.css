@@ -1,0 +1,415 @@
+﻿#header {
+    background-color:#98AFC7;
+    color:black;
+    text-align:center;
+    padding:5px;
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+}
+#container {
+    background-color: white;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#content {
+    padding: 5px;
+}
+h1, h2, h3, p, #text {
+
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;      
+}
+#nav {
+    line-height:30px;
+    /*background-color:#eeeeee;*/
+    /*height:100%;*/
+    width:10%;
+    float:left;
+    padding:5px;	
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;      
+}
+
+#footer {
+    background-color:#98AFC7;
+    color:white;
+    clear:both;
+    text-align:center;
+   padding:5px;	 
+   font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;	 
+}
+
+    #nav ul {
+        list-style-type: none;
+        padding: 0px;
+    }
+
+
+#main {
+    width: 80%;
+    float: left;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+
+}
+
+th {
+    background: #98AFC7;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+
+}
+
+td, th {
+    padding: 2px;
+    border: 1px solid #ccc;
+
+    /*text-align: center;*/
+}
+
+tr th {
+    color: black;
+    background: #C0D7EF;
+}
+
+
+input[type=button], input[type=submit]  {
+    background-color: #98AFC7; 
+    color: black;
+    padding: 2px 4px;
+    font: 13px sans-serif;
+    text-decoration: none;
+    border: 1px solid #000;
+    border-color: #aaa #444 #444 #aaa;
+}
+button {
+    background-color: #98AFC7; 
+    color: black;
+    padding: 2px 4px;
+    font: 13px sans-serif;
+    text-decoration: none;
+    border: 1px solid #000;
+    border-color: #aaa #444 #444 #aaa;
+}
+
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+
+    #container {
+        width: 100%;
+    }
+
+    #nav {
+        width: 30%;
+    }
+
+    #main {
+        width: 70%;
+    }
+
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+    tr {
+        border: 1px solid #ccc;
+    }
+
+    td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+    }
+
+        td:before {
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 255, 255, 255, .8 ) url('../../../Images/spinner.gif') 50% 50% no-repeat;
+    }
+}
+
+#popup-information {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 99;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    height: 400px;
+    resize: both;
+    max-width: 600px;
+    max-height: 500px;
+    overflow: auto;
+    color: #eee;
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+    border: 1px solid #888;
+    background: #2b2a2a;
+}
+
+   html, body, #map-canvas {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#popup-information {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 99;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    height: 400px;
+    resize: both;
+    max-width: 600px;
+    max-height: 500px;
+    overflow: auto;
+    color: #eee;
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+    border: 1px solid #888;
+    background: #01051f;
+}
+
+    #popup-information::-webkit-scrollbar-corner {
+    }
+
+    #popup-information::-webkit-resizer {
+        background-color: #434598;
+        cursor: se-resize;
+    }
+
+
+    #popup-information:hover::-webkit-resizer, #content_window:hover::-webkit-scrollbar-corner {
+        background-color: #434598;
+        border: 1px dotted #434598;
+        border-right-color: #434598;
+        cursor: se-resize;
+    }
+
+
+    #popup-information:active::-webkit-resizer, #content_window:active::-webkit-scrollbar-corner {
+        background-color: #434598;
+        border-color: #434598;
+        border-right-color: #434598;
+    }
+
+#mapcontrolbox ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#mapcontrolbox a {
+    color: #000;
+}
+
+    #mapcontrolbox a:hover {
+        background: none;
+    }
+
+#mapcontrolbox ul li {
+    padding: 5px;
+    border: 1px solid #555;
+    width: 160px;
+    float: left;
+    margin: 5px 0 0 0;
+    border-radius: 0px;
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+}
+
+    #mapcontrolbox ul li:hover {
+        border-color: #222;
+        cursor: default;
+    }
+
+#mapcontrolbox a:hover {
+    color: #000;
+    font-weight: bold;
+}
+
+#mapcontrolbox ul li:active, #mapcontrolbox ul li:focus {
+    border-color: #555;
+}
+
+#mapcontrolbox ul li.selected {
+    border-color: #444;
+}
+
+#mapcontrolbox input {
+    cursor: pointer;
+}
+
+#maincontrolbox h2 {
+    font-size: 1.5em;
+}
+
+#maincontrolbox {
+    position: absolute;
+    top: 200px;
+    right: 180px;
+    width: 180px;
+    height: auto;
+    margin: 0;
+    padding: 10px;
+    overflow: hidden;
+    /*background: transparent url('../img/grey80.png');*/
+    border: 1px solid #888;
+    color: #000;
+    z-index: 99;
+    display: block;
+}
+
+#selector0 {
+    background-color: #fbfaf7;
+}
+
+#selector1 {
+    background-color: #fbfaf7;
+}
+
+#selector2 {
+    background-color: #fbfaf7;
+}
+
+#selector3 {
+    background-color: #fbfaf7;
+}
+
+#selector4 {
+    background-color: #fbfaf7;
+}
+
+#selector5 {
+    background-color: #fbfaf7;
+}
+
+#selector6 {
+    background-color: #fbfaf7;
+}
+
+#selector7 {
+    background-color: #fbfaf7;
+}
+
+#selector8 {
+    background-color: #fbfaf7;
+}
+
+#selector9 {
+    background-color: #fbfaf7;
+}
+
+.control {
+    margin-top: 20px;
+    text-align: center;
+    font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+    background-color: #fbfaf7;
+}
+
+    .nicebox {
+        position: absolute;
+        text-align: center;
+        font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+        font-size: 13px;
+        z-index: 5;
+        box-shadow: 0 4px 6px -4px #333;
+        padding: 5px 10px;
+        background: rgb(255,255,255);
+        background: linear-gradient(to bottom,rgba(255,255,255,1) 0%,rgba(245,245,245,1) 100%);
+        border: rgb(229, 229, 229) 1px solid;
+    }
+
+    #controls {
+        top: 200px;
+        left: 200px;
+        width: 360px;
+        height: 45px;
+    }
+
+    #data-box {
+        top: 200px;
+        left: 580px;
+        height: 45px;
+        line-height: 45px;
+        display: none;
+    }
+
+    #census-variable {
+        width: 360px;
+        height: 20px;
+    }
+
+    #legend {
+        display: flex;
+        display: -webkit-box;
+        padding-top: 7px;
+    }
+
+    .color-key {
+        background: linear-gradient(to right, hsl(5, 69%, 54%) 0%, hsl(29, 71%, 51%) 17%, hsl(54, 74%, 47%) 33%, hsl(78, 76%, 44%) 50%, hsl(102, 78%, 41%) 67%, hsl(127, 81%, 37%) 83%, hsl(151, 83%, 34%) 100%);
+        flex: 1;
+        -webkit-box-flex: 1;
+        margin: 0 5px;
+        text-align: left;
+        font-size: 1.0em;
+        line-height: 1.0em;
+    }
+
+    #data-value {
+        font-size: 2.0em;
+        font-weight: bold;
+    }
+
+    #data-label {
+        font-size: 2.0em;
+        font-weight: normal;
+        padding-right: 10px;
+    }
+
+        #data-label:after {
+            content: ':';
+        }
+
+    #data-caret {
+        margin-left: -5px;
+        display: none;
+        font-size: 14px;
+        width: 14px;
+    }

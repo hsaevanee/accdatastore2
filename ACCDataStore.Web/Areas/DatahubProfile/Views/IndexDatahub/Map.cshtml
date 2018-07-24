@@ -1,0 +1,288 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.CurrentCouncil
+@using Newtonsoft.Json
+@section Header {
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/jquery-ui.min-1.11.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-ui-Slider-Pips/1.11.3/jquery-ui-slider-pips.min.js" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-ui-Slider-Pips/1.11.3/jquery-ui-slider-pips.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script>
+        var currentCouncil = @Html.Raw(JsonConvert.SerializeObject(this.Model)); console.log(currentCouncil)
+    </script>
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/MapMain.js"></script>
+    @*<script src="http://code.highcharts.com/maps/modules/data.js"></script>*@
+    @*<script src="http://code.highcharts.com/maps/modules/exporting.js"></script>*@
+    @*<script src="~/Scripts/accdatastore/views/Datazone_with_Desc.js"></script>*@
+    @*<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" />*@
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+    
+    <style type="text/css">
+
+    .nicebox {
+        position: absolute;
+        text-align: center;
+        font-family: "Roboto", "Arial", sans-serif;
+        font-size: 13px;
+        z-index: 5;
+        box-shadow: 0 4px 6px -4px #333;
+        padding: 5px 10px;
+        background: rgb(255,255,255);
+        background: linear-gradient(to bottom,rgba(255,255,255,1) 0%,rgba(245,245,245,1) 100%);
+        border: rgb(229, 229, 229) 1px solid;
+    }
+
+#data-box {
+    /*top: 15px;
+    left: 480px;*/
+    height: 45px;
+    line-height: 45px;
+    display: none;
+}
+
+
+    #legend {
+        display: flex;
+                display: -webkit-box;
+                padding-top: 7px;
+            }
+
+    .color-key {
+        background: linear-gradient(to right, hsl(5, 69%, 54%) 0%, hsl(29, 71%, 51%) 17%, hsl(54, 74%, 47%) 33%, hsl(78, 76%, 44%) 50%, hsl(102, 78%, 41%) 67%, hsl(127, 81%, 37%) 83%, hsl(151, 83%, 34%) 100%);
+        flex: 1;
+        -webkit-box-flex: 1;
+        /*margin: 0 5px;*/
+        text-align: left;
+        font-size: 1.0em;
+        line-height: 1.0em;
+    }
+
+#data-value {
+        font-size: 1.0em;
+        font-weight: bold;
+    }
+
+#data-label {
+    font-size: 1.0em;
+        font-weight: normal;
+        /*padding-right: 10px;*/
+    }
+
+        #data-label:after {
+            content: ':';
+        }
+
+    #data-caret {
+        margin-left: -5px;
+        display: block;
+        font-size: 14px;
+        /*width: 15px;*/
+    }
+
+    /*Begin slider css*/
+    .ui-state-default:first-of-type, .ui-widget-content .ui-state-default:first-of-type, .ui-widget-header .ui-state-default:first-of-type {
+    background: white;
+    }
+    .ui-state-default:last-of-type, .ui-widget-content .ui-state-default:last-of-type, .ui-widget-header .ui-state-default:last-of-type {
+        background: white;
+    }
+    .ui-slider .ui-slider-range {
+        background: yellow;
+    }
+    .left-color {
+        float: left;
+        background-color: red;
+        height: 100%;
+        /*border-radius: 3px 0px 0px 3px;
+        width: 50px;*/
+    }
+    .slider {
+        background-color: green;
+        background-image: none;
+    }
+    .slider label {
+        position: absolute;
+        /*width: 20px;*/
+        /*margin-left: -10px;*/
+        text-align: center;
+        /*margin-top: 20px;*/
+    }
+</style>
+
+}
+@{
+    ViewBag.Title = "HeatMapIndex";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>DataHub - Interactive Heat Map</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div id="map-canvas" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel-group">
+                    <div class="panel">
+                        
+                        <div class="panel-body">
+                            <div class="row">
+                                <div id="mapcontrolbox">
+                                    <label for="selectedtype">Layer</label>
+                                    <select class="form-control" id="selectedtype">
+                                        <option disabled selected>-- please select --</option>
+                                        <option value="Data Zone">Data Zones</option>
+                                        <option value="Intermediate Zone">Intermediate Zones</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel" id="thresholdControl" style="display:none">
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label for="form-control">Dataset</label>
+                                <select class="form-control" id="selecteddataset">
+                                    <option value="Participating">Participating</option>
+                                    <option value="Not-Participating">Not-Participating</option>
+                                    <option value="Unconfirmed">Unconfirmed</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="thresholdViewLow">Below(%)</label>
+                                
+                                <input type="text" class="sliderValue form-control" data-index="0" value="0" id="thresholdViewLow" />
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="thresholdViewLow">Above(%)</label>
+                                <input type="text" class="sliderValue form-control" data-index="1" value="0" id="thresholdViewHigh" />
+                            </div>
+                            <div class="form-group row">
+                                <label for="averageText">Average for council(%)</label>
+                                <div class="text-center" id="averageText"></div>
+                            </div>
+                            <div class="row">
+                                <input type="button" value="Filter" style="width:100%" class="btn btn-primary form-control" id="thresholdViewBtn">
+                                </div>
+                            </div>
+                    </div>
+                    <div class="panel" style="display:none">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="text-left" id="census-min">min %</div>
+                                <div class="color-key "><span id="data-caret">&#x25c6;</span></div>
+                                <div class="text-right" id="census-max">max %</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div id="data-box" class="col-md-12 text-center">
+                                    <label id="data-label" for="data-value"></label>
+                                    <span id="data-value"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10" id="thresholdControl" style="display:none">
+            <div class="slider row" >
+                <div class="left-color"></div>
+            </div>
+
+        </div>
+                 <!-- 
+        <select class="form-control" id="selectedtype">
+            <option disabled selected> -- select an option -- </option>
+            <option value="Data Zone">Data Zones</option>
+            <option value="Intermediate Zone">Intermediate Zones</option>
+        </select>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="map-canvas" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel-group">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Layers</h3>
+                        </div>
+                        <div class="panel-body">
+                                <div id="mapcontrolbox">
+                                    <div class="row col-md-12">
+                                        <div class="form-inline">
+                                            <select class="form-control" id="selecteddataset">
+                                                <option value="Participating">Participating</option>
+                                                <option value="Not-Participating">Not-Participating</option>
+                                                <option value="Unconfirmed">Unconfirmed</option>
+                                            </select>
+                                            Low: <input  type="text" class="sliderValue form-control" style="width:100%" data-index="0" value="0" id="thresholdViewLow" />
+                                            High: <input type="text" class="sliderValue form-control" style="width:100%" data-index="1" value="0" id="thresholdViewHigh" />
+                                            <input type="button" value="Apply" style="width:100%" class="btn btn-primary form-control" id="thresholdViewBtn">
+                                        </div>
+                                            <br/><br />
+                                    </div>
+                                        <div class="row col-md-12">
+                                            <div class="slider">
+                                                <div class="left-color"></div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                </div>
+                            
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="text-left"  id="census-min">min %</div>
+                                <div class="color-key "><span id="data-caret">&#x25c6;</span></div>
+                                <div class="text-right" id="census-max">max %</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div id="data-box" class="col-md-12 text-center">
+                                    <label id="data-label" for="data-value"></label>
+                                    <span id="data-value"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>          row -->
+
+        <div class="row">
+            <div class="col-md-10">
+                <div id="divinformationContainer" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <div id="divChartContainer" style="width: 100%;"></div>
+            </div>
+            <div class="col-md-5">
+                <div id="divPieChartContainer" style="width: 100%;"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+ 

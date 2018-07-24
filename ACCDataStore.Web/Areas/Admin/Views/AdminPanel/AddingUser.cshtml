@@ -1,0 +1,80 @@
+﻿@section Header {
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/authorisation/service.js"></script>
+}
+
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <section>
+                <div id="container_demo">
+
+                    <div id="wrapper">
+                   
+                        <div id="register" class="animate form">
+                            <form action="@Url.Action("ProcessRequest", "IndexAuthorisation", new { area = "Authorisation" })" autocomplete="on">
+                                <h1> Request </h1>
+                                <p>
+                                    <label for="usernamesignup" class="uname">FIRST NAME:</label>
+                                    <input id="firstname" name="firstname" required="required" type="text" placeholder="Firstname" />
+                                </p>
+                                <p>
+                                    <label for="usernamesignup" class="uname">SURNAME:</label>
+                                    <input id="surname" name="surname" required="required" type="text" placeholder="Surname" />
+                                </p>
+                                <p>
+                                    <label for="usernamesignup" class="uname">JOB TITLE:</label>
+                                    <input id="username" name="jobtitle" required="required" type="text" placeholder="Job Title" />
+                                </p>
+                                <p>
+                                    <label for="usernamesignup" class="uname">TEL NO:</label>
+                                    <input id="username" name="telno" required="required" type="text" placeholder="" />
+                                </p>
+                                <p>
+                                    <label for="emailsignup" class="youmail">EMAIL:</label>
+                                    <input id="emailsignup" name="email" required="required" type="email" placeholder="youremail@aberdeencity.gov.uk" />
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="youpasswd">TEAM / DIRECTORATE FUNCTION:</label>
+                                    <input id="password" name="directorate" required="required" type="text" placeholder="" />
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="youpasswd">ABERDEEN DATA OBSERVATORY REQUIRED TO ACCESS (Please tick as appropriate):</label>
+                                </p>
+                                @*<p class="form-horizontal">
+                                    <input type="checkbox" name="datasets1" id="schprofile" value="schprofile">Aberdeen School Profiles<br>
+                                    <input type="checkbox" name="datasets2" id="datahub" value="datahub">Aberdeen Post 16+ Data Hub<br>    
+                                    <input type="checkbox" name="datasets3" id="cssf" value="cssf">CSSF<br>
+
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="uname">LINE MANAGER NAME:</label>
+                                    <input id="password" name="managername"  type="text" placeholder="" />
+                                </p>
+                                <p>
+                                    <label for="passwordsignup" class="uname">LINE MANAGER EMAIL:</label>
+                                    <input id="password" name="manageremail" type="text" placeholder="" />
+                                </p>
+                                <p class="signin button">
+                                    <input type="submit" value="Request" />
+                                </p>*@
+                                @*<p class="change_link">
+                                    Already a member ?
+                                    <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)" class="to_register"> Go and log in </a>
+                                </p>*@
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+        @*<pre>
+                {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+</div>

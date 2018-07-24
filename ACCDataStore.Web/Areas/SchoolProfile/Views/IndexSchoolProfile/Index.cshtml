@@ -1,0 +1,371 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.IndexSchoolProfile.IndexSchoolProfileViewModel
+@section Header {
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/IndexSchoolProfile/IndexSchoolProfile.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+}
+@{
+    ViewBag.Title = "Index";
+}
+<div id="main">
+    <h2>School Profile</h2>
+    @using (Html.BeginForm("Index", "IndexSchoolProfile", new { area = "SchoolProfile" }))
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Please Select School</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="200">School Name</td>
+                    <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData, "seedcode", "name"), "---Please Select School---"))</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+
+    @*<h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/PIPS/">School Roll</a> </h3>
+        <table>
+            <tr>
+                <td>Total School Roll</td>
+                <td><span id="span0"></span></td>
+            </tr>
+            <tr>
+                <td>Capacity (2010 Based)</td>
+                <td><span id="span1"></span></td>
+            </tr>
+            <tr>
+                <td>% Occupancy 2013/14 (based on 2010 Capacity)</td>
+                <td><span id="span2"></span></td>
+            </tr>
+        </table>
+        <h3>
+            <a onclick="goToCreateURL(this)"
+               href="${pageContext.request.contextPath}/user/PIPS/">PIPS</a>
+        </h3>
+        <table>
+            <tr>
+                <th></th>
+                <th>School Start P1</th>
+                <th>Aberdeen Start P1</th>
+                <th>School End Start P1</th>
+                <th>Aberdeen End P1</th>
+
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span3"></span></td>
+                <td><span id="span4"></span></td>
+                <td><span id="span5"></span></td>
+                <td><span id="span6"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span7"></span></td>
+                <td><span id="span8"></span></td>
+                <td><span id="span9"></span></td>
+                <td><span id="span10"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School P3</th>
+                <th>Aberdeen P3</th>
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span11"></span></td>
+                <td><span id="span12"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span13"></span></td>
+                <td><span id="span14"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School P5</th>
+                <th>Aberdeen P5</th>
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span15"></span></td>
+                <td><span id="span16"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span17"></span></td>
+                <td><span id="span18"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School P7</th>
+                <th>Aberdeen P7</th>
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span19"></span></td>
+                <td><span id="span20"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span21"></span></td>
+                <td><span id="span22"></span></td>
+            </tr>
+        </table>
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Attendance/">Attendance</a> </h3>
+
+        <table>
+            <tr>
+                <th> </th>
+                <th>School</th>
+                <th>City</th>
+            </tr>
+            <tr>
+                <td>% Authorised Absence</td>
+                <td><span id="span23"></span></td>
+                <td><span id="span24"></span></td>
+            </tr>
+            <tr>
+                <td>% Unauthorised Absence</td>
+                <td><span id="span25"></span></td>
+                <td><span id="span26"></span></td>
+            </tr>
+            <tr>
+                <td>% Total Absence</td>
+                <td><span id="span27"></span></td>
+                <td><span id="span28"></span></td>
+            </tr>
+        </table>
+
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Exclusions/">Exclusions Annual</a> </h3>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School</th>
+                <th>City</th>
+            </tr>
+            <tr>
+                <td>Data of Days Lost Per 1000 Pupils </td>
+                <td><span id="span29"></span></td>
+                <td><span id="span30"></span></td>
+            </tr>
+            <tr>
+                <td>Data of Removals from the Register</td>
+                <td><span id="span31"></span></td>
+                <td><span id="span32"></span></td>
+            </tr>
+        </table>
+
+        <h3><a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Violent/"> Violent Incidents  Annual</a></h3>
+
+        <table>
+            <tr>
+                <th> </th>
+                <th>School</th>
+                <th>City</th>
+            </tr>
+            <tr>
+                <td>Data of Violent Incidents Reported </td>
+                <td><span id="span33"></span></td>
+                <td><span id="span34"></span></td>
+            </tr>
+            <tr>
+                <td>Data of Violent Incidents Reported Per 100 </td>
+                <td><span id="span35"></span></td>
+                <td><span id="span36"></span></td>
+            </tr>
+        </table>
+        <br>*@
+    <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/SIMD/Index/">Scottish Index of Multiple Deprivation</a></h3>
+    <h4>% of pupils in each Decile (census 2012)</h4>
+    <table id="SIMDdatatable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Deciles</th>
+                <th>@Model.selectedschoolname</th>
+                <th>All Primary Schools</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var itemSIMD in Model.ListSIMDCode)
+            {
+
+
+                var temp1 = Model.ListSIMDData.Find(x => x.SIMDCode.Equals(Convert.ToString(itemSIMD)));               
+                var data1 = 0.0;
+                var data2 = 0.0;
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool2012;
+                    data2 = temp1.PercentageAllSchool2012;
+                }                
+                <tr>
+                    <td>@itemSIMD</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Ethnicbackground/Index/">Ethnicity</a></h3>
+    <h4>% of pupils in each ethnic group</h4>
+    @*<form id="Ethnicdata">*@
+    <table id="Ethnicdatatable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th align="center">Ethnicity</th>
+                <th align="center">@Model.selectedschoolname</th>
+                <th align="center">All Primary Schools</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var itemEthnic in Model.ListEthnicCode)
+            {
+
+
+                var temp1 = Model.ListEthnicData.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));                
+                var data1 = 0.0;
+                var data2 = 0.0;               
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
+                <tr>
+                    <td>@Model.DicEthnicBG[itemEthnic]</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    @*</form>*@
+    <h4>*In 2011  the Scottish Government introduced a new code list for Ethnicity, hence the historic data is not comparable.</h4>
+    <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Nationality</a></h3>
+    <h4>% of pupils of each nationality</h4>
+    <table id="Nationalitydatatable" class="display">
+        <thead>
+            <tr>
+                <th>Nationality</th>
+                <th>@Model.selectedschoolname</th>
+                <th>All Primary Schools</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var itemNational in Model.ListNationalityCode)
+            {
+
+
+                var temp1 = Model.ListNationalityData.Find(x => x.IdentityCode.Equals(Convert.ToString(itemNational)));               
+                var data1 = 0.0;
+                var data2 = 0.0;                
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
+
+                <tr>
+                    <td>@Model.DicNational[itemNational]</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+
+                </tr>
+            }
+            @*@foreach (var itemNational in Model.ListNationalityData)
+            {
+                <tr>
+                    <td>@itemNational.IdentityName</td>
+                    <td align="center">@String.Format("{0:#,0.00}", @itemNational.PercentageInSchool)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", @itemNational.PercentageAllSchool)</td>
+                </tr>
+
+            }*@
+        </tbody>
+    </table>
+    <h4>*In 2011  the Scottish Government introduced a new code list for Nationality, hence the historic data is not comparable.</h4>
+    @*<h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Occupancy/">Occupancy</a></h3>
+        <div id="tableSchoolProfileDataContainer"></div>*@
+    <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/StudentStage/Index/">Stage</a></h3>
+    <h4>% of pupils in each stage</h4>
+    @*<form id="Ethnicdata">*@
+    <table id="Ethnicdatatable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th align="center">Stage</th>
+                <th align="center">@Model.selectedschoolname</th>
+                <th align="center">All Primary Schools</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var itemStdCode in Model.ListStageCode)
+            {
+
+
+                var temp1 = Model.ListStdStageData.Find(x => x.StageCode.Equals(Convert.ToString(itemStdCode)));                
+                var data1 = 0.0;
+                var data2 = 0.0;
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
+                <tr>
+                    <td>@itemStdCode</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Language/Index/">Level of English</a></h3>
+    <h4>% of pupils in each Level</h4>
+    @*<form id="Ethnicdata">*@
+    <table id="EALdatatable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th align="center">Level of English</th>
+                <th align="center">@Model.selectedschoolname</th>
+                <th align="center">All Primary Schools</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var itemEALCode in Model.ListLevelENCode)
+            {
+
+
+                var temp1 = Model.ListLevelENData.Find(x => x.IdentityCode.Equals(Convert.ToString(itemEALCode)));
+                var data1 = 0.0;
+                var data2 = 0.0;
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
+                <tr>
+                    <td>@itemEALCode</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br>
+</div>

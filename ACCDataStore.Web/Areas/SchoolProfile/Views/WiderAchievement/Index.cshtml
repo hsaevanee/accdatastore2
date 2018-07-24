@@ -1,0 +1,110 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.WiderAchievement.WiderAchievementViewModel
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+}
+@{
+    //Wider Achievement 
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="list-group">
+                    <a href="@Url.Action("Index", "WiderAchievement", new { Area = "SchoolProfile", sSchoolName = "" }, null)" class="list-group-item">Data</a>
+                    <a href="@Url.Action("MapData", "WiderAchievement", new { area = "SchoolProfile", sschoolname = "" }, null)" class="list-group-item">Interactive Map</a>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <h2>Wider Achievement Framework Data 2013 - 2015</h2>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title text-center"> Please Select Criteria</h4>
+                    </div>
+                    <div class="panel-body">
+                            @using (Html.BeginForm("index", "WiderAchievement", new { area = "SchoolProfile" }))
+                            {
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td width="200" class="text-left">Centre Name</td>
+                                            <td class="text-left">@Html.DropDownListFor(m => m.selectedschoolname, new SelectList(Model.Listschoolname, "seedcode", "name"), "---Please Select Centre---")</td>
+                                            <td width="200"><input class="btn btn-primary" type="submit" name="schoolsubmitButton" value="Search" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200" class="text-left">Award</td>
+                                            <td class="text-left">@Html.DropDownListFor(m => m.selectedawardname, new SelectList(Model.Listawardname), "---Please Select Award---")</td>
+                                            <td width="200"><input class="btn btn-primary" type="submit" name="awardsubmitButton" value="Search" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="200" class="text-left">SCQF_Rating</td>
+                                            <td class="text-left">@Html.DropDownListFor(m => m.selectescqf_rating, new SelectList(Model.Listscqf_rating), "---Please Select SCQF_Rating---")</td>
+                                            <td width="200"><input class="btn btn-primary" type="submit" name="scqfsubmitButton" value="Search" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                    </div>
+                </div>
+            </div>
+        </div><!--row-->
+        @if (Model.Listresults != null && Model.Listresults.Count() != 0)
+        {
+            <hr>
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Wider Achievement Framework Data 2013 - 2015 </h4>
+                        </div>
+                        <div class="panel-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="4"></th>
+                                            <th colspan="4" class="text-center">Citywide Totals</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Centre</th>
+                                            <th class="text-center">Age Range</th>
+                                            <th class="text-center">Award</th>
+                                            <th class="text-center">SCQF_Rating</th>
+                                            <th class="text-center">Gender</th>
+                                            <th class="text-center">2013-2014</th>
+                                            <th class="text-center">2014-2015</th>
+                                            <th class="text-center">2015-2016</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in Model.Listresults)
+                                        {
+                                            <tr>
+                                                <td class="text-left">@item.centre</td>
+                                                <td class="text-left">@item.age_range</td>
+                                                <td class="text-left">@item.awardname</td>
+                                                <td class="text-left">@item.scqf_rating</td>
+                                                <td>@item.gender</td>
+                                                <td>@item.award2013</td>
+                                                <td>@item.award2014</td>
+                                                <td>@item.award2015</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            <ul class="list-inline">
+                                <li>
+                                    @Html.ActionLink("Export Excel", "ExportExcel", "WiderAchievement", new { Area = "SchoolProfile", sSchoolName = "" }, null)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div> <!--container-->
+</body>

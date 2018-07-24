@@ -1,0 +1,331 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Admin</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/bower_components/angular-ui-select/dist/select.min.css">
+    <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+        function updateUser(username) {
+            var formData = {};
+            $('#' + username).find("input[name]").each(function (index, node) {
+                switch (node.type) {
+                    case "checkbox":
+                        formData[node.name] = node.checked;
+                        break;
+                    default:
+                        formData[node.name] = node.value;
+                }
+            });
+            $.ajax({
+                url: '/Admin/AdminPanel/UpdateUser',
+                type: 'post',
+                data: formData,
+                success: function () {
+                    alert("Update successful.");
+                },
+                error: function () {
+                    alert("Update failed.");
+                }
+            });
+            return false;
+        }
+        function deleteUser(username) {
+            $.ajax({
+                url: '/Admin/AdminPanel/DeleteUser',
+                type: 'post',
+                data: { userName: username },
+                success: function () {
+                    $('#' + username).remove();
+                },
+                error: function () {
+                    alert("User could not be deleted.");
+                }
+            });
+            return false;
+        }
+        function AddUser() {
+            $.ajax({
+                url: '/Admin/AdminPanel/AddUser',
+                type: 'post',
+                data: { userName: username },
+                success: function () {
+                    $('#' + username).remove();
+                },
+                error: function () {
+                    alert("User could not be added.");
+                }
+            });
+            return false;
+        }
+    </script>
+    <style>
+        DIV.table {
+            display: table;
+            border-collapse: collapse;
+            border: 2px solid rgb(221,221,221);
+        }
+
+        FORM.tr, DIV.tr {
+            display: table-row;
+            border-collapse: collapse;
+            border: 2px solid rgb(221,221,221);
+        }
+
+        SPAN.td {
+            display: table-cell;
+            border-collapse: collapse;
+            border: 2px solid rgb(221,221,221);
+        }
+
+        SPAN.th {
+            display: table-cell;
+            border-collapse: collapse;
+            border: 2px solid rgb(221,221,221);
+            font-size: 14px;
+            text-align: center;
+            font-weight: 700;
+            color: #333;
+        }
+
+        body {
+            padding-top: 60px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Index", new { Area = "", id = "" }, null)" style="color: whitesmoke; font-weight: bold; font-style: italic; font-family: Verdana; font-size: x-large;">Data Observatory</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About us</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{
+                        ACCDataStore.Entity.Users user = Session["SessionUser"] as ACCDataStore.Entity.Users;
+                        if (user != null) {
+                            <li>
+                                <a>Hello @user.UserName</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Account</a></li>
+                                    <li><a href="@Url.Action("Logout", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Sign out</a></li>
+                                </ul>
+                            </li>
+
+                        }
+                        else {
+                            <li>
+                                <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)">
+                                    <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+
+    <div>
+        <div class="table">
+            <div class="tr">
+                <span class="th">
+                    UserName
+                </span>
+                <span class="th">
+                    Firstname
+                </span>
+                <span class="th">
+                    Lastname
+                </span>
+                <span class="th">
+                    email
+                </span>
+                <span class="th">
+                    IsAdministrator
+                </span>
+                <span class="th">
+                    IsDataHubAdministrator
+                </span>
+                <span class="th">
+                    IsPublicUser
+                </span>
+                <span class="th">
+                    IsSchoolAdministrator
+                </span>
+                <span class="th">
+                    Save Changes
+                </span>
+                <span class="th">
+                    Delete
+                </span>
+            </div>
+            @foreach (var item in ViewData["Users"] as IEnumerable<ACCDataStore.Entity.Users>) {
+                <form onsubmit="submit();" class="tr" id="@item.UserName">
+                    <span class="td">
+                        <input type="text" style="width:100%" name="UserName" value="@item.UserName" />
+                    </span>
+                    <span class="td">
+                        <input type="text" style="width:100%" name="Firstname" value="@item.Firstname" />
+                    </span>
+                    <span class="td">
+                        <input type="text" style="width:100%" name="Lastname" value="@item.Lastname" />
+                    </span>
+                    <span class="td">
+                        <input type="text" style="width:100%" name="email" value="@item.email" />
+                    </span>
+                    <span class="td" style="text-align:center;vertical-align: middle">
+                        <input type="checkbox" name="IsAdministrator" @(item.IsAdministrator ? "checked" : "") />
+                    </span>
+                    <span class="td" style="text-align:center;vertical-align: middle">
+                        <input type="checkbox" name="IsDataHubAdministrator" @(item.IsDataHubAdministrator ? "checked" : "") />
+                    </span>
+                    <span class="td" style="text-align:center;vertical-align: middle">
+                        <input type="checkbox" name="IsPublicUser" @(item.IsPublicUser ? "checked" : "") />
+                    </span>
+                    <span class="td" style="text-align:center;vertical-align: middle">
+                        <input type="checkbox" name="IsSchoolAdministrator" @(item.IsSchoolAdministrator ? "checked" : "") />
+                    </span>
+                    <span class="td" style="text-align:center;vertical-align: middle" >
+                        <a onclick="updateUser('@item.UserName')">Save</a>
+                    </span>
+                    <span class="td" style="text-align:center;vertical-align: middle" >
+                        <a onclick="deleteUser('@item.UserName')">Delete</a>
+                    </span>
+                </form>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="register" class="animate form">
+                <form action="@Url.Action("ProcessRequest", "IndexAuthorisation", new { area = "Authorisation" })" autocomplete="on">
+                    <h1> Add User by Admin </h1>
+                    <p>
+                        <label for="usernamesignup" class="uname">USERNAME:</label>
+                        <input id="firstname" name="username" required="required" type="text" placeholder="Username" />
+                    </p>
+                    <p>
+                        <label for="usernamesignup" class="uname">FIRST NAME:</label>
+                        <input id="firstname" name="firstname" required="required" type="text" placeholder="Firstname" />
+                    </p>
+                    <p>
+                        <label for="usernamesignup" class="uname">SURNAME:</label>
+                        <input id="surname" name="surname" required="required" type="text" placeholder="Surname" />
+                    </p>
+                    <p>
+                        <label for="usernamesignup" class="uname">JOB TITLE:</label>
+                        <input id="username" name="jobtitle" required="required" type="text" placeholder="Job Title" />
+                    </p>
+                    @*<p>
+                        <label for="usernamesignup" class="uname">TEL NO:</label>
+                        <input id="username" name="telno" required="required" type="text" placeholder="" />
+                    </p>*@
+                    <p>
+                        <label for="emailsignup" class="youmail">EMAIL:</label>
+                        <input id="emailsignup" name="email" required="required" type="email" placeholder="youremail@aberdeencity.gov.uk" />
+                    </p>
+                    @*<p>
+                        <label for="passwordsignup" class="youpasswd">TEAM / DIRECTORATE FUNCTION:</label>
+                        <input id="password" name="directorate" required="required" type="text" placeholder="" />
+                    </p>*@
+                    @*<p>
+                        <label for="passwordsignup" class="youpasswd">ABERDEEN DATA OBSERVATORY REQUIRED TO ACCESS (Please tick as appropriate):</label>
+                    </p>*@
+                    @*<p class="form-horizontal">
+                    <input type="checkbox" name="datasets1" id="schprofile" value="schprofile">Aberdeen School Profiles<br>
+                    <input type="checkbox" name="datasets2" id="datahub" value="datahub">Aberdeen Post 16+ Data Hub<br>
+                    <input type="checkbox" name="datasets3" id="cssf" value="cssf">CSSF<br>
+
+                </p>
+                <p>
+                    <label for="passwordsignup" class="uname">LINE MANAGER NAME:</label>
+                    <input id="password" name="managername"  type="text" placeholder="" />
+                </p>
+                <p>
+                    <label for="passwordsignup" class="uname">LINE MANAGER EMAIL:</label>
+                    <input id="password" name="manageremail" type="text" placeholder="" />
+                </p>
+                <p class="signin button">
+                    <input type="submit" value="Request" />
+                </p>*@
+                    @*<p class="change_link">
+                    Already a member ?
+                    <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)" class="to_register"> Go and log in </a>
+                </p>*@
+                    <p class="signin button">
+                        <input type="submit" value="Add" />
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="container">
+        <hr>
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="text-center">Aberdeen City Council is not responsible for the content or accuracy of the data contained in any external sites.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                </div>
+                <div class="col-lg-6">
+                    <p class="text-right"> Data Observatory Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div id="divSpinner" class="modal" style="display: none;">
+    </div>
+</body>
+</html>

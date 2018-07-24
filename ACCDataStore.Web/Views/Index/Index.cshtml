@@ -1,0 +1,210 @@
+﻿@section Header {
+
+}
+ 
+
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Title -->
+        <h1></h1>
+        <div class="jumbotron">
+            <center>
+                <h1>Aberdeen City Council Data Observatory</h1>
+                <p class="text-info">A Data Observatory that combines Aberdeen's open data based on 2011 data-zones to provide insights on the indicators shown below which represent Scottish Index of Multiple Deprevation, Population, Child Benefits and Housing</p>
+            </center>       
+        </div>    
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="text-left text-info">Data Hub</h2>
+                <h4 class="text-left">To access data hub please fill in 
+                    <a href="@Url.Action("Register", "IndexAuthorisation", new { Area = "Authorisation" }, null)">Request Form</a>
+                </h4>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <center>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profiles</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">
+                            <img src="@Url.Content("~/Images/SchoolLogo.png")" alt="School Profile logo">
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>View school profiles information for aberdeen city</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">16+ Destinations</a></h3>                       
+                    </div>
+                    <div class="imagebox">
+                        <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">
+                            <img src="@Url.Content("~/Images/DestinationIcon.png")" />
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>View 16+ destination data for Aberdeen City</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="@Url.Action("Index", "IndexCSSF", new { Area = "CSSF" }, null)">CSSF</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="@Url.Action("Index", "IndexCSSF", new { Area = "CSSF" }, null)">
+                            <img src="@Url.Content("~/Images/families.png")" />
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>View CSSF data for Aberdeen City</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="http://localhost:2777/Content/accdatastore/static/testpowerbi.html" target="_blank">Test Power BI</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="http://localhost:2777/Content/accdatastore/static/testpowerbi.html" target="_blank">
+                            <img src="@Url.Content("~/Images/WorkInProgress4.png")" />
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>Power BI dashboard</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+        </div>
+        
+        <hr />
+        <!-- Title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="text-left text-info">Resources</h2>
+            </div>
+        </div>
+        <div class="row">
+            <center>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="http://communityplanningaberdeen.org.uk/ " target="_blank">Community Planning</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="http://communityplanningaberdeen.org.uk/" target="_blank">
+                            <img src="@Url.Content("~/Images/house.png")" alt="community planning">
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>Community Planning</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="@Url.Action("Index", "Index", new { Area = "", id = "education" }, null)" target="_blank">Education</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "education" }, null)" target="_blank">
+                            <img src="@Url.Content("~/Images/EducationLogo.png")" />
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>Education</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="@Url.Action("Index", "Index", new { Area = "", id = "finance" }, null)" target="_blank">Finance</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "finance" }, null)" target="_blank">
+                            <img src="@Url.Content("~/Images/Finance Logo.png")" />
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>Finance Portal</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="@Url.Action("Index", "Index", new { Area = "", id = "management" }, null)" target="_blank">Management</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "management" }, null)" target="_blank">
+                            <img src="@Url.Content("~/Images/Management Logo.png")" alt="management">
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>Management Portal</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+        </div>
+        <div class="row">
+            <center>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="http://www.aberdeengettingitright.org.uk" target="_blank">Integrated Children’s Services</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="http://www.aberdeengettingitright.org.uk" target="_blank">
+                            <img src="~/Images/population.png" />
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>Integrated Children’s Services</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="@Url.Action("Index", "Index", new { Area = "", id = "pandp" }, null)" target="_blank">Performance and Information</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "pandp" }, null)" target="_blank">
+                            <img src="@Url.Content("~/Images/Performance and Management Logo.png")" />
+                            <div class="main-content">
+                                <div class="content">
+                                    <p>Performance and Information</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                </div>
+            </center>
+
+        </div>
+    </div>
+
+
+
+       
+
+
+

@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{88628C45-BFD4-4AB4-B356-8A7BD1306CAB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACCDataStore.Entity.RenderObject</RootNamespace>
+    <AssemblyName>ACCDataStore.Entity.RenderObject</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseRenderObject.cs" />
+    <Compile Include="Charts\AngularGauge\AngularGauge.cs" />
+    <Compile Include="Charts\AngularGauge\background.cs" />
+    <Compile Include="Charts\AngularGauge\chart.cs" />
+    <Compile Include="Charts\AngularGauge\dial.cs" />
+    <Compile Include="Charts\AngularGauge\gauge.cs" />
+    <Compile Include="Charts\AngularGauge\labels.cs" />
+    <Compile Include="Charts\AngularGauge\pane.cs" />
+    <Compile Include="Charts\AngularGauge\plotBands.cs" />
+    <Compile Include="Charts\AngularGauge\plotOptions.cs" />
+    <Compile Include="Charts\AngularGauge\series.cs" />
+    <Compile Include="Charts\AngularGauge\tooltip.cs" />
+    <Compile Include="Charts\AngularGauge\yAxis.cs" />
+    <Compile Include="Charts\ColumnCharts\column.cs" />
+    <Compile Include="Charts\ColumnCharts\ColumnCharts.cs" />
+    <Compile Include="Charts\ColumnCharts\labels.cs" />
+    <Compile Include="Charts\ColumnCharts\line.cs" />
+    <Compile Include="Charts\ColumnCharts\options.cs" />
+    <Compile Include="Charts\ColumnCharts\plotOptions.cs" />
+    <Compile Include="Charts\ColumnCharts\series.cs" />
+    <Compile Include="Charts\ColumnCharts\spline.cs" />
+    <Compile Include="Charts\ColumnCharts\tooltip.cs" />
+    <Compile Include="Charts\ColumnCharts\xAxis.cs" />
+    <Compile Include="Charts\ColumnCharts\yAxis.cs" />
+    <Compile Include="Charts\Generic\backgroundColor.cs" />
+    <Compile Include="Charts\Generic\chart.cs" />
+    <Compile Include="Charts\Generic\credits.cs" />
+    <Compile Include="Charts\Generic\crosshairs.cs" />
+    <Compile Include="Charts\Generic\dataLabels.cs" />
+    <Compile Include="Charts\Generic\dateTimeLabelFormats.cs" />
+    <Compile Include="Charts\Generic\exporting.cs" />
+    <Compile Include="Charts\Generic\itemStyle.cs" />
+    <Compile Include="Charts\Generic\legend.cs" />
+    <Compile Include="Charts\Generic\linearGradient.cs" />
+    <Compile Include="Charts\Generic\marker.cs" />
+    <Compile Include="Charts\Generic\options3d.cs" />
+    <Compile Include="Charts\Generic\style.cs" />
+    <Compile Include="Charts\Generic\subtitle.cs" />
+    <Compile Include="Charts\Generic\title.cs" />
+    <Compile Include="Charts\PieCharts\chart.cs" />
+    <Compile Include="Charts\PieCharts\dataItem.cs" />
+    <Compile Include="Charts\PieCharts\dataLabels.cs" />
+    <Compile Include="Charts\PieCharts\options.cs" />
+    <Compile Include="Charts\PieCharts\pie.cs" />
+    <Compile Include="Charts\PieCharts\PieCharts.cs" />
+    <Compile Include="Charts\PieCharts\plotOptions.cs" />
+    <Compile Include="Charts\PieCharts\series.cs" />
+    <Compile Include="Charts\PieCharts\tooltip.cs" />
+    <Compile Include="Charts\SplineCharts\options.cs" />
+    <Compile Include="Charts\SplineCharts\plotOptions.cs" />
+    <Compile Include="Charts\SplineCharts\series.cs" />
+    <Compile Include="Charts\SplineCharts\spline.cs" />
+    <Compile Include="Charts\SplineCharts\SplineCharts.cs" />
+    <Compile Include="Charts\SplineCharts\tooltip.cs" />
+    <Compile Include="Charts\SplineCharts\xAxis.cs" />
+    <Compile Include="Charts\SplineCharts\yAxis.cs" />
+    <Compile Include="Charts\StackedColumnCharts\column.cs" />
+    <Compile Include="Charts\StackedColumnCharts\labels.cs" />
+    <Compile Include="Charts\StackedColumnCharts\options.cs" />
+    <Compile Include="Charts\StackedColumnCharts\plotOptions.cs" />
+    <Compile Include="Charts\StackedColumnCharts\series.cs" />
+    <Compile Include="Charts\StackedColumnCharts\StackedColumnCharts.cs" />
+    <Compile Include="Charts\StackedColumnCharts\tooltip.cs" />
+    <Compile Include="Charts\StackedColumnCharts\xAxis.cs" />
+    <Compile Include="Charts\StackedColumnCharts\yAxis.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ACCDataStore.Core\ACCDataStore.Core.csproj">
+      <Project>{1089dbbb-7b0b-482b-aae0-d40cc98d8d75}</Project>
+      <Name>ACCDataStore.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

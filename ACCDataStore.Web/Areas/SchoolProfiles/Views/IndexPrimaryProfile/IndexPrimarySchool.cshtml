@@ -1,0 +1,2537 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles.IndexPrimarySchoolProfilesViewModel
+@using System.Data;
+@using Newtonsoft;
+
+@section Header {
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />*@
+    <script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/IndexPrimarySchool.js"></script>
+    <!-- Bootstrap Multiselect Plugin -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-multiselect.js" type="text/javascript"></script>
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+    <link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+    <link href="//datatables.net/download/build/dataTables.responsive.nightly.css?_=10286c5adce287862954c6f702966dd3.css" rel="stylesheet" type="text/css" />
+    <script src="//datatables.net/download/build/dataTables.responsive.nightly.js?_=10286c5adce287862954c6f702966dd2"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+}
+            <!-- Initialize the plugin: -->
+<script type="text/javascript">
+    var year = '@Model.selectedYear.academicyear';
+    var selectid = function () { return @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x => x.seedcode).ToList())); }();
+</script>
+<script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/LoadMutiselect.js"></script>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar Column -->
+            @*<div class="col-md-2">
+                    <div class="list-group">
+                        <a href="@Url.Action("Nationality", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2" }, null)" class="list-group-item">Nationality</a>
+                        <a href="@Url.Action("Ethnicity", "IndexSchoolProfiles", new { area = "SchoolProfiles", sSchoolType = "2" }, null)" class="list-group-item">Ethnicity</a>
+                    </div>
+                </div>*@
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Select Primary Schools</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p> <font color="red">* You can select up to 2 schools for comparison</font></p>
+                        @using (Html.BeginForm("GetPrimaryProfileData", "IndexPrimaryProfile", new { area = "SchoolProfiles", sSchoolType = "2" }))
+                        {
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr rowspan="2">
+                                        <td class="text-left" width="10%">
+                                            School Name
+                                        </td>
+                                        <td class="text-left" colspan="2">
+                                            @Html.DropDownListFor(x => x.listSelectedSchoolname, new MultiSelectList(Model.listSchoolname, "seedcode", "name"), new { Multiple = "multiple" })
+                                        </td>
+                                        @*<td class="text-center" width="20%"> * Maximum 3 Schools </td>*@
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Year</td>
+                                        <td class="text-left" colspan="2">@Html.DropDownListFor(x => x.stringYear, new SelectList(Model.listYears, "year", "academicyear"))</td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                            <p><button id="buttonGetData" type="submit" class="btn btn-primary">Get Data!</button></p>
+
+                        }
+                        @*<td>@Html.DropDownListFor(x => x.listSelectedGender, Model.listGender.Select(x => new SelectListItem { Text = x.fullName, Value = x.id, Selected = x.selected}), new { Multiple = "multiple" })</td>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (!String.IsNullOrEmpty(Model.profiletitle))
+        {
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
+                    <li role="presentation"><a id="tabschoolroll" role="tab" data-toggle="tab" href="#schoolroll">School Roll</a></li>
+                    <li role="presentation"><a id="tabsimd" role="tab" data-toggle="tab" href="#simd">SIMD</a></li>
+                    <li role="presentation"><a id="tabfsm" role="tab" data-toggle="tab" href="#fsm">FSM</a></li>
+                    <li role="presentation"><a id="
+                                               
+                                               s" role="tab" data-toggle="tab" href="#pips">PIPS</a></li>
+                    <li role="presentation"><a id="tabincas" role="tab" data-toggle="tab" href="#incas">InCAS</a></li>
+                    <li role="presentation"><a id="tabattendance" role="tab" data-toggle="tab" href="#attendance">Attendance</a></li>
+                    <li role="presentation"><a id="tabexclusions" role="tab" data-toggle="tab" href="#exclusions">Exclusions</a></li>
+                    <li role="presentation"><a id="tabeal" role="tab" data-toggle="tab" href="#eal">EAL</a></li>                   
+                    <li role="presentation"><a id="tablookafter" role="tab" data-toggle="tab" href="#lookafter">Looked After</a></li>                
+                    <li role="presentation"><a id="tabethnicity" role="tab" data-toggle="tab" href="#ethnicity" aria-controls="ethnicity">Ethnicity</a></li>
+                    <li role="presentation"><a id="tabnationality" role="tab" data-toggle="tab" href="#nationality">Nationality</a></li>
+                    <li role="presentation"><a id="tabotherlinks" role="tab" data-toggle="tab" href="#otherlinks">Websites</a></li>
+                </ul>
+            </div>
+
+
+        <div id="tab-content" class="tab-content">
+        <div id="summary" class="tab-pane fade in active">
+            <h3> Summary  </h3>
+
+            @if (Model.listSelectedSchoolname != null && Model.listSelectedSchoolname.Count > 0)
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var temp in Model.listSelectedSchoolname)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href=@temp.website_link target="_blank">
+                                                    <div style="height:100%;width:100%">
+                                                        @temp.name Website
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href=@temp.hmie_report target="_blank">
+                                                    <div style="height:100%;width:100%">
+                                                        @temp.name (Inspection and review) Latest inspection (@temp.getHimeReportDate())
+                                                    </div>
+                                                </a>
+
+                                            </td>
+                                            @*<td>
+                                                        Latest Report @temp.hmie_report
+                                            </td>*@
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+                <h3>School Roll</h3>
+
+                if (Model.dataTableSchoolRoll != null && Model.dataTableSchoolRoll.Rows.Count > 0)
+    {
+            <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"> <strong>School Roll @Model.selectedYear.academicyear </strong></h4>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="table-responsive">                          
+                            <table id="SchoolRollDatatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        @foreach (DataColumn col in Model.dataTableSchoolRoll.Columns)
+                                        {
+                                            if (Model.dataTableSchoolRoll.Columns.IndexOf(col) == 0)
+                                            {
+
+                                                <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            else
+                                            {
+                                                <th class="text-center">@col.ColumnName</th>
+                                            }
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow row in Model.dataTableSchoolRoll.Rows)
+                                    {
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableSchoolRoll.Columns)
+                                            {
+                                                if (Model.dataTableSchoolRoll.Columns.IndexOf(col) == 0)
+                                                {
+                                                    <td class="text-left">@row[col.ColumnName]</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        @row[col.ColumnName]
+                                                    </td>
+                                                }
+
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+            }
+
+
+
+            @if (Model.dataTablePIPS != null && Model.dataTablePIPS.Rows.Count > 0)
+            {
+                <hr />
+                <h3>PIPS</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle</strong></h3>
+                            <h3 class="text-center"> <strong>Value Added Assessment @Model.selectedYear.academicyear </strong></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"><strong>PIPS Baseline </strong></a></h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p></p>
+                                    <table id="" class="table table-bordered table-hover displayPIPtable">
+                                        <thead>
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTablePIPS.Columns)
+                                                {
+                                                    if (Model.dataTablePIPS.Columns.IndexOf(col) == 0)
+                                                    {
+
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                    }
+                                                    else
+                                                    {
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                    }
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in Model.dataTablePIPS.Rows)
+                                            {
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTablePIPS.Columns)
+                                                    {
+                                                        if (Model.dataTablePIPS.Columns.IndexOf(col) == 0)
+                                                        {
+                                                            <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                @row[col.ColumnName]
+                                                                @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                            </td>
+                                                        }
+                                                        @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                        @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.showTableInCAS.HasValue)
+            {
+                <hr />
+                <h3>InCAS</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                            <h3 class="text-center"> <strong> Assessment for Excellent [InCAS] @Model.selectedYear.academicyear</strong></h3>
+
+                        </div>
+                    </div>
+                </div>
+
+                if (Model.showTableInCAS.Value == true)
+                {
+                <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>InCAS</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p></p>
+                                        <table id="InCASP2Datatable" class="table table-bordered table-hover displayDTTableV">
+                                            <thead>
+                                                @{var colspan = (Model.dataTableInCASP2.Columns.Count) + 1;}
+                                                <tr class="bg-primary">
+                                                    <td colspan=@colspan><strong>P2</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableInCASP2.Columns)
+                                                    {
+                                                        if (Model.dataTableInCASP2.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center"></th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableInCASP2.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableInCASP2.Columns)
+                                                        {
+                                                            if (Model.dataTableInCASP2.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <p></p>
+                                        <table id="InCASP4Datatable" class="table table-bordered table-hover displayDTTableV">
+                                            <thead>
+                                                @{colspan = (Model.dataTableInCASP4.Columns.Count) + 1;}
+                                                <tr class="bg-primary">
+                                                    <td colspan=@colspan><strong>P4</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableInCASP4.Columns)
+                                                    {
+                                                        if (Model.dataTableInCASP4.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center"></th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableInCASP4.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableInCASP4.Columns)
+                                                        {
+                                                            if (Model.dataTableInCASP4.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <p></p>
+                                        <table id="InCASP6Datatable" class="table table-bordered table-hover displayDTTableV">
+                                            <thead>
+                                                @{colspan = (Model.dataTableInCASP6.Columns.Count) + 1;}
+                                                <tr class="bg-primary">
+                                                    <td colspan=@colspan><strong>P6</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableInCASP6.Columns)
+                                                    {
+                                                        if (Model.dataTableInCASP6.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center"></th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableInCASP6.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableInCASP6.Columns)
+                                                        {
+                                                            if (Model.dataTableInCASP6.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong> Data is not available </strong> </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                }
+            }
+
+            @if (Model.showTableAttendance.HasValue)
+            {
+                if (Model.showTableAttendance.Value == true && Model.dataTableAttendance.Rows.Count > 0)
+                {
+                    <hr>
+                    <h3>Attendance</h3>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong>Attendance @Model.selectedYear.academicyear </strong></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p><strong>% of Attendance </strong></p>
+                                        <table id="" class="table table-bordered table-hover displayAttendancetable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableAttendance.Columns)
+                                                    {
+                                                        if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableAttendance.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableAttendance.Columns)
+                                                        {
+                                                            if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                </td>
+                                                            }
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/AttendanceAbsenceDatasets/atttab2015">Attendance and Absence in Scottish Schools 2014/15: Scottish Government Publication</a></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <hr>
+                    <h3>Attendance</h3>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"><strong>@Model.profiletitle</strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong>Attendance @Model.selectedYear.academicyear </strong></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <h4 class="panel-title"> <strong> <em>Data is not available </em> </strong></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+
+            @if (Model.showTableExclusion.HasValue)
+            {
+                if (Model.showTableExclusion.Value == true && Model.dataTableExclusion.Rows.Count > 0)
+                {
+                    <hr>
+                    <h3>Exclusions</h3>
+                <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong>Exclusions-Annual @Model.selectedYear.academicyear </strong></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong>Pupil Numbers</strong></p>
+                                        <table id="" class="table table-bordered table-hover displayExclusiontable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableExclusion.Columns)
+                                                    {
+                                                        if (Model.dataTableExclusion.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableExclusion.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableExclusion.Columns)
+                                                        {
+                                                            if (Model.dataTableExclusion.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                </td>
+                                                            }
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/exclusiondatasets/exclusionsdataset2015">Exclusions from Schools 2014/15: Scottish Government Publication</a></p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong>Exclusions-Annual @Model.selectedYear.academicyear </strong></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <h4 class="panel-title"> <strong> <em>Data is not available </em> </strong> </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+            
+            @if (Model.dataTableSIMDDecile != null && Model.dataTableSIMDDecile.Rows.Count > 0)
+            {
+                <hr>
+                <h3>Scottish Index of Multiple Deprivation</h3>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#simdtable">Table</button>
+                <div id="simdtable" class="collapse">
+        <!-- Content Row -->
+                    <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation @Model.selectedYear.academicyear </strong></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p> % of pupils</p>
+                                <table id="SIMDDatatable" class="table table-bordered table-hover displaySIMDtable">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableSIMDDecile.Columns)
+                                            {
+                                            if (Model.dataTableSIMDDecile.Columns.IndexOf(col) == 0)
+                                            {
+
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            else
+                                            {
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableSIMDDecile.Rows)
+                                        {
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableSIMDDecile.Columns)
+                                            {
+                                            if (Model.dataTableSIMDDecile.Columns.IndexOf(col) == 0)
+                                            {
+
+                                            <td class="text-left">@row[col.ColumnName]</td>
+
+                                            }
+                                            else
+                                            {
+                                            <td>
+                                                @row[col.ColumnName]
+                                            </td>
+                                            }
+
+                                            }
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#simdgraph">Graph</button>
+                <div id="simdgraph" class="collapse in">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div id="SimdGraphContainer" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <hr>
+                <h3>Scottish Index of Multiple Deprivation</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <strong>SIMD @Model.selectedYear.academicyear </strong></h4>
+                            </div>
+                            <div class="panel-body">
+                                <h4 class="panel-title"> <strong> <em>Data is not comparable </em> </strong> </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+
+        @if (Model.dataTableFreeSchoolMeal != null && Model.dataTableFreeSchoolMeal.Rows.Count > 0)
+            {
+            <hr>
+            <h3>Free School Meal</h3>
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"> <strong>Free School Meal Entitlement @Model.selectedYear.academicyear </strong></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p> <strong>% of P4-P7 Roll Registered for FSM @Model.selectedYear.academicyear </strong></p>
+                                <table id="" class="table table-bordered table-hover displayFSMtable">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableFreeSchoolMeal.Columns)
+                                            {
+                                                if (Model.dataTableFreeSchoolMeal.Columns.IndexOf(col) == 0)
+                                                {
+
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                                else
+                                                {
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableFreeSchoolMeal.Rows)
+                                        {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableFreeSchoolMeal.Columns)
+                                                {
+                                                    if (Model.dataTableFreeSchoolMeal.Columns.IndexOf(col) == 0)
+                                                    {
+
+                                                        <td class="text-left">@row[col.ColumnName]</td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @row[col.ColumnName]
+                                                        </td>
+                                                    }
+
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/SchoolMealsDatasets/schmeals2015">School Meals in Scotland 2015:Scottish Government Publication 2015</a></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+        @if (Model.dataTableBudget != null && Model.dataTableBudget.Rows.Count > 0)
+            {
+            <hr>
+            <h3>School Cost</h3>
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><strong>Budgeted School Cost 2014/15</strong></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p></p>
+                                <table id="budgetDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableBudget.Columns)
+                                                {
+                                                    if (Model.dataTableBudget.Columns.IndexOf(col) == 0)
+                                                    {
+
+                                                <th class="text-center">@col.ColumnName</th>
+                                                    }
+                                                    else
+                                                    {
+                                                <th class="text-center">@col.ColumnName</th>
+                                                    }
+                                                }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableBudget.Rows)
+                                            {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableBudget.Columns)
+                                                    {
+                                                        if (Model.dataTableBudget.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                    <td class="text-left">@row[col.ColumnName]</td>
+                                                        }
+                                                        else
+                                                        {
+                                                    <td>
+                                                        @row[col.ColumnName]
+                                                    </td>
+                                                        }
+                                                    }
+                                            </tr>
+                                            }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+
+        @if (Model.dataTableStage != null && Model.dataTableStage.Rows.Count > 0)
+            {
+            <hr>
+            <h3>School Roll</h3>
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"> <strong>School Roll Year Groups @Model.selectedYear.academicyear </strong></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p> <strong> Pupil Numbers in Each Year Groups </strong></p>
+                                <table id="StageDatatable" class="table table-bordered table-hover displayStagetable">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableStage.Columns)
+                                            {
+                                            if (Model.dataTableStage.Columns.IndexOf(col) == 0)
+                                            {
+
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            else
+                                            {
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableStage.Rows)
+                                        {
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableStage.Columns)
+                                            {
+                                            if (Model.dataTableStage.Columns.IndexOf(col) == 0)
+                                            {
+                                            <td class="text-left">@row[col.ColumnName]</td>
+                                            }
+                                            else
+                                            {
+                                            <td>
+                                                @row[col.ColumnName]
+                                            </td>
+                                            }
+
+                                            }
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/dspupcensus/dspupcensus15">Pupils in Scotland 2015: Scottish Government Publication</a></p>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+
+
+        @if (Model.dataTableLookedAfter != null && Model.dataTableLookedAfter.Rows.Count > 0)
+            {
+            <hr>
+            <h3>Looked After Children</h3>
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"> <strong>Looked After Children @Model.selectedYear.academicyear </strong></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p> <strong>% School Roll Looked After @Model.selectedYear.academicyear </strong></p>
+                                <table id="" class="table table-bordered table-hover displayLookedAftertable">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableLookedAfter.Columns)
+                                            {
+                                            if (Model.dataTableLookedAfter.Columns.IndexOf(col) == 0)
+                                            {
+
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            else
+                                            {
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableLookedAfter.Rows)
+                                        {
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableLookedAfter.Columns)
+                                            {
+                                            if (Model.dataTableLookedAfter.Columns.IndexOf(col) == 0)
+                                            {
+                                            <td class="text-left">@row[col.ColumnName]</td>
+                                            }
+                                            else
+                                            {
+                                            <td>
+                                                @row[col.ColumnName]
+                                            </td>
+                                            }
+
+                                            }
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+        @if (Model.dataTableEnglishLevel != null && Model.dataTableEnglishLevel.Rows.Count > 0)
+            {
+            <hr>
+            <h3>Level of english</h3>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#englishtable">Table</button>
+            <div id="englishtable" class="collapse in">
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">  <strong> Level of English @Model.selectedYear.academicyear </strong></h4>
+                            </div>
+                            <div class="panel-body">
+                                <p> <strong> % of rolls with this level of English </strong></p>
+                                <table id="EnglishLevelDatatable" class="table table-bordered table-hover displayEnglishLeveltable" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableEnglishLevel.Columns)
+                                            {
+                                            if (Model.dataTableEnglishLevel.Columns.IndexOf(col) == 0)
+                                            {
+
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            else
+                                            {
+                                            <th class="text-center">@col.ColumnName</th>
+                                            }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableEnglishLevel.Rows)
+                                        {
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableEnglishLevel.Columns)
+                                            {
+                                            if (Model.dataTableEnglishLevel.Columns.IndexOf(col) == 0)
+                                            {
+
+                                            <td class="text-left">@row[col.ColumnName]</td>
+                                            }
+                                            else
+                                            {
+                                            <td>
+                                                @row[col.ColumnName]
+                                            </td>
+                                            }
+
+                                            }
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#englishgraph">Chart</button>
+            <div id="englishgraph" class="collapse">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div id="EnglishLevelGraphContainer" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <!-- Graph Row -->
+
+        }
+        @if (Model.dataTableEthnicBackground != null && Model.dataTableEthnicBackground.Rows.Count > 0)
+            {
+            <hr>
+            <h3>Ethnicity</h3>
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"> <strong>Ethnicity @Model.selectedYear.academicyear </strong></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p> <strong> % of pupils of each ethnic group </strong></p>
+                                <table id="Ethnicdatatable" class="table table-bordered table-hover displayEthnictable">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableEthnicBackground.Columns)
+                                                        {
+                                                            if (Model.dataTableEthnicBackground.Columns.IndexOf(col) == 0)
+                                                            {
+
+                                                                <th class="text-center no-sort">@col.ColumnName</th>
+                                                            }
+                                                            else
+                                                            {
+                                                                <th class="text-center">@col.ColumnName</th>
+
+                                                            }
+                                                        }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableEthnicBackground.Rows)
+                                                    {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableEthnicBackground.Columns)
+                                                            {
+                                                                if (Model.dataTableEthnicBackground.Columns.IndexOf(col) == 0)
+                                                                {
+                                                                    <td class="text-left">@row[col.ColumnName]</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td class="text-center">@row[col.ColumnName]</td>
+                                                                }
+                                                            }
+                                            </tr>
+                                                    }
+
+                                    </tbody>
+                                </table>
+                                <p>*In 2011 the Scottish Government introduced a new code list for Ethnicity, hence the historic data is not comparable.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <!-- Graph Row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="EthinicityGraphContainer" style="width: 100%;"></div>
+
+                </div>
+            </div>
+            }
+
+        @if (Model.dataTableNationality != null && Model.dataTableNationality.Rows.Count > 0)
+            {
+            <hr>
+
+            <h3>Nationality</h3>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#nationatable">Table</button>
+            <div id="nationatable" class="collapse in">
+                <!-- Data Table Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <strong>Nationality @Model.selectedYear.academicyear  </strong></h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p> <strong>% of pupils of each nationality </strong></p>
+                                    <table id="Nationalitydatatable" class="table table-bordered table-hover displayNationalitytable">
+                                        <thead>
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableNationality.Columns)
+                                                {
+                                                if (Model.dataTableNationality.Columns.IndexOf(col) == 0)
+                                                {
+
+                                                <th class="text-center">@col.ColumnName</th>
+                                                }
+                                                else
+                                                {
+                                                <th class="text-center">@col.ColumnName</th>
+                                                }
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in Model.dataTableNationality.Rows)
+                                            {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableNationality.Columns)
+                                                {
+                                                if (Model.dataTableNationality.Columns.IndexOf(col) == 0)
+                                                {
+                                                <td class="text-left">@row[col.ColumnName]</td>
+                                                }
+                                                else
+                                                {
+                                                <td class="text-center">@row[col.ColumnName]</td>
+                                                }
+                                                }
+                                            </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                    <p>*In 2011  the Scottish Government introduced a new code list for Nationality, hence the historic data is not comparable.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#nationalitychart">Chart</button>
+            <div id="nationalitychart" class="collapse">
+                <!-- Graph Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div id="NationalityGraphContainer" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            }
+    </div>
+        <div id="schoolroll" class="tab-pane fade">
+                <h3>School Roll</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                            <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.dataTableStageHistory != null && Model.dataTableStageHistory.Rows.Count > 0)
+                {
+                    <hr>
+            <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>School Roll Year Groups</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong> Pupil Numbers in Each Year Groups </strong></p>
+                                        <table id="" class="table table-bordered table-hover displayStagetable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableStageHistory.Columns)
+                                                    {
+                                                        if (Model.dataTableStageHistory.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableStageHistory.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableStageHistory.Columns)
+                                                        {
+                                                            if (Model.dataTableStage.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/dspupcensus/dspupcensus15">Pupils in Scotland 2015: Scottish Government Publication</a></p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                @if (Model.dataTableSchoolRollForecast != null && Model.dataTableSchoolRollForecast.Rows.Count > 0)
+                {
+                                    <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong> School Roll Forecast @Model.selectedYear.academicyear </strong></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong>Number of Pupils </strong></p>
+                                        <table id="SchoolRollForecastDatatable" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableSchoolRollForecast.Columns)
+                                                    {
+                                                        if (Model.dataTableSchoolRollForecast.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableSchoolRollForecast.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableSchoolRollForecast.Columns)
+                                                        {
+                                                            if (Model.dataTableSchoolRollForecast.Columns.IndexOf(col) == 0)
+                                                            {
+
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                </td>
+                                                            }
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div id="SchoolRollForecastGraphContainer" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+        </div>
+        <div id="simd" class="tab-pane fade">
+            <h3>Scottish Index of Multiple Deprivation</h3>
+            @if (Model.dataTableSIMDDecile != null && Model.dataTableSIMDDecile.Rows.Count > 0)
+            {
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                            <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                        </div>
+                    </div>
+                </div>
+
+                    <!-- Content Row -->
+                <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation @Model.selectedYear.academicyear </strong></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> % of pupils </p>
+                                        <table id="" class="table table-bordered table-hover displaySIMDtable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableSIMDDecile.Columns)
+                                                    {
+                                                        if (Model.dataTableSIMDDecile.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableSIMDDecile.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableSIMDDecile.Columns)
+                                                        {
+                                                            if (Model.dataTableSIMDDecile.Columns.IndexOf(col) == 0)
+                                                            {
+
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+                                                                @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div id="SimdGraphContainer2" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div id="SimdGraphContainer3" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                            <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <strong>SIMD @Model.selectedYear.academicyear </strong></h4>
+                            </div>
+                            <div class="panel-body">
+                                <h4 class="panel-title"> <strong> <em>Data is not comparable </em> </strong> </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+        <div id="pips" class="tab-pane fade">
+            <h3> PIPS  </h3>
+            @if (Model.dataTablePIPShistoric != null && Model.dataTablePIPShistoric.Rows.Count > 0)
+                    {
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle</strong></h3>
+                                <h3 class="text-center"> <strong>Value Added Assessment @Model.selectedYear.academicyear </strong></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"><strong>PIPS Baseline </strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p></p>
+                                        <table id="" class="table table-bordered table-hover displayPIPtable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTablePIPShistoric.Columns)
+                                                    {
+                                                        if (Model.dataTablePIPShistoric.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTablePIPShistoric.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTablePIPShistoric.Columns)
+                                                        {
+                                                            if (Model.dataTablePIPShistoric.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+        </div>
+        <div id="incas" class="tab-pane fade in" role="tabpanel">
+            <h3> InCAS </h3>
+            @if (Model.showTableInCAS.HasValue)
+            {
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                            <h3 class="text-center"> <strong> Assessment for Excellent [InCAS] @Model.selectedYear.academicyear</strong></h3>
+
+                        </div>
+                    </div>
+                </div>
+
+                if (Model.showTableInCAS.Value == true)
+                {
+                <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>InCAS</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p></p>
+                                        <table id="InCASP2Datatable2" class="table table-bordered table-hover displayDTTableV">
+                                            <thead>
+                                                @{var colspan = (Model.dataTableInCASP2.Columns.Count) + 1;}
+                                                <tr class="bg-primary">
+                                                    <td colspan=@colspan><strong>P2</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableInCASP2.Columns)
+                                                            {
+                                                                if (Model.dataTableInCASP2.Columns.IndexOf(col) == 0)
+                                                                {
+
+                                                            <th class="text-center"></th>
+                                                                }
+                                                                else
+                                                                {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                                }
+                                                            }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableInCASP2.Rows)
+                                                        {
+                                                        <tr>
+                                                            @foreach (DataColumn col in Model.dataTableInCASP2.Columns)
+                                                                {
+                                                                    if (Model.dataTableInCASP2.Columns.IndexOf(col) == 0)
+                                                                    {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                        //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                                    }
+                                                                @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                                @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                                }
+                                                        </tr>
+                                                        }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <p></p>
+                                        <table id="InCASP4Datatable2" class="table table-bordered table-hover displayDTTableV">
+                                            <thead>
+                                                @{colspan = (Model.dataTableInCASP4.Columns.Count) + 1;}
+                                                <tr class="bg-primary">
+                                                    <td colspan=@colspan><strong>P4</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableInCASP4.Columns)
+                                                    {
+                                                        if (Model.dataTableInCASP4.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center"></th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableInCASP4.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableInCASP4.Columns)
+                                                        {
+                                                            if (Model.dataTableInCASP4.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <p></p>
+                                        <table id="InCASP6Datatable2" class="table table-bordered table-hover displayDTTableV">
+                                            <thead>
+                                                @{colspan = (Model.dataTableInCASP6.Columns.Count) + 1;}
+                                                <tr class="bg-primary">
+                                                    <td colspan=@colspan><strong>P6</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableInCASP6.Columns)
+                                                            {
+                                                                if (Model.dataTableInCASP6.Columns.IndexOf(col) == 0)
+                                                                {
+
+                                                            <th class="text-center"></th>
+                                                                }
+                                                                else
+                                                                {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                                }
+                                                            }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableInCASP6.Rows)
+                                                        {
+                                                        <tr>
+                                                            @foreach (DataColumn col in Model.dataTableInCASP6.Columns)
+                                                                {
+                                                                    if (Model.dataTableInCASP6.Columns.IndexOf(col) == 0)
+                                                                    {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                        //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                                    }
+                                                                @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                                @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                                }
+                                                        </tr>
+                                                        }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <strong> Data is not available </strong> </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                }
+            }
+        </div>
+        <div id="attendance" class="tab-pane fade">
+            <h3> Attendance </h3>
+            @if (Model.showTableAttendance.HasValue)
+                    {
+                        if (Model.showTableAttendance.Value == true && Model.dataTableAttendance.Rows.Count > 0)
+                        {
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"><strong>Attendance</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p><strong>% of Attendance </strong></p>
+                                        <table id="" class="table table-bordered table-hover displayAttendancetable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableAttendance.Columns)
+                                                    {
+                                                        if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center"></th>
+                                                        }
+                                                        else
+                                                        {
+                                                            @*<th class="text-center">@col.ColumnName</th>*@
+                                                            <td class="text-center">@col.ColumnName</td>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableAttendance.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableAttendance.Columns)
+                                                        {
+                                                            if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
+                                                            {
+
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+                                                                @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/AttendanceAbsenceDatasets/atttab2015">Attendance and Absence in Scottish Schools 2014/15: Scottish Government Publication</a></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        }
+                        else
+                        {
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"><strong>@Model.profiletitle</strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"><strong>Attendance</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <h4 class="panel-title"> <strong> <em>Data is not available </em> </strong></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        }
+                    }
+        </div>
+        <div id="exclusions" class="tab-pane fade">
+            <h3>Exclusions</h3>
+            @if (Model.showTableExclusion.HasValue)
+                    {
+                        if (Model.showTableExclusion.Value == true && Model.dataTableExclusion.Rows.Count > 0)
+                        {
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                                 <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>Exclusions-Annual</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong>Pupil Numbers</strong></p>
+                                        <table id="" class="table table-bordered table-hover displayExclusiontable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableExclusion.Columns)
+                                                    {
+                                                        if (Model.dataTableExclusion.Columns.IndexOf(col) == 0)
+                                                        {
+
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                        else
+                                                        {
+                                                            <th class="text-center">@col.ColumnName</th>
+                                                        }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableExclusion.Rows)
+                                                {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableExclusion.Columns)
+                                                        {
+                                                            if (Model.dataTableExclusion.Columns.IndexOf(col) == 0)
+                                                            {
+                                                                <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                                @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    @row[col.ColumnName]
+                                                                    @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                                </td>
+                                                            }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/exclusiondatasets/exclusionsdataset2015">Exclusions from Schools 2014/15: Scottish Government Publication</a></p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        }
+                        else
+                        {
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>Exclusions-Annual </strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <h4 class="panel-title"> <strong> <em>Data is not available </em> </strong> </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        }
+                    }
+        </div>
+        <div id="fsm" class="tab-pane fade">
+            <h3>Free School Meal</h3>
+            @if (Model.dataTableFreeSchoolMeal != null && Model.dataTableFreeSchoolMeal.Rows.Count > 0)
+                    {
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+            <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"><strong>Free School Meal Entitlement</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong>% of P4-P7 Roll Registered for FSM @Model.selectedYear.academicyear </strong></p>
+                                        <table id="" class="table table-bordered table-hover displayFSMtable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableFreeSchoolMeal.Columns)
+                                                        {
+                                                            if (Model.dataTableFreeSchoolMeal.Columns.IndexOf(col) == 0)
+                                                            {
+
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                            }
+                                                            else
+                                                            {
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                            }
+                                                        }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableFreeSchoolMeal.Rows)
+                                                    {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableFreeSchoolMeal.Columns)
+                                                            {
+                                                                if (Model.dataTableFreeSchoolMeal.Columns.IndexOf(col) == 0)
+                                                                {
+
+                                                            <td class="text-left">@row[col.ColumnName]</td>
+
+                                                            @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                                }
+                                                                else
+                                                                {
+                                                            <td>
+                                                                @row[col.ColumnName]
+                                                                @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                            </td>
+                                                                }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                            }
+                                                    </tr>
+                                                    }
+                                            </tbody>
+                                        </table>
+                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/SchoolMealsDatasets/schmeals2015">School Meals in Scotland 2015:Scottish Government Publication 2015</a></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+        </div>
+        
+        <div id="lookafter" class="tab-pane fade">
+            <h3>Looked After</h3>
+            @if (Model.dataTableLookedAfterHistory != null && Model.dataTableLookedAfterHistory.Rows.Count > 0)
+                    {
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+            <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>Looked After Children</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong>% of School Roll Looked After @Model.selectedYear.academicyear </strong></p>
+                                        <table id="" class="table table-bordered table-hover displayLookedAftertable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableLookedAfterHistory.Columns)
+                                                        {
+                                                            if (Model.dataTableLookedAfterHistory.Columns.IndexOf(col) == 0)
+                                                            {
+
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                            }
+                                                            else
+                                                            {
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                            }
+                                                        }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableLookedAfterHistory.Rows)
+                                                    {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableLookedAfterHistory.Columns)
+                                                            {
+                                                                if (Model.dataTableLookedAfterHistory.Columns.IndexOf(col) == 0)
+                                                                {
+                                                            <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                            @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "lookafter", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                                }
+                                                                else
+                                                                {
+                                                            <td>
+                                                                @row[col.ColumnName]
+                                                                @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                            </td>
+                                                                }
+                                                            @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                            @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                            }
+                                                    </tr>
+                                                    }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+        </div>
+
+          <div role="tabpanel" id="eal" class="tab-pane fade">
+            <h3>Level of English</h3>
+
+            @if (Model.listDataSeriesHistoryEnglishLevel != null)
+            {
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                            <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong> Level of English </strong></a></h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p> <strong> % of pupils with this level of English </strong></p>
+                                    <table id="" class="table table-bordered displayEnglishLeveltable">
+                                        <thead>
+                                            <tr>
+                                                <th> </th>
+                                                @foreach (var item in Model.listDataSeriesHistoryEnglishLevel)
+                                            {
+                                                if (item !=null )
+                                                {
+
+                                                        <th class="text-center">@item.year.year</th>
+                                                }
+                                            }
+                                            </tr>
+
+
+                                        </thead>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div id="EnglishLevelGraphContainer2" class=".contains-chart" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div id="EnglishLevelGraphContainer3" class=".contains-chart" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        @*<div role="tabpanel" id="eal" class="tab-pane fade">
+            <h3>Level of English</h3>
+
+            @if (Model.dataTableEnglishLevelHistory != null && Model.dataTableEnglishLevelHistory.Rows.Count > 0)
+            {
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                            <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong> Level of English </strong></a></h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p> <strong> % of pupils with this level of English </strong></p>
+                                    <table id="" class="table table-bordered displayEnglishLeveltable">
+                                        <thead>
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableEnglishLevelHistory.Columns)
+                                            {
+                                                if (Model.dataTableEnglishLevelHistory.Columns.IndexOf(col) == 0)
+                                                {
+
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                }
+                                                else
+                                                {
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                }
+                                            }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in Model.dataTableEnglishLevelHistory.Rows)
+                                        {
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableEnglishLevelHistory.Columns)
+                                                {
+                                                    if (Model.dataTableEnglishLevelHistory.Columns.IndexOf(col) == 0)
+                                                    {
+
+                                                <td class="text-left">@row[col.ColumnName]</td>
+                                                    }
+                                                    else
+                                                    {
+                                                <td>
+                                                    @row[col.ColumnName]
+                                                </td>
+                                                    }
+                                                }
+                                        </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div id="EnglishLevelGraphContainer2" class=".contains-chart" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div id="EnglishLevelGraphContainer3" class=".contains-chart" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>*@
+
+
+
+        <div role="tabpanel" id="ethnicity" class="tab-pane fade">
+            <h3>Ethnicity</h3>
+            @if (Model.dataTableEthnicBackgroundHistory != null && Model.dataTableEthnicBackgroundHistory.Rows.Count > 0)
+                    {
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- Content Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>Ethnicity </strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong> % of pupils of each ethnic group </strong></p>
+                                        <table id="" class="table table-bordered displayEthnictable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableEthnicBackgroundHistory.Columns)
+                                                    {
+                                                        if (Model.dataTableEthnicBackgroundHistory.Columns.IndexOf(col) == 0)
+                                                    {
+
+                                                    <th class="text-center no-sort">@col.ColumnName</th>
+                                                    }
+                                                    else
+                                                    {
+                                                    <th>@col.ColumnName</th>
+
+                                                    }
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableEthnicBackgroundHistory.Rows)
+                                                {
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableEthnicBackgroundHistory.Columns)
+                                                    {
+                                                        if (Model.dataTableEthnicBackgroundHistory.Columns.IndexOf(col) == 0)
+                                                    {
+                                                    <td class="text-left">@row[col.ColumnName]</td>
+                                                    }
+                                                    else
+                                                    {
+                                                    <td class="text-center">@row[col.ColumnName]</td>
+
+                                                    }
+                                                    }
+                                                </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+
+                                        <p>*In 2011 the Scottish Government introduced a new code list for Ethnicity, hence the historic data is not comparable.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- Graph Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="EthinicityGraphContainer" style="width: 100%;"></div>
+
+                        </div>
+                    </div>
+                    }
+        </div>
+        <div id="nationality" class="tab-pane fade">
+            <h3>Nationality</h3>
+            @if (Model.dataTableEnglishLevelHistory != null && Model.dataTableEnglishLevelHistory.Rows.Count > 0)
+                    {
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <h3 class="text-center"> <strong> @Model.profiletitle </strong></h3>
+                                <h3 class="text-center"><strong>Pupil Census Information for @Model.selectedYear.academicyear</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- Data Table Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/"> <strong>Nationality</strong></a></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <p> <strong>% of pupils of each nationality </strong></p>
+                                        <table id="" class="table table-bordered table-hover displayNationalitytable">
+                                            <thead>
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableEnglishLevelHistory.Columns)
+                                                        {
+                                                            if (Model.dataTableEnglishLevelHistory.Columns.IndexOf(col) == 0)
+                                                            {
+
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                            }
+                                                            else
+                                                            {
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                            }
+                                                        }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (DataRow row in Model.dataTableEnglishLevelHistory.Rows)
+                                                    {
+                                                    <tr>
+                                                        @foreach (DataColumn col in Model.dataTableEnglishLevelHistory.Columns)
+                                                            {
+                                                                if (Model.dataTableEnglishLevelHistory.Columns.IndexOf(col) == 0)
+                                                                {
+                                                            <td class="text-left">@row[col.ColumnName]</td>
+                                                            @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "nationality", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                                }
+                                                                else
+                                                                {
+                                                            <td class="text-center">@row[col.ColumnName]</td>
+                                                            @*<td>
+                                                                    <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value=@row[col.ColumnName] onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "nationality", Indexrow = Model.nationalityDataTable.Rows.IndexOf(row), Indexcol = Model.nationalityDataTable.Columns.IndexOf(col.ColumnName) })'" />
+                                                                </td>*@
+                                                                }
+                                                            }
+                                                    </tr>
+                                                    }
+
+                                            </tbody>
+                                        </table>
+                                        <p>*In 2011  the Scottish Government introduced a new code list for Nationality, hence the historic data is not comparable.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- Graph Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div id="NationalityGraphContainer2" class=".contains-chart" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <!-- Graph Row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-primary text-center">
+                                <div id="NationalityGraphContainer3" class=".contains-chart" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+        </div>
+        <div id="otherlinks" class="tab-pane fade">
+            <h3> Other Links  </h3>
+            @if (Model.listSelectedSchoolname != null && Model.listSelectedSchoolname.Count > 0)
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var temp in Model.listSelectedSchoolname)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href=@temp.website_link>
+                                                    <div style="height:100%;width:100%">
+                                                        @temp.name Website
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href=@temp.hmie_report>
+                                                    <div style="height:100%;width:100%">
+                                                        @temp.name Education Scotland (Inspection and review)
+                                                    </div>
+                                                </a>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+
+        }
+
+
+
+
+
+
+    </div>
+</body>

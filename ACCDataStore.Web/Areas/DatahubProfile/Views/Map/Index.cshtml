@@ -1,0 +1,132 @@
+﻿@section Header {
+    @*<link rel="stylesheet" href="~/Content/accds/areas/school_profiles/primary_school/index.css" />*@
+    <link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/Map/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/Map/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/Map/service.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script src="~/Scripts/accdatastore/views/Neighbourhoods.js"></script>
+    <script src="~/Scripts/accdatastore/views/InsightSchoollocations.js"></script>
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/map.css">
+
+<script type="text/javascript" src="~/bower_components/angularjs-slider/dist/rzslider.js"></script>
+<link rel="stylesheet" href="~/bower_components/angularjs-slider/dist/rzslider.css" />
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-ui-Slider-Pips/1.11.3/jquery-ui-slider-pips.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-ui-Slider-Pips/1.11.3/jquery-ui-slider-pips.min.js" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">*@
+    }
+
+
+<div ng-app="MapApp" ng-controller="rootCtrl">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <div id="map"></div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <p>Select Layer:</p>
+                                <select ng-options="layer.Name for layer in mMap.layers track by layer.Code" ng-model="mMap.selectedLayer" ng-change="updateLayer()"></select>
+                            </div>
+                            <div class="row">
+                                <p>Select Dataset:</p>
+                                <select ng-options="dataset.Name for dataset in mMap.datasets track by dataset.Code" ng-model="mMap.selectedDataset" ng-change="updateDataset(mMap.selectedDataset)"></select>
+                            </div>
+                            <div class="row" ng-if="mMap.bHeatMapShowContent">
+                                <p>Select Destinations:</p>
+                                <select ng-options="destination.Name for destination in mMap.datacatagories track by destination.Code" ng-model="mMap.selecteddatacatagory" ng-change="updateCatagory()"></select>
+                            </div>
+                            <div class="row " ng-if="mMap.bHeatMapShowContent" style="height:250px;">
+                                <p>{{ mMap.otherData  }}</p>
+                                <rzslider rz-slider-model="slider.minValue"
+                                          rz-slider-high="slider.maxValue"
+                                          rz-slider-options="slider.options">
+                                </rzslider>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container" ng-if="mMap.bShowContent">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h2 class="panel-title text-center"> Opportunities for All Clients: {{ mMap.selectedcentre.name}} - {{ mMap.selectedDataset.Name}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mMap.ChartData.ChartPupilsAges"></highchart>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mMap.ChartData.ChartOverallDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mMap.ChartData.ChartPositiveDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mMap.ChartData.ChartNonPositiveDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+
+                        <div class="panel-body">
+                            <button type="button" class="btn btn-info" ng-click="GetPositiveChart()">Participating</button>
+                            <button type="button" class="btn btn-info" ng-click="GetNonPositiveChart()">Not Participating</button>
+                            <button type="button" class="btn btn-info" ng-click="GetUnknownChart()">Unknown</button>
+                            <button type="button" class="btn btn-info" ng-click="GetTimelineChart()">All Participation</button>
+                            <highchart config="mMap.ChartData.ChartTimelineDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @*<pre>
+                {{ mMap | json }}
+            </pre>*@
+    </script>
+
+
+
+</div>

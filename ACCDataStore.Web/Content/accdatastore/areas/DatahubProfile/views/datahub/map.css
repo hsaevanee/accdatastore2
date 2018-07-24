@@ -1,0 +1,41 @@
+﻿#map {
+            height: 500px;
+            width: 100%;
+        }
+
+    .infoWindowContent {
+            font-size: 14px !important;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+         /*Begin slider css*/
+    .ui-state-default:first-of-type, .ui-widget-content .ui-state-default:first-of-type, .ui-widget-header .ui-state-default:first-of-type {
+    background: white;
+    }
+    .ui-state-default:last-of-type, .ui-widget-content .ui-state-default:last-of-type, .ui-widget-header .ui-state-default:last-of-type {
+        background: white;
+    }
+    .ui-slider .ui-slider-range {
+        background: yellow;
+    }
+    .left-color {
+        float: left;
+        background-color: red;
+        height: 100%;
+        /*border-radius: 3px 0px 0px 3px;
+        width: 50px;*/
+    }
+    .slider {
+        background-color: green;
+        background-image: none;
+    }
+    .slider label {
+        position: absolute;
+        /*width: 20px;*/
+        /*margin-left: -10px;*/
+        text-align: center;
+        /*margin-top: 20px;*/
+    }
+
+     

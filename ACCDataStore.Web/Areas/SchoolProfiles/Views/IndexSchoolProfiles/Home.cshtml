@@ -1,0 +1,99 @@
+﻿ 
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+}
+@{
+    //SchoolProfile
+    ViewBag.Title = "Home";
+}
+
+<body>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-3">
+                <img class="img-responsive img-hover" src="@Url.Content("~/Images/Aberdeen Council_TransparentLogo.png")" alt="">
+        </div>
+        <div class="col-md-9">
+            <h2 class="text-left text-info" >School Profiles</h2>
+            <p class="text-justify">
+                These profiles are a summary of the information that is available for each school in Aberdeen City. They contain attainment data, attendance, exclusions, violent incidents, costs, roll and census data but much more and they also contain links to related websites such as related Scottish Government publications, HMIE reports and school websites.
+            </p>
+            <p class="text-justify">
+                The profiles are intended for internal use for performance management and quality assurance purposes.
+                <em>
+                    <a href="#">
+                        Guidance to School Profiles
+                    </a>
+                </em>
+            </p>
+
+            <p>
+                <ul class="text-left">
+                    <li>
+                        <a href="@Url.Action("Index", "PrimarySchoolProfile", new { Area = "SchoolProfiles"}, null)">Primary Schools</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "SecondarySchoolProfile", new { Area = "SchoolProfiles"}, null)">Secondary Schools</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "SpecialSchoolProfile", new { Area = "SchoolProfiles"}, null)">Special Schools</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "LocalitySchoolProfile", new { Area = "SchoolProfiles" }, null)">Aberdeen Localities</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "CitySchoolProfile", new { Area = "SchoolProfiles"}, null)">Aberdeen City</a>
+                    </li>
+                </ul>
+            </p>
+            <p class="text-left">
+                Other Useful Links
+            </p>
+            <p class="text-danger">
+                <ul class="text-left">
+                    <li>
+                        <a href="@Url.Action("SchoolWebsites", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)" target="_blank">School websites</a>
+                    </li>
+                    <li>
+                        <a href="http://www.educationscotland.gov.uk/inspectionandreview/index.asp" target="_blank">Education Scotland (Inspection and review)</a>
+                    </li>
+                    <li>
+                        <a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education" target="_blank">Scottish Government Education Statistics</a>
+                    </li>
+                    <li>
+                        <a href="http://www.gov.scot/Topics/Statistics/Browse/Children/PubChildrenSocialWork" target="_blank">Children's Social Work Statistics</a>
+                    </li>
+                    <li>
+                        <a href="http://www.cem.org/" target="_blank">CEM-Centre for Evaluation & Monitorimg</a>
+                    </li>
+                    <li>
+                        <a href="http://www.educationscotland.gov.uk/parentzone/myschool/findaschool/index.asp" target="_blank">Parentzone Scotland</a>
+                    </li>
+                    <li>
+                        <a href="https://www.celcis.org/" target="_blank">Looked After Children in Scotland</a>
+                    </li>
+                    <li>
+                        <a href="http://communityplanningaberdeen.org.uk/" target="_blank">Community Planning Website</a>
+                    </li>
+                </ul>
+            </p>
+
+            <p class="text-left">
+                If you have any queries regarding the data, please contact 
+            </p>
+            <p class="text-left">
+                Ljiljana Pavlenić  
+            </p>
+            <p class="text-justify">
+                <i class="fa fa-envelope-o"></i>
+                <abbr title="Email">E</abbr>: <a href="mailto:LPAVLENIC@aberdeencity.gov.uk">LPAVLENIC@aberdeencity.gov.uk</a>
+
+            </p>
+            <p class="text-left">
+                <i class="fa fa-phone"></i>
+                <abbr title="Phone">Direct Dial</abbr>: 01224523241 ; Mobile: 07825262932
+            </p>
+        </div>
+    </div>
+    </div> <!--container-->
+</body>

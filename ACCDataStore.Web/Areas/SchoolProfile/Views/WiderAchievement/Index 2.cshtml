@@ -1,0 +1,81 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.WiderAchievement.WiderAchievementViewModel
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/IndexSchoolProfile/IndexSchoolProfile.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+}
+@{
+    ViewBag.Title = "Index";
+}
+<div id="main">
+    <h2>Wider Achievement Framework Data 2013 - 2015</h2>
+    @*@using (Html.BeginForm("Index", "IndexSchoolProfile", new { area = "SchoolProfile" }))
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Please Select School</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="200">School Name</td>
+                    <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData, "seedcode", "name"), "---Please Select School---"))</td>
+                </tr>
+            </tbody>
+        </table>
+    }*@
+
+
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th colspan="2"></th>
+                <th colspan="3">Citywide Totals</th>
+            </tr>
+            <tr>
+                @foreach (System.Data.DataColumn col in Model.dtTable1.Columns)
+                {
+                    <th>@col.Caption</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow row in Model.dtTable1.Rows)
+            {
+                <tr>
+                    @foreach (var cell in row.ItemArray)
+                    {
+                        <td>@cell.ToString()</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th colspan="2"></th>
+                <th colspan="3">Citywide Totals</th>
+            </tr>
+            <tr>
+                @foreach (System.Data.DataColumn col in Model.dtTable2.Columns)
+                {
+                    <th>@col.Caption</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow row in Model.dtTable2.Rows)
+            {
+                <tr>
+                    @foreach (var cell in row.ItemArray)
+                    {
+                        <td>@cell.ToString()</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,177 @@
+﻿@using ACCDataStore.Entity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>School Profile</title>
+    <!-- Bootstrap Core CSS -->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Custom CSS -->
+    <!--<link href="css/heroic-features.css" rel="stylesheet">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <script src="~/Scripts/accdatastore/views/global.js"></script>
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script>
+        var sContextPath = '@Url.Content("~")';
+    </script>
+    @RenderSection("Header")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Index", new { Area = "", id = "" }, null)" style="color: whitesmoke; font-weight: bold; font-style: italic; font-family: Verdana; font-size: x-large;">Data Observatory</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)">School Profile</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">Pupils Population</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @*<li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About</a>
+                    </li>*@
+                    @*<li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "theTeam" }, null)">The Team</a>
+                    </li>*@
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{
+                        Users user = Session["SessionUser"] as Users;
+                        if (user != null)
+                        {
+                            <li>
+                                <a>Hello @user.UserName</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Account</a></li>
+                                    <li><a href="@Url.Action("Logout", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Sign out</a></li>
+                                </ul>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)">
+                                    <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login
+                                </a>
+                            </li>
+                        }
+
+
+                    }
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- Subheading Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    School Profile
+                    @*<small>Subheading</small>*@
+                </h1>
+                <ol class="breadcrumb">
+                    @*<li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "" }, null)">Home</a>
+                    </li>*@
+                    <li>
+                        <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)">Home</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Compareable", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)">EthnicBackground</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Nationality", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Nationality</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)">SIMD</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Student Stage</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Language", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Level of English</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Curriculum", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Curriculum for Excellence</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+        <!-- Footer -->
+        <div class="container">
+            <hr>
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        @*<p>Copyright &copy; Your Website 2014</p>*@
+                        <p>Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <div id="divSpinner" class="modal" style="display: none;">
+        </div>
+
+</body>
+</html>

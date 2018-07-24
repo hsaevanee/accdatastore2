@@ -1,0 +1,192 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@section Header {
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+<script src="~/Scripts/pdfmake.min.js"></script>
+<script src="~/Scripts/vfs_fonts.js"></script>
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/Pupilslist.js"></script>
+    @*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+
+}
+@{
+    ViewBag.Title = "Pupilslist";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center">@Model.selectedschool.name</h3>
+                    </div>
+                    <div class="panel-body">
+                        @*<div class="table-responsive">*@
+                            <table id="datatable" class="table table-bordered table-hover">
+                                <thead>
+                                    @*<tr>
+                                        <th class="text-center" colspan="9">@Model.levercategory</th>
+                                    </tr>*@
+                                    <tr>
+                                        <th class="text-center">SDS Client Ref</th>
+                                        <th class="text-center">Name </th>
+                                        <th class="text-center">Age</th>
+                                        <th class="text-center">D.O.B</th>
+                                        <th class="text-center">Gender</th>
+                                        <th class="text-center">School</th>
+                                        <th class="text-center">SCN</th>
+                                        <th class="text-center">Tel. Number</th>
+                                        <th class="text-center">Cohort</th>
+                                        <th class="text-center">Preferred_Forename</th>
+                                        <th class="text-center">CSS_Address</th>
+                                        <th class="text-center">CSS_Postcode</th>
+                                        <th class="text-center">LA_Address</th>
+                                        <th class="text-center">LA_Postcode</th>
+                                        <th class="text-center">Statutory_Leave_Date</th>
+                                        <th class="text-center">SEED_Code</th>
+                                        <th class="text-center">School_MIS_Reference</th>
+                                        <th class="text-center">Start_Date</th>
+                                        <th class="text-center">Anticipated_School_Leaving_Date</th>
+                                        <th class="text-center">Actual_Date_Left_School</th>
+                                        <th class="text-center">School_Year_Group</th>
+                                        <th class="text-center">School_Roll_Status_Code</th>
+                                        <th class="text-center">School_History_Source</th>
+                                        <th class="text-center">Preferred_Occupation</th>
+                                        <th class="text-center">Preferred_Occupation_Source</th>
+                                        <th class="text-center">Preferred_Route</th>
+                                        <th class="text-center">Preferred_Route_Source</th>
+                                        <th class="text-center">Current_Status</th>
+                                        <th class="text-center">Status_Source</th>
+                                        <th class="text-center">Conditional_Status</th>
+                                        <th class="text-center">Status_Start_Date</th>
+                                        <th class="text-center">Organisation_Name</th>
+                                        <th class="text-center">Course_Title</th>
+                                        <th class="text-center">Course_Level</th>
+                                        <th class="text-center">Employer_Name</th>
+                                        <th class="text-center">Job_Title</th>
+                                        <th class="text-center">End_Date</th>
+                                        <th class="text-center">Weeks_since_last_Pos_Status</th>
+                                        <th class="text-center">Last_Positive_Status</th>
+                                        <th class="text-center">Last_Engagement_with_SDS</th>
+                                        <th class="text-center">Benefit_Types</th>
+                                        <th class="text-center">Benefit_Source</th>
+                                        <th class="text-center">Looked_After_Status</th>
+                                        <th class="text-center">Looked_After_Source</th>
+                                        <th class="text-center">Young_Carer</th>
+                                        <th class="text-center">Young_Carer_Source</th>
+                                        <th class="text-center">ASN</th>
+                                        <th class="text-center">ASN_Source</th>
+                                        <th class="text-center">IEP</th>
+                                        <th class="text-center">IEP_Source</th>
+                                        <th class="text-center">CSP</th>
+                                        <th class="text-center">CSP_Source</th>
+                                        <th class="text-center">Transition_Plan</th>
+                                        <th class="text-center">Transition_Plan_Source</th>
+                                        <th class="text-center">Childs_Plan</th>
+                                        <th class="text-center">Childs_Plan_Source</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Listpupils == null)
+                                {
+
+
+                                <tr>
+                                    <td class="text-center" colspan="9">No data available</td>
+                                </tr>
+                                }
+                                else {
+                                    foreach (var item in Model.Listpupils)
+                                    {
+                                <tr>
+                                    <td class="text-left">@item.SDS_Client_Ref</td>
+                                    <td class="text-left">@{var name = item.Forename + " " + item.Surname;} @name</td>
+                                    <td class="text-center">@item.Age</td>
+                                    <td class="text-center">@item.Date_of_Birth</td>
+                                    <td class="text-center">@item.Gender</td>
+                                    <td class="text-left">@item.School_Name</td>
+                                    <td class="text-center">@item.Scottish_Candidate_Number</td>
+                                    <td class="text-center">@item.Telephone_Number</td>
+                                    <td class="text-center">@item.Cohort</td>
+                                    <td class="text-center">@item.Preferred_Forename</td>
+                                    <td class="text-center">@item.CSS_Address</td>
+                                    <td class="text-center">@item.CSS_Postcode</td>
+                                    <td class="text-center">@item.LA_Address</td>
+                                    <td class="text-center">@item.LA_Postcode</td>
+                                    <td class="text-center">@item.Statutory_Leave_Date</td>
+                                    <td class="text-center">@item.SEED_Code</td>
+                                    <td class="text-center">@item.School_MIS_Reference</td>
+                                    <td class="text-center">@item.Start_Date</td>
+                                    <td class="text-center">@item.Anticipated_School_Leaving_Date</td>
+                                    <td class="text-center">@item.Actual_Date_Left_School</td>
+                                    <td class="text-center">@item.School_Year_Group</td>
+                                    <td class="text-center">@item.School_Roll_Status_Code</td>
+                                    <td class="text-center">@item.School_History_Source</td>
+                                    <td class="text-center">@item.Preferred_Occupation</td>
+                                    <td class="text-center">@item.Preferred_Occupation_Source</td>
+                                    <td class="text-center">@item.Preferred_Route</td>
+                                    <td class="text-center">@item.Preferred_Route_Source</td>
+                                    <td class="text-center">@item.Current_Status</td>
+                                    <td class="text-center">@item.Status_Source</td>
+                                    <td class="text-center">@item.Conditional_Status</td>
+                                    <td class="text-center">@item.Status_Start_Date</td>
+                                    <td class="text-center">@item.Organisation_Name</td>
+                                    <td class="text-center">@item.Course_Title</td>
+                                    <td class="text-center">@item.Course_Level</td>
+                                    <td class="text-center">@item.Employer_Name</td>
+                                    <td class="text-center">@item.Job_Title</td>
+                                    <td class="text-center">@item.End_Date</td>
+                                    <td class="text-center">@item.Weeks_since_last_Pos_Status</td>
+                                    <td class="text-center">@item.Last_Positive_Status</td>
+                                    <td class="text-center">@item.Last_Engagement_with_SDS</td>
+                                    <td class="text-center">@item.Benefit_Types</td>
+                                    <td class="text-center">@item.Benefit_Source</td>
+                                    <td class="text-center">@item.Looked_After_Status</td>
+                                    <td class="text-center">@item.Looked_After_Source</td>
+                                    <td class="text-center">@item.Young_Carer</td>
+                                    <td class="text-center">@item.Young_Carer_Source</td>
+                                    <td class="text-center">@item.ASN</td>
+                                    <td class="text-center">@item.ASN_Source</td>
+                                    <td class="text-center">@item.IEP</td>
+                                    <td class="text-center">@item.IEP_Source</td>
+                                    <td class="text-center">@item.CSP</td>
+                                    <td class="text-center">@item.CSP_Source</td>
+                                    <td class="text-center">@item.Transition_Plan</td>
+                                    <td class="text-center">@item.Transition_Plan_Source</td>
+                                    <td class="text-center">@item.Childs_Plan</td>
+                                    <td class="text-center">@item.Childs_Plan_Source</td>
+                                    @*<td class="text-center">xxx</td>*@
+
+                                    <td>
+                                        <input type="button" class="btn btn-info btn-xs text-center" style="width: 80px; height:25px" value="Full Details" onclick="location.href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'" />
+                                    </td>
+                                    @*<td class="text-center"><a href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'><button>Full Details</button></a></td>*@
+                                </tr>
+                                    }
+                                }
+                                </tbody>
+                            </table>
+                        @*</div>*@
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,537 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.IndexSchoolProfile.Index2SchoolProfileViewModel
+@section Header {
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />*@
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/IndexSchoolProfile/Index2SchoolProfile.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    @*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
+        <!-- jQuery -->
+<script src="~/Scripts/jquery.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        @using (Html.BeginForm("Compareable", "IndexSchoolProfile", new { area = "SchoolProfile" }))
+        {
+        <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select School</h3>
+                        </div>
+                        <div class="panel-body">
+                            @Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select School</h3>
+                        </div>
+                        <div class="panel-body">
+                            @Html.DropDownListFor(x => x.selectedschoolname2, new SelectList(Model.ListSchoolNameData2), "---Please Select School---")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- /.row -->
+        <hr>
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" > <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/SIMD/Index/">Scottish Index of Multiple Deprivation</a></h4>
+                    </div>
+                    <div class="panel-body">
+                            <p>% of pupils in each Decile (census 2012)</p>
+                            <table id="SIMDdatatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Deciles</th>
+                                        @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                        {
+                                            <th class="text-center">@Model.selectedschoolname</th>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.selectedschoolname.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname</th>
+                                            }
+                                            if (!Model.selectedschoolname2.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname2</th>
+                                            }
+                                        }
+                                        <th class="text-center">All Primary Schools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemSIMD in Model.ListSIMDCode)
+                                    {
+                                        var temp1 = Model.ListSIMDData.Find(x => x.SIMDCode.Equals(Convert.ToString(itemSIMD)));
+                                        var temp2 = Model.ListSIMDData2.Find(x => x.SIMDCode.Equals(Convert.ToString(itemSIMD)));
+                                        var data1 = 0.0;
+                                        var data2 = 0.0;
+                                        var data3 = 0.0;
+
+                                        if (temp1 != null)
+                                        {
+                                            data1 = temp1.PercentageInSchool2012;
+                                            data3 = temp1.PercentageAllSchool2012;
+                                        }
+                                        if (temp2 != null)
+                                        {
+                                            data2 = temp2.PercentageInSchool2012;
+                                            data3 = temp2.PercentageAllSchool2012;
+                                        }
+                                        <tr>
+                                            <td>@itemSIMD</td>
+                                            @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                            {
+                                                <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                                            }
+                                            else
+                                            {
+                                                if (!Model.selectedschoolname.Equals(""))
+                                                {
+                                                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                                                }
+                                                if (!Model.selectedschoolname2.Equals(""))
+                                                {
+                                                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+                                                }
+                                            }
+                                            <td align="center">@String.Format("{0:#,0.00}", data3)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Ethnicbackground/Compareable">Ethnicity</a></h4>
+                    </div>
+                    <div class="panel-body">
+                            <p>% of pupils in each ethnic group</p>
+                            <table id="Ethnicdatatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Ethnicity</th>
+                                        @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                        {
+                                            <th class="text-center">@Model.selectedschoolname</th>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.selectedschoolname.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname</th>
+                                            }
+                                            if (!Model.selectedschoolname2.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname2</th>
+                                            }
+                                        }
+                                        <th class="text-center">All Primary Schools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemEthnic in Model.ListEthnicCode)
+                                    {
+                                        var temp1 = Model.ListEthnicData.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));
+                                        var temp2 = Model.ListEthnicData2.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));
+                                        var data1 = 0.0;
+                                        var data2 = 0.0;
+                                        var data3 = 0.0;
+
+                                        if (temp1 != null)
+                                        {
+                                            data1 = temp1.PercentageInSchool;
+                                            data3 = temp1.PercentageAllSchool;
+                                        }
+                                        if (temp2 != null)
+                                        {
+                                            data2 = temp2.PercentageInSchool;
+                                            data3 = temp2.PercentageAllSchool;
+                                        }
+                                    <tr>
+                                        <td class="text-left">@Model.DicEthnicBG[itemEthnic]</td>
+                                        @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                        {
+                                            <td class="text-center">@String.Format("{0:#,0.00}", data1)</td>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.selectedschoolname.Equals(""))
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", data1)</td>
+                                            }
+                                            if (!Model.selectedschoolname2.Equals(""))
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", data2)</td>
+                                            }
+                                        }
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data3)</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <p>*In 2011  the Scottish Government introduced a new code list for Ethnicity, hence the historic data is not comparable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" > <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Nationality</a></h4>
+                    </div>
+                    <div class="panel-body">
+                            <p>% of pupils of each nationality</p>
+                            <table id="Nationalitydatatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Nationality</th>
+                                        @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                        {
+                                            <th class="text-center">@Model.selectedschoolname</th>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.selectedschoolname.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname</th>
+                                            }
+                                            if (!Model.selectedschoolname2.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname2</th>
+                                            }
+                                        }
+
+                                        <th class="text-center">All Primary Schools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemNational in Model.ListNationalityCode)
+                                    {
+
+
+                                        var temp1 = Model.ListNationalityData.Find(x => x.IdentityCode.Equals(Convert.ToString(itemNational)));
+                                        var temp2 = Model.ListNationalityData2.Find(x => x.IdentityCode.Equals(Convert.ToString(itemNational)));
+                                        var data1 = 0.0;
+                                        var data2 = 0.0;
+                                        var data3 = 0.0;
+
+                                        if (temp1 != null)
+                                        {
+                                            data1 = temp1.PercentageInSchool;
+                                            data3 = temp1.PercentageAllSchool;
+                                        }
+                                        if (temp2 != null)
+                                        {
+                                            data2 = temp2.PercentageInSchool;
+                                            data3 = temp2.PercentageAllSchool;
+                                        }
+                                        <tr>
+                                            <td class="text-left">@Model.DicNational[itemNational]</td>
+                                            @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                            {
+                                                <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                                            }
+                                            else
+                                            {
+                                                if (!Model.selectedschoolname.Equals(""))
+                                                {
+                                                    <td class="text-center">@String.Format("{0:#,0.00}", data1)</td>
+                                                }
+                                                if (!Model.selectedschoolname2.Equals(""))
+                                                {
+                                                    <td class="text-center">@String.Format("{0:#,0.00}", data2)</td>
+                                                }
+                                            }
+                                            <td class="text-center">@String.Format("{0:#,0.00}", data3)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <p>*In 2011  the Scottish Government introduced a new code list for Nationality, hence the historic data is not comparable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/StudentStage/Index/">Student Stage</a></h4>
+                    </div>
+                    <div class="panel-body">
+                            <p>% of pupils in each stage</p>
+                            <table id="StdStagedatatable" class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Stage</th>
+                                        @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                        {
+                                            <th class="text-center">@Model.selectedschoolname</th>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.selectedschoolname.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname</th>
+                                            }
+                                            if (!Model.selectedschoolname2.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname2</th>
+                                            }
+                                        }
+                                        <th class="text-center">All Primary Schools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemStdCode in Model.ListStageCode)
+                                    {
+
+
+                                        var temp1 = Model.ListStdStageData.Find(x => x.StageCode.Equals(Convert.ToString(itemStdCode)));
+                                        var temp2 = Model.ListStdStageData2.Find(x => x.StageCode.Equals(Convert.ToString(itemStdCode)));
+                                        var data1 = 0.0;
+                                        var data2 = 0.0;
+                                        var data3 = 0.0;
+
+                                        if (temp1 != null)
+                                        {
+                                            data1 = temp1.PercentageInSchool;
+                                            data3 = temp1.PercentageAllSchool;
+                                        }
+                                        if (temp2 != null)
+                                        {
+                                            data2 = temp2.PercentageInSchool;
+                                            data3 = temp2.PercentageAllSchool;
+                                        }
+                                        <tr>
+                                            <td class="text-left">@itemStdCode</td>
+                                            @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", data1)</td>
+                                            }
+                                            else
+                                            {
+                                                if (!Model.selectedschoolname.Equals(""))
+                                                {
+                                                    <td class="text-center">@String.Format("{0:#,0.00}", data1)</td>
+                                                }
+                                                if (!Model.selectedschoolname2.Equals(""))
+                                                {
+                                                    <td class="text-center">@String.Format("{0:#,0.00}", data2)</td>
+                                                }
+                                            }
+                                            <td class="text-center">@String.Format("{0:#,0.00}", data3)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr>
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" > <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Language/Index/">Level of English</a></h4>
+                    </div>
+                    <div class="panel-body">
+                            <p>% of pupils in each level</p>
+                            <table id="EALdatatable" class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Level of English</th>
+                                        @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                        {
+                                            <th class="text-center">@Model.selectedschoolname</th>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.selectedschoolname.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname</th>
+                                            }
+                                            if (!Model.selectedschoolname2.Equals(""))
+                                            {
+                                                <th class="text-center">@Model.selectedschoolname2</th>
+                                            }
+                                        }
+                                        <th class="text-center">All Primary Schools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemEALCode in Model.ListLevelENCode)
+                                    {
+
+
+                                        var temp1 = Model.ListLevelENData.Find(x => x.IdentityCode.Equals(Convert.ToString(itemEALCode)));
+                                        var temp2 = Model.ListLevelENData2.Find(x => x.IdentityCode.Equals(Convert.ToString(itemEALCode)));
+                                        var data1 = 0.0;
+                                        var data2 = 0.0;
+                                        var data3 = 0.0;
+
+                                        if (temp1 != null)
+                                        {
+                                            data1 = temp1.PercentageInSchool;
+                                            data3 = temp1.PercentageAllSchool;
+                                        }
+                                        if (temp2 != null)
+                                        {
+                                            data2 = temp2.PercentageInSchool;
+                                            data3 = temp2.PercentageAllSchool;
+                                        }
+                                    <tr>
+                                        <td class="text-left">@Model.DicLevelEN[itemEALCode]</td>
+                                        @if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                        {
+                                            <td class="text-center">@String.Format("{0:#,0.00}", data1)</td>
+                                        }
+                                        else
+                                        {
+                                            if (!Model.selectedschoolname.Equals(""))
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", data1)</td>
+                                            }
+                                            if (!Model.selectedschoolname2.Equals(""))
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", data2)</td>
+                                            }
+                                        }
+                                        <td class="text-center">@String.Format("{0:#,0.00}", data3)</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <!-- Content Row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Free School Meal</h4>
+                    </div>
+                    <div class="panel-body">
+                            <p>% of pupils in each school</p>
+                            <table id="FSMdatatable" class="table table-hover table-bordered">
+                                <thead>
+                                    <tr >
+                                        <th class="text-center">School Name</th>
+                                        <th class="text-center">On Roll on</th>
+                                        <th class="text-center">% of school roll entitled and registered for free meals</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var itemFSM in Model.ListFSMData)
+                                    {
+                                        <tr>
+                                            <td class="text-left">@itemFSM.schoolname</td>
+                                            <td >@String.Format("{0:#,0.00}", itemFSM.schoolroll)</td>
+                                            @*<td align="center">@String.Format("{0:#,0.00}", itemFSM.registeredFSMInSchool)</td>*@
+                                            <td >@String.Format("{0:#,0.00}", itemFSM.PercentageRegisteredInSchool)</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+        @*<div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/WiderAchievement/Index/">Wider Achivement</a></h4>
+                    </div>
+                    <div class="panel-body">
+                            <table id="WiderAchievementdatatable" class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" class="text-center"></th>
+                                        <th colspan="3" class="text-center">Citywide Totals</th>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-center">Age Range</th>
+                                        <th class="text-center">Awardname</th>
+                                        <th class="text-center"> 2013-2014</th>
+                                        <th class="text-center"> 2014-2015</th>
+                                        <th class="text-center"> 2015-2016</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ListWiderAchievementData)
+                                    {
+                                        <tr>
+                                            <td class="text-left">@item.age_range</td>
+                                            <td class="text-left">@item.awardname</td>
+                                            <td class="text-center">@item.award2013</td>
+                                            <td class="text-center">@item.award2014</td>
+                                            <td class="text-center">@item.award2015</td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </div>
+</body>
+

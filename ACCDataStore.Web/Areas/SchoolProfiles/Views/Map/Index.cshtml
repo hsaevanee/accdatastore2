@@ -1,0 +1,111 @@
+﻿@section Header {
+    @*<link rel="stylesheet" href="~/Content/accds/areas/school_profiles/primary_school/index.css" />*@
+    <link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/Map/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/Map/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/Map/service.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script src="~/Scripts/accdatastore/views/Datazone_2016.js"></script>
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/map.css">
+
+<script type="text/javascript" src="~/bower_components/angularjs-slider/dist/rzslider.js"></script>
+<link rel="stylesheet" href="~/bower_components/angularjs-slider/dist/rzslider.css" />
+
+}
+
+
+<div ng-app="MapApp" ng-controller="rootCtrl">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-body">
+                        <div class="col-md-10">
+                            <div id="map"></div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <p>Select Layer:</p>
+                                <select ng-options="layer.Name for layer in mMap.layers track by layer.Code" ng-model="mMap.selectedLayer" ng-change="updateLayer()"></select>
+                            </div>
+                            <div class="row">
+                                <p>Select Dataset:</p>
+                                <select ng-options="dataset.Name for dataset in mMap.datasets track by dataset.Code" ng-model="mMap.selectedDataset" ng-change="updateDataset()"></select>
+                            </div>
+                            <div class="row" ng-if="mMap.bHeatMapShowContent">
+                                <p>Select Destinations:</p>
+                                <select ng-options="destination.Name for destination in mMap.datacatagories track by destination.Code" ng-model="mMap.selecteddatacatagory" ng-change="updateCatagory()"></select>
+                            </div>
+                            <div class="row " ng-if="mMap.bHeatMapShowContent" style="height:250px;">
+                                <p>{{ mMap.otherData  }}</p>
+                                <rzslider rz-slider-model="slider.minValue"
+                                          rz-slider-high="slider.maxValue"
+                                          rz-slider-options="slider.options">
+                                </rzslider>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container" ng-if="mMap.bShowContent">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h2 class="panel-title text-center"> {{ mMap.selectedDataset.Name}}</h2>
+
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"> Neighbourhoods </th>
+                                        <th class="text-center"> P4-P7</th>
+                                        <th class="text-center"> S1-S6</th>
+                                        <th class="text-center"> SP</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="info">
+                                        <td class="text-center">
+                                            <b>{{  mMap.showeddata.seedcode}}  - {{  mMap.showeddata.centrename}} </b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>{{  mMap.showeddata.listdata[0].count}}</b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>{{  mMap.showeddata.listdata[1].count}}</b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>{{  mMap.showeddata.listdata[2].count}}</b>
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        @*<pre>
+                {{ mMap | json }}
+            </pre>*@
+    </script>
+
+
+
+</div>

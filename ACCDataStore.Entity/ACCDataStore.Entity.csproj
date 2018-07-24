@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8A578AE3-A65B-4EBF-AFD0-458C455C408A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACCDataStore.Entity</RootNamespace>
+    <AssemblyName>ACCDataStore.Entity</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthenIdentity\EmailSettings.cs" />
+    <Compile Include="BaseEntity.cs" />
+    <Compile Include="CSSF\Entity\ChildAgreements.cs" />
+    <Compile Include="CSSF\Entity\ChildPlacements.cs" />
+    <Compile Include="CSSF\Entity\Placements.cs" />
+    <Compile Include="CSSF\Mapping\ChildAgreementsMap.cs" />
+    <Compile Include="CSSF\Mapping\ChildPlacementsMap.cs" />
+    <Compile Include="CSSF\Mapping\PlacementsMap.cs" />
+    <Compile Include="DatahubProfile\Entities\AllSchools.cs" />
+    <Compile Include="DatahubProfile\Entities\ChartData.cs" />
+    <Compile Include="DatahubProfile\Entities\DatahubCentre.cs" />
+    <Compile Include="DatahubProfile\Entities\DataHubData.cs" />
+    <Compile Include="DatahubProfile\Entities\DataSetDate.cs" />
+    <Compile Include="DatahubProfile\Entities\Status.cs" />
+    <Compile Include="DatahubProfile\Entities\GenericData.cs" />
+    <Compile Include="DatahubProfile\Entities\PupilsDataHubObj.cs" />
+    <Compile Include="DatahubProfile\Entities\SDSGroup.cs" />
+    <Compile Include="DatahubProfile\Entities\SummaryData.cs" />
+    <Compile Include="DatahubProfile\Entities\SummaryDHdata.cs" />
+    <Compile Include="DatahubProfile\Mappings\AllSchoolsMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\DatahubDataAberdeenMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\DatahubDataAberdeenshireMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\DatahubDataGlasgowMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\PupilsDataHubMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\SummaryDataMap.cs" />
+    <Compile Include="Mapping\RightMp.cs" />
+    <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
+    <Compile Include="SchoolProfiles\CensusObj.cs" />
+    <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\BaseSchoolProfile.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SecondarySPDataModel.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\PrimarySPDataModel.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\ChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\LocalityChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SecondaryChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\PrimaryChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\CityChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\CitySchool.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\Ethnicbackground.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\FreeSchoolMeal.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\GenericSchoolData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\GenericSPFSM.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\LevelOfEnglish.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\LookedAfter.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\NationalityIdentity.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransform.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransformRow.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\PrimaryCfElevel.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPCfElevel.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPAttendance.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPExclusion.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPMiDYIS.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPMiDYISReport.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPPIPS.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SchoolRoll.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPInCAS.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPCfEReport.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPReport.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPSchoolRollForecast.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\BaseSPDataModel.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPSIMD.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\StudentNeed.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\StudentStage.cs" />
+    <Compile Include="SchoolProfiles\Census\ViewObj.cs" />
+    <Compile Include="SchoolProfiles\Census\ExclusionStudentObj.cs" />
+    <Compile Include="SchoolProfiles\Census\SchoolForecastObj.cs" />
+    <Compile Include="SchoolProfiles\Census\StudentNeedObj.cs" />
+    <Compile Include="SchoolProfiles\ChartData.cs" />
+    <Compile Include="SchoolProfiles\DataSeries.cs" />
+    <Compile Include="SchoolProfiles\EnglishLevel.cs" />
+    <Compile Include="SchoolProfiles\EthnicBackground.cs" />
+    <Compile Include="CriteriaParameters.cs" />
+    <Compile Include="DatahubProfile\Entities\NeighbourhoodObj.cs" />
+    <Compile Include="DatahubProfile\Entities\DatahubDataObj.cs" />
+    <Compile Include="CheckModel.cs" />
+    <Compile Include="Gender.cs" />
+    <Compile Include="GeneralCounter.cs" />
+    <Compile Include="GenderObj.cs" />
+    <Compile Include="Mapping\MSAccess\SchoolProfiles\EthnicBackgroundMap.cs" />
+    <Compile Include="Mapping\MSAccess\LuEnglishLevelMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\NeighbourhoodMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\DatahubDataMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchoolProfiles\CostcenterMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchoolProfiles\PupilMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchPrimarySchoolMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchStudentMap.cs" />
+    <Compile Include="Mapping\UsersMap.cs" />
+    <Compile Include="Rights.cs" />
+    <Compile Include="RightsCode.cs" />
+    <Compile Include="Mapping\MySQL\RightsCodeMap.cs" />
+    <Compile Include="Mapping\MySQL\RightsMap.cs" />
+    <Compile Include="SchoolProfiles\InCAS\ViewInCASObj.cs" />
+    <Compile Include="SchoolProfiles\InCAS\InCASObj.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\AaaeAttendance2007Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\StudentNeedMap.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2008Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchoolRollForecastMap.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2016Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2015Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2014Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2013Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2012Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPSMap.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2010Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2011Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2013Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2015Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2014Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2012Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2009Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2008Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2009Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2010Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2011Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2012Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\ExclusionStudent2008Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2015Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2014Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2013Map.cs" />
+    <Compile Include="SchoolProfiles\NationalIdentity.cs" />
+    <Compile Include="SchoolProfiles\ObjectDetail.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2015.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2014.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2013.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2012.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2011.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2010.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2009.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPS2008.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPSObj.cs" />
+    <Compile Include="SchoolProfiles\PIPS\PIPSObjDetail.cs" />
+    <Compile Include="SchoolProfiles\PIPS\ViewPIPSObj.cs" />
+    <Compile Include="SchoolProfiles\SchoolNew.cs" />
+    <Compile Include="SchoolProfiles\Census\StudentObj.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="SchoolProfiles\Costcentre.cs" />
+    <Compile Include="SchoolProfile\EthnicBackgroundObj.cs" />
+    <Compile Include="SchoolProfile\LuEnglishLevel.cs" />
+    <Compile Include="SchoolProfiles\Census\PupilObj.cs" />
+    <Compile Include="SchoolProfile\SchPrimarySchool.cs" />
+    <Compile Include="SchoolProfile\SchStudent.cs" />
+    <Compile Include="Mapping\MSAccess\WiderAchievementMap.cs" />
+    <Compile Include="School.cs" />
+    <Compile Include="SchoolProfile\CurriculumObj.cs" />
+    <Compile Include="SchoolProfile\EthnicObj.cs" />
+    <Compile Include="Mapping\MSAccess\StudentSIMDMap.cs" />
+    <Compile Include="SchoolProfile\FSMObj.cs" />
+    <Compile Include="SchoolProfile\NationalityObj.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchoolProfile\SchCriteriaParameter.cs" />
+    <Compile Include="SchoolProfile\SIMDObj.cs" />
+    <Compile Include="SchoolProfile\StdStageObj.cs" />
+    <Compile Include="SchoolProfile\StudentSIMD.cs" />
+    <Compile Include="SchoolProfile\WiderAchievementObj.cs" />
+    <Compile Include="ScotlandMapData\Entities\CouncilObj.cs" />
+    <Compile Include="ScotlandMapData\Entities\DataZoneObj.cs" />
+    <Compile Include="ScotlandMapData\Entities\IntermediateZoneObj.cs" />
+    <Compile Include="ScotlandMapData\Mappings\CouncilMap.cs" />
+    <Compile Include="ScotlandMapData\Mappings\DataZoneMap.cs" />
+    <Compile Include="ScotlandMapData\Mappings\IntermediateZoneMap.cs" />
+    <Compile Include="Users.cs" />
+    <Compile Include="Year.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ACCDataStore.Core\ACCDataStore.Core.csproj">
+      <Project>{1089dbbb-7b0b-482b-aae0-d40cc98d8d75}</Project>
+      <Name>ACCDataStore.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACCDataStore.Entity.RenderObject\ACCDataStore.Entity.RenderObject.csproj">
+      <Project>{88628c45-bfd4-4ab4-b356-8a7bd1306cab}</Project>
+      <Name>ACCDataStore.Entity.RenderObject</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

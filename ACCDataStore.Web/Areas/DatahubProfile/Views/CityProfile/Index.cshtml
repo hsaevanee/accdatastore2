@@ -1,0 +1,253 @@
+﻿@section Header {
+    <link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/CityProfile/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/CityProfile/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/CityProfile/service.js"></script>
+}
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select Schools</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left" width="10%">
+                                            Dataset
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eYear.Name for eYear in mIndex.ListDataset track by eYear.Code"
+                                                    ng-model="mIndex.DatasetSelected"
+                                                    ng-change="Update()"></select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" width="10%">
+                                            Center Types
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eType.Name for eType in mIndex.ListCentreTypes track by eType.Code"
+                                                    ng-model="mIndex.ListCentreSelected"
+                                                    ng-change="Update()"></select>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button type="button" class="btn btn-info" ng-click="doGetDatabyCatagory()">View</button>
+                                        </td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12" align="center">
+                    <img height="100" width="100" src="@Url.Content("~/Resources/Download/loading.gif")" ng-show="bShowLoading" />
+                </div>
+            </div>
+         </div>
+
+        <div class="container" ng-if="mIndex.bShowContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Participation Cohort by {{ mIndex.ListCentreSelected.Name}} - {{ mIndex.DatasetSelected.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">{{ mIndex.ListCentreSelected.Name}}</th>
+                                        <th class="text-center" ng:repeat="(i,th) in mIndex.ListingData[0].listdata" ng:class="selectedCls(i)" ng:click="changeSorting(i)">{{th.Code}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="eSchool in mIndex.ListingData | orderBy: 'sPercent'" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eSchool.centrename }}</td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetDataDetails(eSchool.seedcode, mIndex.ListCentreSelected.Code ,eSchool.listdata[0].Code)">{{ eSchool.listdata[0].sPercent}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetDataDetails(eSchool.seedcode, mIndex.ListCentreSelected.Code ,eSchool.listdata[1].Code)">{{ eSchool.listdata[1].sPercent}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetDataDetails(eSchool.seedcode, mIndex.ListCentreSelected.Code ,eSchool.listdata[2].Code)">{{ eSchool.listdata[2].sPercent}}</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="text-left"> Note: Percentages may not total 100% due to rounding</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartPositiveCohortbyCentre"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartNonPositiveCohortbyCentre"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartUnknownCohortbyCentre"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<pre>
+            {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+    <script id="templates/list.html" type="text/ng-template">
+        <div class="container" ng-if="mIndex.bShowContentA">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4> {{mIndex.selectedcentre.name}}  - {{mIndex.selectedDataset.Name}}  </h4>
+                            <h4 class="panel-title text-center">   {{mIndex.selecteddatacatagory.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Destinations</th>
+                                        <th class="text-center" colspan="2" ng-repeat="eSchool in mIndex.listSchoolData">{{ eSchool.SchoolName}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-if="mIndex.selecteddatacatagory.Code === 'Positive Destination'">
+                                    <tr ng-repeat="eSchool in mIndex.listSchoolData[0].PositiveDestinations" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.listSchoolData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.PositiveDestinations[nTopicIndex].scount}}</button>
+                                        </td>
+                                        <td><input type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.PositiveDestinations[nTopicIndex].sPercent }}" onclick="location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" /></td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                </tbody>
+
+                                <tbody ng-if="mIndex.selecteddatacatagory.Code === 'Non-Positive Destination'">
+                                    <tr ng-repeat="eSchool in mIndex.listSchoolData[0].NonPositiveDestinations" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.listSchoolData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.NonPositiveDestinations[nTopicIndex].scount}}</button>
+                                        </td>
+                                        <td><input type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.PositiveDestinations[nTopicIndex].sPercent }}" onclick="location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" /></td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                </tbody>
+
+                                <tbody ng-if="mIndex.selecteddatacatagory.Code === 'Unknown Destination'">
+                                    <tr>
+                                        <td class="text-left">Unknown</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.listSchoolData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchoolInfo.Unknown.Code)">{{eSchoolInfo.Unknown.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.Unknown.sPercent }}" onclick="location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="container" ng-if="mIndex.bShowContentB">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4> {{mIndex.CentreName.name}}  ( {{mIndex.DatasetSelected.Name}} ) </h4>
+                            <h4 class="panel-title text-center">  Pupils List - {{mIndex.DataTitle}}</h4>
+                        </div>
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Age</th>
+                                        <th class="text-center">Gender</th>
+                                        <th class="text-center">CSS_Address</th>
+                                        <th class="text-center">CSS_Postcode</th>
+                                        <th class="text-center">Tel. Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="eSchool in mIndex.ListPupils" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{eSchool.Forename}} {{eSchool.Surname}}</td>
+                                        <td class="text-center">{{eSchool.Age}}</td>
+                                        <td class="text-center">{{eSchool.Gender}}</td>
+                                        <td class="text-left">{{eSchool.CSS_Address}}</td>
+                                        <td class="text-center">{{eSchool.CSS_Postcode}}</td>
+                                        <td class="text-center">{{eSchool.Telephone}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        @*<pre>
+                {{ mIndex | json }}
+            </pre>*@
+    </script>
+
+</div>

@@ -1,0 +1,154 @@
+﻿@section Header {
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb pull-left">
+                    <li>
+                        <a href="@Url.Action("index", "Index" , new { area="" ,id="" }, null)">Home</a>
+                    </li>
+                    <li class="active">Education</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Team Members -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-left text-info">Education</h1>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <center>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="http://www.abernet.org/" target="_blank">Abernet</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="http://www.abernet.org/" target="_blank">
+                            <img src="@Url.Content("~/Images/Aberdeen Council Logo.png")" alt="community planning">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="https://secure.glowscotland.org.uk/login/" target="_blank">Glow</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="https://secure.glowscotland.org.uk/login/" target="_blank">
+                            <img src="@Url.Content("~/Images/Glow Logo.png")" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="https://insight.scotxed.net/Account/ChooseIdentityProvider?ReturnUrl=%2f" target="_blank">Insight</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="https://insight.scotxed.net/Account/ChooseIdentityProvider?ReturnUrl=%2f" target="_blank">
+                            <img src="@Url.Content("~/Images/Insight Logo.png")" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="http://acc-intranet.seemis.org/pub/" target="_blank">SEEMiS</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="http://acc-intranet.seemis.org/pub/" target="_blank">
+                            <img src="@Url.Content("~/Images/Seemis Logo.png")" alt="management">
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+        </div>
+ 
+
+        <div class="row">
+            <center>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="https://primary.cemcentre.org/PIPSPlusNet/Login.aspx " target="_blank">CEM Primary (ASPECTS & PIPS)</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="https://primary.cemcentre.org/PIPSPlusNet/Login.aspx " target="_blank">
+                            <img src="@Url.Content("~/Images/CEMlogo.png")" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="https://primary.cemcentre.org/InCASPlusNet/Login.aspx?ReturnUrl=%2fInCASPlusNet%2f" target="_blank">CEM Primary (InCAS)</a>&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="https://primary.cemcentre.org/InCASPlusNet/Login.aspx?ReturnUrl=%2fInCASPlusNet%2f" target="_blank">
+                            <img src="@Url.Content("~/Images/CEMlogo.png")" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="category-label">
+                        <h3><a href="https://css.cemcentre.org/SecondaryPlusNet/Login.aspx?ReturnUrl=%2fSecondaryPlusNet%2f" target="_blank">CEM Secondary (MidYis & SOSCA)</a></h3>
+                    </div>
+                    <div class="imagebox">
+                        <a href="https://css.cemcentre.org/SecondaryPlusNet/Login.aspx?ReturnUrl=%2fSecondaryPlusNet%2f" target="_blank">
+                            <img src="@Url.Content("~/Images/CEMlogo.png")" />
+                        </a>
+                    </div>
+                </div>
+
+            </center>
+
+        </div>
+        @*<div class="row">
+            <div class="col-md-12">
+                <h1 class="text-left text-info">Value Added Assessment</h1>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="img-rounded">
+                    <a href="https://primary.cemcentre.org/PIPSPlusNet/Login.aspx " target="_blank"><img src="@Url.Content("~/Images/CEM.png")" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="https://primary.cemcentre.org/PIPSPlusNet/Login.aspx " target="_blank">CEM Primary (ASPECTS & PIPS)</a> </h4>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="img-rounded">
+                    <a href="https://primary.cemcentre.org/InCASPlusNet/Login.aspx?ReturnUrl=%2fInCASPlusNet%2f" target="_blank"><img src="@Url.Content("~/Images/CEM.png")" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="https://primary.cemcentre.org/InCASPlusNet/Login.aspx?ReturnUrl=%2fInCASPlusNet%2f" target="_blank">CEM Primary (InCAS) </a> </h4>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="img-rounded">
+                    <a href="https://css.cemcentre.org/SecondaryPlusNet/Login.aspx?ReturnUrl=%2fSecondaryPlusNet%2f" target="_blank"><img src="@Url.Content("~/Images/CEM.png")" height="216" alt=""></a> 
+                </div>
+                <div class="caption">
+                    <h4><a href="https://css.cemcentre.org/SecondaryPlusNet/Login.aspx?ReturnUrl=%2fSecondaryPlusNet%2f" target="_blank">CEM Secondary (MidYis & SOSCA) </a> </h4>
+                </div>
+            </div>
+        </div>*@
+    </div>
+
+
+
+</body>
+
+
+
+
+

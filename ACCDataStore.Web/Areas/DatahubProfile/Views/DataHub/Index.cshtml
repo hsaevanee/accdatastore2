@@ -1,0 +1,660 @@
+﻿@section Header {
+    @*<link rel="stylesheet" href="~/Content/accds/areas/school_profiles/primary_school/index.css" />*@
+<link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/DataHub/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/DataHub/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/DataHub/service.js"></script>
+    @*<script type="text/javascript" src="~/bower_components/highcharts/modules/exporting.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts/modules/offline-exporting.js"></script>*@
+
+@*<script src="jquery.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="angular.min.js"></script>*@
+<script src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
+<link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+}
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select Schools</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left" width="10%">
+                                            Dataset
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eYear.Name for eYear in mIndex.ListDataset track by eYear.Code"
+                                                    ng-model="mIndex.DatasetSelected" ng-change="updateData()"></select>
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    @*<tr>
+                                        <td class="text-left" width="10%">
+                                            Report
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eReport.Name for eReport in mIndex.ListReport track by eReport.Code"
+                                                    ng-model="mIndex.ReportsetSelected"></select>
+                                        </td>
+                                        <td colspan="2"></td>
+                                    </tr>*@
+                                    <tr>
+                                        <td class="text-left" width="10%">
+                                            School Name
+                                        </td>
+                                        <td class="text-left">
+                                            <ui-select multiple limit="2" ng-model="mIndex.ListSchoolSelected" theme="bootstrap" close-on-select="true" ng-change="updateData()">
+                                                <ui-select-match placeholder="Select school...">{{ $item.Name }}</ui-select-match>
+                                                <ui-select-choices repeat="eSchool in mIndex.ListSchool">
+                                                    <div ng-bind-html="eSchool.Name"></div>
+                                                </ui-select-choices>
+                                            </ui-select>                                          
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info" ng-click="doGetDatabySchool()">View</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" width="10%">
+                                            Neighbourhoods
+                                        </td>
+                                        <td class="text-left">
+                                            <ui-select multiple limit="5" ng-model="mIndex.ListNeighbourSelected" theme="bootstrap" close-on-select="true" ng-change="updateData()">
+                                                <ui-select-match placeholder="Select Neighbourhood...">{{ $item.Name }}</ui-select-match>
+                                                <ui-select-choices repeat="eNeighbour in mIndex.ListNeighbourhood">
+                                                    <div ng-bind-html="eNeighbour.Name"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info" ng-click="doGetDatabyNeighbourhood()">View</button>
+                                        </td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12" align="center">
+                    <img height="100" width="100" src="@Url.Content("~/Resources/Download/loading.gif")" ng-show="bShowLoading" />
+                </div>
+            </div>
+         </div>
+
+        <div class="container" ng-if="mIndex.bShowContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Opportunities for All Clients - {{ mIndex.DatasetSelected.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"></th>
+                                        <th class="text-center" colspan="2" ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SchoolName}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left">All Clients</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.AllClients.Code)">{{ eSchool.AllClients.count}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchool.AllClients.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Males</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.Males.Code)">{{ eSchool.Males.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.Males.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Females</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.Females.Code)">{{ eSchool.Females.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.Females.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Pupils 16</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.Pupil16.Code)">{{ eSchool.Pupil16.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.Pupil16.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Pupils 17</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.Pupil17.Code)">{{ eSchool.Pupil17.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.Pupil17.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Pupils 18</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.Pupil18.Code)">{{ eSchool.Pupil18.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.Pupil18.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Pupils 19</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.Pupil19.Code)">{{ eSchool.Pupil19.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.Pupil19.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Moved Outwith Scotland</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.MovedOutwithScotland.Code)">{{ eSchool.MovedOutwithScotland.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.MovedOutwithScotland.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Measure Summary of Key Results - {{ mIndex.DatasetSelected.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"></th>
+ 
+                                        <th class="text-center" colspan="2" ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SchoolName}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr class="info">
+
+                                        <td class="text-left">
+                                           <b>Participating</b>
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.Participating_count}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.Participating_Percent}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+
+                                    <tr>
+
+                                        <td class="text-right">
+                                            {{  mIndex.ListingData[0].listPEducationGroup.name}}
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEducationGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEducationGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-right">
+                                            {{  mIndex.ListingData[0].listPEmploymentGroup.name}}
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEmploymentGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEmploymentGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-right">
+                                            {{  mIndex.ListingData[0].listPTrainingGroup.name}}
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPTrainingGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPTrainingGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+
+
+                                    <tr class="info">
+
+                                        <td class="text-left">
+                                            <b>Not Participating</b>
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.NotParticipating_count}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.NotParticipating_Percent}}
+                                        </td> 
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">
+                                            {{  mIndex.ListingData[0].listNPUnemployedSeekingGroup.name}}
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listNPUnemployedSeekingGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listNPUnemployedSeekingGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">
+                                            {{  mIndex.ListingData[0].listNPUnemployedNotSeekingGroup.name}}
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listNPUnemployedNotSeekingGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listNPUnemployedNotSeekingGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                    <tr class="info">
+                                        <td class="text-left">
+                                            <b>Unknown</b>
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            {{eSchool.Unknown.scount}}
+                                        </td>
+                                        <td align="center">
+                                            {{eSchool.Unknown.sPercent}}%
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartGroupDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Participating - {{ mIndex.DatasetSelected.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"></th>
+                                        <th class="text-center" colspan="2" ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SchoolName}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>        
+                                    <tr class="info">
+                                        <td class="text-left">
+                                            <b>{{  mIndex.ListingData[0].listPEducationGroup.name}}</b>
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEducationGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEducationGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>                       
+                                    <tr ng-repeat="eSchool in mIndex.ListingData[0].listPEducationGroup.listdata" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.listPEducationGroup.listdata[nTopicIndex].scount}}</button>
+                                        </td>
+                                        <td><input type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.listPEducationGroup.listdata[nTopicIndex].sPercent }}" onclick="location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" /></td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                    <tr class="info">
+                                        <td class="text-left">
+                                            <b>{{  mIndex.ListingData[0].listPEmploymentGroup.name}}</b>
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEmploymentGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPEmploymentGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>     
+                                    <tr  ng-repeat="eSchool in mIndex.ListingData[0].listPEmploymentGroup.listdata" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.listPEmploymentGroup.listdata[nTopicIndex].scount}}</button>
+                                        </td>
+                                        <td><input type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.listPEmploymentGroup.listdata[nTopicIndex].sPercent }}" onclick="location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" /></td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                    <tr class="info">
+                                        <td class="text-left">
+                                            <b>{{  mIndex.ListingData[0].listPTrainingGroup.name}}</b>
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPTrainingGroup.checkSumCount}}
+                                        </td>
+                                        <td align="center">
+                                            {{ eSchoolInfo.listPTrainingGroup.checkSumPercentage}}%
+                                        </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>   
+                                    <tr ng-repeat="eSchool in mIndex.ListingData[0].listPTrainingGroup.listdata" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.listPTrainingGroup.listdata[nTopicIndex].scount}}</button>
+                                        </td>
+                                        <td><input type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.listPTrainingGroup.listdata[nTopicIndex].sPercent }}" onclick=" l location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })' " /></td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                        <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Not Participating - {{ mIndex.DatasetSelected.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+ 
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center"></th>
+                                            <th class="text-center" colspan="2" ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SchoolName}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="info">
+                                            <td class="text-left">
+                                                <b>{{  mIndex.ListingData[0].listNPUnemployedSeekingGroup.name}}</b>
+                                            </td>
+                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                            <td align="center">
+                                                {{ eSchoolInfo.listNPUnemployedSeekingGroup.checkSumCount}}
+                                            </td>
+                                            <td align="center">
+                                                {{ eSchoolInfo.listNPUnemployedSeekingGroup.checkSumPercentage}}%
+                                            </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                            <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                        </tr>
+                                        <tr ng-repeat="eSchool in mIndex.ListingData[0].listNPUnemployedSeekingGroup.listdata" ng-init="nTopicIndex = $index">
+                                            <!-- topic loop -->
+                                            <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
+                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                            <td align="center">
+                                                <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.listNPUnemployedSeekingGroup.listdata[nTopicIndex].scount}}</button>
+                                            </td>
+                                            <td><input type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.listNPUnemployedSeekingGroup.listdata[nTopicIndex].sPercent }}" onclick="location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" /></td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                            <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                        </tr>
+                                        <tr class="info">
+                                            <td class="text-left">
+                                                <b>{{  mIndex.ListingData[0].listNPUnemployedNotSeekingGroup.name}}</b>
+                                            </td>
+                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                            <td align="center">
+                                                {{ eSchoolInfo.listNPUnemployedNotSeekingGroup.checkSumCount}}
+                                            </td>
+                                            <td align="center">
+                                                {{ eSchoolInfo.listNPUnemployedNotSeekingGroup.checkSumPercentage}}%
+                                            </td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                            <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                        </tr>
+                                        <tr ng-repeat="eSchool in mIndex.ListingData[0].listNPUnemployedNotSeekingGroup.listdata" ng-init="nTopicIndex = $index">
+                                            <!-- topic loop -->
+                                            <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
+                                            <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
+                                            <td align="center">
+                                                <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.listNPUnemployedNotSeekingGroup.listdata[nTopicIndex].scount}}</button>
+                                            </td>
+                                            <td><input type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{ eSchoolInfo.listNPUnemployedNotSeekingGroup.listdata[nTopicIndex].sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "Datahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" /></td><!-- percent data, based on nTopicIndex & nYearIndex -->
+                                            <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+ 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Unknown - {{ mIndex.DatasetSelected.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"></th>
+                                        <th class="text-center" colspan="2" ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SchoolName}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left">Unknown</td>
+                                        <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                        <td align="center">
+                                            <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchool.SeedCode,eSchool.Centretype,eSchool.Unknown.Code)">{{eSchool.Unknown.scount}}</button>
+                                        </td>
+                                        <td align="center">
+                                            <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="{{eSchool.Unknown.sPercent}}" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupils" })'" />
+                                        </td>
+                                        <td ng-hide="true" ng-repeat-end></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartPupilsAges"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+
+                        <div class="panel-body">
+                            <button type="button" class="btn btn-info" ng-click="GetPositiveChart()">Participating</button>
+                            <button type="button" class="btn btn-info" ng-click="GetNonPositiveChart()">Not Participating</button>
+                            <button type="button" class="btn btn-info" ng-click="GetUnknownChart()">Unknown</button>
+                            <button type="button" class="btn btn-info" ng-click="GetTimelineChart()">All Participation</button>
+                            <highchart config="mIndex.ChartData.ChartTimelineDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartOverallDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartPositiveDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-body">
+                            <highchart config="mIndex.ChartData.ChartNonPositiveDestinations"></highchart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @*<pre>
+            {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+    <script id="templates/list.html" type="text/ng-template">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4> {{mIndex.CentreName.name}}  ( {{mIndex.DatasetSelected.Name}} ) </h4>
+                            <h4 class="panel-title text-center">  Pupils List - {{mIndex.DataTitle}}</h4>
+                        </div>
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Age</th>
+                                        <th class="text-center">Gender</th>
+                                        <th class="text-center">CSS_Address</th>
+                                        <th class="text-center">CSS_Postcode</th>
+                                        <th class="text-center">Tel. Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="eSchool in mIndex.ListPupils" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{eSchool.Forename}} {{eSchool.Surname}}</td> 
+                                        <td class="text-center">{{eSchool.Age}}</td>
+                                        <td class="text-center">{{eSchool.Gender}}</td>
+                                        <td class="text-left">{{eSchool.CSS_Address}}</td>
+                                        <td class="text-center">{{eSchool.CSS_Postcode}}</td>
+                                        <td class="text-center">{{eSchool.Telephone}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        @*<pre>
+            {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+
+
+
+</div>
