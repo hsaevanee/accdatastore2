@@ -318,7 +318,7 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
         {
             try
             {
-
+                // Send email
                 if (ModelState.IsValid)
                 {
                     var senderEmail = new MailAddress("hataichanok.saevanee@gmail.com", "Janny");
