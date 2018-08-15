@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.Web", "ACCDataStore.Web\ACCDataStore.Web.csproj", "{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.Entity", "ACCDataStore.Entity\ACCDataStore.Entity.csproj", "{8A578AE3-A65B-4EBF-AFD0-458C455C408A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.Repository", "ACCDataStore.Repository\ACCDataStore.Repository.csproj", "{8C8CC883-DC02-419F-8160-B9DD8A8AE273}"
@@ -15,16 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.DatahubSummary
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.Entity.RenderObject", "ACCDataStore.Entity.RenderObject\ACCDataStore.Entity.RenderObject.csproj", "{88628C45-BFD4-4AB4-B356-8A7BD1306CAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.Web", "ACCDataStore.Web\ACCDataStore.Web.csproj", "{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A578AE3-A65B-4EBF-AFD0-458C455C408A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A578AE3-A65B-4EBF-AFD0-458C455C408A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A578AE3-A65B-4EBF-AFD0-458C455C408A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,8 +41,15 @@ Global
 		{88628C45-BFD4-4AB4-B356-8A7BD1306CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88628C45-BFD4-4AB4-B356-8A7BD1306CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88628C45-BFD4-4AB4-B356-8A7BD1306CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C16B0BC2-4EB7-4A5B-96AE-ED7774AC0EE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56FBDE07-A94A-493A-908D-F8F6157ED96B}
 	EndGlobalSection
 EndGlobal

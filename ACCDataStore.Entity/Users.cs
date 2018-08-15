@@ -21,6 +21,7 @@ namespace ACCDataStore.Entity
         public virtual bool IsPublicUser { get; set; }
         public virtual string enablekey { get; set; }
         public virtual int enable { get; set; }
+        public virtual int no_dataset_request { get; set; }
 
     }
 }

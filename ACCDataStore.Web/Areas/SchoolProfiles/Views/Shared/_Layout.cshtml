@@ -23,17 +23,19 @@
     <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
     <link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
     <link rel="stylesheet" href="~/Content/accdatastore/areas/SchoolProfiles/SchoolProfile.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
     @RenderSection("style", required: false)
     <script type="text/javascript" src="~/Scripts/accdatastore/views/global.js"></script>
     <script type="text/javascript" src="~/Scripts/jquery-2.1.1.min.js"></script>
-    @*<script type="text/javascript" src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>*@
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-ui-select/dist/select.min.js"></script>
     <script type="text/javascript" src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script> 
+    <script type="text/javascript" src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
     <script type="text/javascript" src="~/bower_components/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="~/bower_components/highcharts/highcharts-3d.js"></script>
     <script type="text/javascript" src="~/bower_components/ngmap/build/scripts/ng-map.min.js"></script>
@@ -47,8 +49,7 @@
         var sContextPath = '@Url.Content("~")';
     </script>
     @RenderSection("Header")
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
     <!-- Navigation -->
@@ -71,7 +72,7 @@
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact us</a>
                     </li>
                     <li>
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About us</a>

@@ -22,13 +22,13 @@
     <script src="~/Scripts/accdatastore/views/global.js"></script>
     <script type="text/javascript" src="~/Scripts/jquery-2.1.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
 
     <script>
         var sContextPath = '@Url.Content("~")';
     </script>
     @RenderSection("Header")
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
@@ -52,7 +52,7 @@
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "contact" }, null)">Contact</a>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "contact" }, null)">Contact us</a>
                     </li>
                     <li>
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About us</a>

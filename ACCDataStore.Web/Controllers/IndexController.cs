@@ -90,11 +90,11 @@ namespace ACCDataStore.Web.Controllers
                     ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("PandP");
                 }
-                else if (id.ToLower().Equals("test"))
+                else if (id.ToLower().Equals("simd2016"))
                 {
                     eGeneralSettings.TeampgCounter++;
                     ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
-                    return View("Test");
+                    return View("SIMD2016");
                 }
                 else {
                     eGeneralSettings.HomepgCounter++;

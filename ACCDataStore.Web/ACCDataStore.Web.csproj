@@ -22,6 +22,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -226,12 +227,8 @@
     <Content Include="Content\accdatastore\BaseContent.css" />
     <Content Include="Content\accdatastore\views\global.css" />
     <Content Include="Content\bootstrap-multiselect.css" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\heroic-features.css" />
-    <Content Include="Content\justified-nav.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -580,8 +577,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\HeatMapIndex.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\WiderAchievement\Index.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\WiderAchievement\Index 2.cshtml" />
@@ -656,11 +651,12 @@
     <Content Include="Views\Index\Management.cshtml" />
     <Content Include="Views\Index\PandP.cshtml" />
     <Content Include="Views\Index\Education.cshtml" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="Views\Index\Test.cshtml" />
+    <Content Include="Views\Index\SIMD2016.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

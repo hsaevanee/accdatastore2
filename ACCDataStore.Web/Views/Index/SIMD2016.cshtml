@@ -1,0 +1,50 @@
+﻿@section Header {
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+}
+
+@{
+    ViewBag.Title = "Test Power BI";
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ol class="breadcrumb pull-left">
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "" }, null)">Home</a>
+                    </li>
+                    <li class="active">SIMD 2016</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h1 class="text-left text-info">
+                    SIMD 2016
+                </h1>
+                <hr />
+            </div>
+
+        </div>
+        <div class="row" style="width:100%;height:500px">
+            @*<div class="embed-responsive embed-responsive-16by9">
+                <iframe  class="embed-responsive-item" src="https://app.powerbi.com/view?r=eyJrIjoiYjA3ZWY1ZjItZmQyMy00ZDgxLWE2NGMtMTg2MjAyZmNiMzFiIiwidCI6IjI0YTkwZjZiLWJmM2QtNGQxMy1hMmE3LTg5MzY5Y2ViMzVlYiIsImMiOjh9" allowfullscreen></iframe>
+            </div>*@
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiYjA3ZWY1ZjItZmQyMy00ZDgxLWE2NGMtMTg2MjAyZmNiMzFiIiwidCI6IjI0YTkwZjZiLWJmM2QtNGQxMy1hMmE3LTg5MzY5Y2ViMzVlYiIsImMiOjh9" frameborder="0" allowfullscreen="true"></iframe>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Content Row -->
+
+    </div>
+</body>
+

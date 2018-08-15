@@ -18,6 +18,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
     @RenderSection("style", required: false)
 
     <link rel="stylesheet" href="~/bower_components/angular-ui-select/dist/select.min.css">
@@ -41,8 +43,7 @@
         var sContextPath = '@Url.Content("~")';
     </script>
     @RenderSection("Header")
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
     <!-- Navigation -->

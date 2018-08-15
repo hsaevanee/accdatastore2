@@ -9,16 +9,20 @@
         <h1></h1>
         <div class="jumbotron">
             <center>
-                <h1>Aberdeen City Council Data Observatory</h1>
-                <p class="text-info">A Data Observatory that combines Aberdeen's open data based on 2011 data-zones to provide insights on the indicators shown below which represent Scottish Index of Multiple Deprevation, Population, Child Benefits and Housing</p>
+                <h1>Aberdeen Data Observatory</h1>
+                <p class="text-info">
+                    A Data Observatory is a form of information system built with business intelligence tools, designed with the capability to support statistical data, and the analysis of geospatial data.
+                </p>
             </center>       
         </div>    
 
         <div class="row">
             <div class="col-lg-12">
                 <h2 class="text-left text-info">Data Hub</h2>
-                <h4 class="text-left">To access data hub please fill in 
-                    <a href="@Url.Action("Register", "IndexAuthorisation", new { Area = "Authorisation" }, null)">Request Form</a>
+                <h4 class="text-left">
+                    To access data hub please fill in
+                    @*<a href="@Url.Action("Register", "IndexAuthorisation", new { Area = "Authorisation" }, null)">Request Form</a>*@
+                    <a href="@Url.Content("~/Resources/Download/ADOAccessForm.docx")" target="_blank">Request Form</a>
                 </h4>
             </div>
         </div>
@@ -72,14 +76,14 @@
                 </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="category-label">
-                        <h3><a href="http://localhost:2777/Content/accdatastore/static/testpowerbi.html" target="_blank">Test Power BI</a></h3>
+                        <h3><a href="@Url.Action("Index", "Index", new { Area = "", id = "simd2016" }, null)" target="_blank">SIMD 2016</a></h3>
                     </div>
                     <div class="imagebox">
-                        <a href="http://localhost:2777/Content/accdatastore/static/testpowerbi.html" target="_blank">
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "simd2016" }, null)" target="_blank">
                             <img src="@Url.Content("~/Images/WorkInProgress4.png")" />
                             <div class="main-content">
                                 <div class="content">
-                                    <p>Power BI dashboard</p>
+                                    <p>View SIMD 2016 data</p>
                                 </div>
                             </div>
                         </a>
@@ -121,7 +125,7 @@
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "education" }, null)" target="_blank">
                             <img src="@Url.Content("~/Images/EducationLogo.png")" />
                             <div class="main-content">
-                                <div class="content">
+                                <div class="content center-block">
                                     <p>Education</p>
                                 </div>
                             </div>

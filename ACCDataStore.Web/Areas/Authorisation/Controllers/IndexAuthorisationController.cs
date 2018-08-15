@@ -28,6 +28,8 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
 
         private const string sKey =  "ilovefood";
 
+        private const string SenderEmail = "aberdeendataobservatory@gmail.com";
+        private const string SenderPassword = "Jan161980!";
         public IndexAuthorisationController(IGenericRepository2nd rpGeneric2nd)
         {
             this.rpGeneric2nd = rpGeneric2nd;
@@ -208,9 +210,6 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
         {
             FormsAuthentication.SignOut();
             Session.Abandon(); // it will clear the session at the end of request
-            //return Redirect("http://localhost:2777/");
-            
-
             return Redirect("~/");
         }
 
@@ -281,6 +280,8 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                 eUser.enable = 0;
                 //eUser.enablekey = GenerateKey();
                 //this.rpGeneric2nd.SaveOrUpdate<Users>(eUser);
+
+                
                 return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 //return RedirectToAction("Index", "AdminPanel", new { Area = "Admin", id = "" });
             }
@@ -302,9 +303,9 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                 PrimaryPort = 587,
                 SecondaryPort = 0,
                 SecondayDomain = "",
-                ToEmail = "",
-                UsernameEmail = "speech2text.alarm@gmail.com",
-                UsernamePassword = "text2speech"
+                ToEmail = "hataichanok_s@yahoo.com",
+                UsernameEmail = SenderEmail,
+                UsernamePassword = SenderPassword
             };
                             var emailSender = new AuthMessageSender(eEmailSettings);
                     await emailSender.SendEmailAsync("", "Result file for job ", "Please see attached file.", null);
@@ -312,45 +313,98 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
              
         }
 
+        private void generateEmail(Users eUsers)
+        { 
+            
+        
+        
+        
+        
+        }
 
-        [HttpPost]
-        public ActionResult SendEmail(string receiver, string subject, string message)
+        private bool SendEmail(string receiver, string subject, string message, string key) 
         {
+            bool sendcomplete = false;
             try
             {
-                // Send email
-                if (ModelState.IsValid)
-                {
-                    var senderEmail = new MailAddress("hataichanok.saevanee@gmail.com", "Janny");
+                var senderEmail = new MailAddress(SenderEmail, "Janny");
                     var receiverEmail = new MailAddress("hataichanok_s@yahoo.com", "Receiver");
-                    var password = "Pang1232498!";
                     var sub = subject;
                     var body = message;
                     var smtp = new SmtpClient
                     {
                         Host = "smtp.gmail.com",
-                        Port = 587,
                         EnableSsl = true,
+                        Port = 587,
                         DeliveryMethod = SmtpDeliveryMethod.Network,
                         UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(senderEmail.Address, password)
+                        Credentials = new NetworkCredential(senderEmail.Address, SenderPassword)
                     };
                     using (var mess = new MailMessage(senderEmail, receiverEmail)
                     {
                         Subject = subject,
-                        Body = body
+                        Body = "http://localhost:2777/Authorisation/IndexAuthorisation/EnableAccount?key="+key
                     })
                     {
                         smtp.Send(mess);
+                        sendcomplete = true;
                     }
-                    return View();
-                }
+
+                    return sendcomplete;
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Some Error"+ex;
+                sendcomplete = false;
+            }
+
+            
+            return sendcomplete;
+        }
+
+        [HttpPost]
+        public ActionResult SubmitRegister(string receiver, string subject, string message)
+        {
+            try
+            {              
+
+                // Send email
+                //if (ModelState.IsValid)
+                //{
+
+                //    var senderEmail = new MailAddress(SenderEmail, "Janny");
+                //    var receiverEmail = new MailAddress("hataichanok_s@yahoo.com", "Receiver");
+                //    var sub = subject;
+                //    var body = message;
+                //    var smtp = new SmtpClient
+                //    {
+                //        Host = "smtp.gmail.com",
+                //        Port = 587,
+                //        EnableSsl = true,
+                //        DeliveryMethod = SmtpDeliveryMethod.Network,
+                //        UseDefaultCredentials = false,
+                //        Credentials = new NetworkCredential(senderEmail.Address, SenderPassword)
+                //    };
+                //    using (var mess = new MailMessage(senderEmail, receiverEmail)
+                //    {
+                //        Subject = subject,
+                //        Body = "http://localhost:2777/Authorisation/IndexAuthorisation/EnableAccount?key=AQALQYNGUYLUWGSMAUDOLWYSGSIPICLIVEOMWRIE"
+                //    })
+                //    {
+                //        smtp.Send(mess);
+                //    }
+                //    return Redirect("~/");
+                //}
+
+                string key = "AQALQYNGUYLUWGSMAUDOLWYSGSIPICLIVEOMWRIE";
+                bool test = SendEmail(receiver, subject, message,key );
             }
             catch (Exception)
             {
                 ViewBag.Error = "Some Error";
             }
-            return View();
+            return Redirect("~/");
         }  
 
         private string GenerateKey() 
@@ -401,12 +455,29 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
             string key = Request.Params["key"];
             Users eUser = this.rpGeneric2nd.Find<Users>(" From Users where enablekey = :key ", new string[] { "key" }, new object[] { key }).FirstOrDefault();
             if (eUser != null) {
-                //if enable = 1/; then generate a new key to a dataset owner 
-                eUser.enable = 1;
+                switch (eUser.enable)
+                {
+                    case 0:
+                        //Manager approve
+                        Console.WriteLine("0");
+                        eUser.enable = 1;
+                        //set enable = 1/; then generate a new key to a dataset owner 
+                        //SendEmail("HSaevanee@aberdeencity.gov.uk", "Test", "Test", "AQALQYNGUYLUWGSMAUDOLWYSGSIPICLIVEOMWRIE");
+
+                        break;
+                    case 1:
+                        //Dataset Owner Approve 
+                        Console.WriteLine("1");
+                        eUser.enable = 2;
+                        break;
+                }
+              
                 this.rpGeneric2nd.SaveOrUpdate<Users>(eUser);
             }
             
         }
+
+
         static string EncryptString(string Message, string Passphrase)
         {
             byte[] Results;

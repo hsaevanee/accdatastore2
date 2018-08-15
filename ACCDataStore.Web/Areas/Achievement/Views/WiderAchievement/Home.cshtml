@@ -1,7 +1,5 @@
 ﻿@model ACCDataStore.Web.Areas.Achievement.ViewModels.WiderAchievement.WiderAchievementViewModel
 @section Header {
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/highcharts.js"></script>
     <script src="~/Scripts/accdatastore/areas/schoolprofile/views/WiderAchievement/IndexWiderAchievement.js"></script>
 }
 @{
@@ -18,72 +16,30 @@
             </a>
         </div>
         <div class="col-md-9">
-            <h2>Wider Achievement</h2>
+            <h2 class="text-left text-info">Wider Achievement</h2>
             <p class="text-justify">
                 The data contained here details the range of wider achievement courses which have been delivered by ACC establishments and / or partner organisations between 2013 and 2016.  The intention is to regularly update these data sets to provide an accurate picture of the courses and awards being completed by young people across the city.
 
                 Please note that while the majority of the data is based on the number of awards completed by participants, a small amount of data is based on the number of awards registered at that establishment (Sports Leaders & Junior Award Scheme for Schools data).
             </p>
-            <p>
+            <p class="text-justify">
                 If you have any queries regarding the data, please contact 
             </p>
-            <p>
+            <p class="text-justify">
                 Mark Pain
             </p>
-            <p>
+            <p class="text-justify">
                 Wider Achievement Manager
             </p>
-            <p>
+            <p class="text-justify">
                 Adventure Aberdeen
             </p>
-            <p>
+            <p class="text-justify">
                 <i class="fa fa-envelope-o"></i>
                 <abbr title="Email">E</abbr>: <a href="mailto:mapain@aberdeencity.gov.uk">mapain@aberdeencity.gov.uk</a>
 
             </p>
         </div>
-    </div>
-
-        @*<div class="row">
-            <div class="col-md-12">
-                <h2>Wider Achievement Framework Data 2013 - 2015</h2>
-                <div class="panel panel-primary text-center">
-                    <div class="panel-heading">
-                        <h4 class="panel-title" style="text-align: center"> Wider Achievement Framework Data 2013 - 2015</h4>
-                    </div>
-                    <div class="panel-body">
-                        <table id="WiderAchievementdatatable" class="table table-hover table-bordered">
-                            <thead>
-                                <tr>
-                                    <th colspan="2" class="text-center"></th>
-                                    <th colspan="3" class="text-center">Citywide Totals</th>
-                                </tr>
-
-                                <tr>
-                                    <th class="text-center">Age Range</th>
-                                    <th class="text-center">Awardname</th>
-                                    <th class="text-center"> 2013-2014</th>
-                                    <th class="text-center"> 2014-2015</th>
-                                    <th class="text-center"> 2015-2016</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.ListWiderAchievementData)
-                                {
-                                    <tr>
-                                        <td class="text-left">@item.age_range</td>
-                                        <td class="text-left">@item.awardname</td>
-                                        <td class="text-center">@item.award2013</td>
-                                        <td class="text-center">@item.award2014</td>
-                                        <td class="text-center">@item.award2015</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>row*@
+    </div>     
     </div> <!--container-->
 </body>

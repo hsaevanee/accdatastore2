@@ -11,28 +11,27 @@
     @*<title>@HttpContext.Current.Application["APP_NAME"]</title>*@
     @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
     @*<script src="~/Scripts/accdatastore/views/global.js"></script>
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
+        <script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
     @*<script src="~/Scripts/highcharts.js"></script>*@
     @*<link href="~/Content/bootstrap.min.css" rel="stylesheet">*@
     @*<script src="~/Scripts/accdatastore/views/global.js"></script>*@
     @*<script src="~/Scripts/jquery-2.1.1.min.js"></script>
-    <script>
-        var sContextPath = '@Url.Content("~")';
-    </script>*@
+        <script>
+            var sContextPath = '@Url.Content("~")';
+        </script>*@
 
     @*@RenderSection("Header")
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
 
     @RenderSection("style", required: false)
     <link rel="stylesheet" href="~/bower_components/angular-ui-select/dist/select.min.css">
     <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
     <script type="text/javascript" src="~/Scripts/accdatastore/views/global.js"></script>
     <script type="text/javascript" src="~/Scripts/jquery-2.1.1.min.js"></script>
-    @*<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>*@
-
     <script type="text/javascript" src="~/bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-route/angular-route.min.js"></script>
@@ -49,8 +48,7 @@
         var sContextPath = '@Url.Content("~")';
     </script>
     @RenderSection("Header")
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
 </head>
 
 <body>
@@ -74,7 +72,7 @@
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
                     <li class="nav-item">
-                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact us</a>
                     </li>
                     <li class="nav-item">
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About us</a>
